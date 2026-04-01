@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zikra — Persistent Memory for AI Agents</title>
+    <meta name="description" content="We built Zikra because our AI agents kept forgetting everything. Decisions, schemas, errors — gone every session. So we fixed it. Now we're sharing it.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav class="navbar glass">
+    <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="lite.html">Zikra Lite</a>
+        <a href="pro.html">Zikra</a>
+        <a href="license.html">License</a>
+    </div>
+    <div class="nav-actions">
+        <a href="lite.html" class="btn btn-ghost">Try Lite Free</a>
+        <a href="pro.html" class="btn btn-primary">Explore Zikra</a>
+    </div>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<header class="hero reveal">
+    <div class="badge pulse">Built for our team — now open source</div>
+    <h1 class="hero-title">We got tired of AI agents that <span class="gradient-text">forget everything</span>.</h1>
+    <p class="hero-sub">
+        Every session ended, and all that context vanished. Decisions re-explained.
+        Bugs re-diagnosed. Architecture re-described. We built Zikra to stop that.
+        It worked for us — so we're sharing it.
+    </p>
+    <div class="hero-cta">
+        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Start with Lite — Free</a>
+        <a href="#story" class="btn btn-ghost btn-lg">Read the story ↓</a>
+    </div>
+
+    <div class="terminal glass float reveal">
+        <div class="terminal-header">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <span class="terminal-label">zikra — live memory</span>
+        </div>
+        <div class="terminal-body">
+            <span><span class="prompt">$</span> curl -s -X POST http://localhost:7723/webhook/zikra \</span>
+            <span class="t-out t-anim">  -H "Authorization: Bearer $ZIKRA_TOKEN" \</span>
+            <span class="t-out t-anim">  -d '{"command":"search","project":"myapp","query":"how does auth work"}'</span>
+            <span class="t-dim t-anim">──────────────────────────────────────────────────</span>
+            <span class="t-success t-anim">✓  score 0.94  │  auth uses JWT tokens</span>
+            <span class="t-success t-anim">✓  score 0.87  │  session expiry set to 7 days in prod</span>
+            <span class="t-stat t-anim">   2 results · 38 tokens · your agent remembers</span>
+        </div>
+    </div>
+</header>
+
+<!-- ── The story ─────────────────────────────────────────────────────────────── -->
+<section id="story" class="section reveal">
+    <h2 class="section-title">Here's what actually happened</h2>
+    <p class="section-subtitle">No polished origin story. Just a real problem that kept getting worse.</p>
+
+    <div class="grid-3">
+        <div class="card glass">
+            <div class="card-icon">😤</div>
+            <h3>The third time explaining the same thing</h3>
+            <p>
+                We'd start a new Claude session and spend the first 20 minutes re-explaining the database schema,
+                the auth approach, the deployment setup. Every. Single. Time. It wasn't Claude's fault —
+                it just couldn't remember. But it was eating our days.
+            </p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🤝</div>
+            <h3>The team made it worse</h3>
+            <p>
+                When more people joined, the problem multiplied. Decisions made in one session were invisible to everyone else.
+                Two developers working in parallel would arrive at contradictory solutions and not find out until
+                a late-night code review argument.
+            </p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🔧</div>
+            <h3>So we built the fix ourselves</h3>
+            <p>
+                We started with a simple webhook and a SQLite database. Then added vector search.
+                Then shared it across machines. Then wired it into our hooks so it ran automatically.
+                Six months later it was saving us hours a week. We called it Zikra.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ── What it actually does ─────────────────────────────────────────────────── -->
+<section class="section reveal">
+
+    <div class="feature-row">
+        <div class="feature-text">
+            <span class="step-tag">The core idea</span>
+            <h3>Your agents read from the same memory</h3>
+            <p>
+                Zikra is a small server that sits between your AI tools and a database.
+                Every agent — Claude, Cursor, Gemini, whatever you use — can save and search
+                the same pool of context. Architecture decisions, error patterns, requirements,
+                runbook prompts.
+            </p>
+            <p>
+                One POST request to save something. Another to find it later.
+                It's not magic — it's just memory that actually persists.
+            </p>
+            <ul class="check-list">
+                <li>Hybrid vector + keyword search — finds things by meaning, not just exact words</li>
+                <li>Hooks fire automatically at session end — no manual saving</li>
+                <li>Token budget on results — never floods your context window</li>
+            </ul>
+        </div>
+        <div class="feature-visual">
+            <div class="code-block">
+<span class="c-comment"># Save something once</span>
+<span class="c-key">{</span>
+  <span class="c-key">"command"</span>:    <span class="c-val">"save_memory"</span>,
+  <span class="c-key">"title"</span>:      <span class="c-val">"auth uses JWT tokens"</span>,
+  <span class="c-key">"content_md"</span>: <span class="c-val">"We use JWT with 7-day expiry. Refresh tokens stored in httpOnly cookies. No sessions table."</span>,
+  <span class="c-key">"project"</span>:    <span class="c-val">"myapp"</span>
+<span class="c-key">}</span>
+<span class="c-success">→ saved</span>
+
+<span class="c-comment"># Find it weeks later, in any session</span>
+<span class="c-key">{</span>
+  <span class="c-key">"command"</span>: <span class="c-val">"search"</span>,
+  <span class="c-key">"query"</span>:   <span class="c-val">"how do users log in"</span>
+<span class="c-key">}</span>
+<span class="c-success">→ score 0.91  auth uses JWT tokens</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-row flip">
+        <div class="feature-text">
+            <span class="step-tag">The part we're proudest of</span>
+            <h3>It runs automatically — you don't have to think about it</h3>
+            <p>
+                The hardest part of any memory system is actually using it consistently.
+                We solved this with Claude Code hooks. A Stop hook fires the moment a session ends
+                and logs everything automatically. You never have to type "save this" — it just happens.
+            </p>
+            <p>
+                The statusline shows your memory count and session stats right in your terminal.
+                After a while you stop noticing it's there — you just notice that Claude always
+                seems to know your codebase.
+            </p>
+            <ul class="check-list">
+                <li>Stop hook logs every Claude Code session on close</li>
+                <li>PreCompact hook saves context before the window resets</li>
+                <li>Neovim and Claude Code statusline — live memory stats</li>
+            </ul>
+        </div>
+        <div class="feature-visual">
+            <div class="code-block">
+<span class="c-comment"># What Claude sees at the start of every session</span>
+<span class="c-comment"># (injected automatically from CLAUDE.md)</span>
+
+<span class="c-out">## Recent memory — myapp</span>
+<span class="c-out"></span>
+<span class="c-success">▸ auth uses JWT tokens (score 0.94)</span>
+<span class="c-out">  JWT with 7-day expiry. Refresh in httpOnly cookie.</span>
+<span class="c-out"></span>
+<span class="c-success">▸ payments use Stripe (score 0.88)</span>
+<span class="c-out">  Stripe Checkout. No card data touches our servers.</span>
+<span class="c-out"></span>
+<span class="c-out">  17 runs logged · 847 memories · last sync 2m ago</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Two versions ──────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <h2 class="section-title">Two ways to use it</h2>
+    <p class="section-subtitle">
+        Start with Lite on your own machine. Move to Zikra when your team needs shared context.
+        Same commands either way — no migration.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+        <div class="card glass" style="border-color:rgba(232,115,10,0.2);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+                <h3 style="font-size:1.5rem;">Zikra Lite</h3>
+                <span class="badge" style="margin:0;">MIT · Free</span>
+            </div>
+            <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.975rem;">
+                A single Python process. SQLite database. No infrastructure. Works on your laptop
+                in 60 seconds. This is what most solo developers need.
+            </p>
+            <ul class="check-list" style="margin-bottom:2rem;">
+                <li>pip install zikra-lite</li>
+                <li>Zero Docker, zero PostgreSQL</li>
+                <li>Full command surface — search, save, log, prompts</li>
+                <li>All 8 commands, all aliases</li>
+            </ul>
+            <a href="lite.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">
+                Get Zikra Lite →
+            </a>
+        </div>
+
+        <div class="card glass" style="border-color:rgba(232,115,10,0.35);">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+                <h3 style="font-size:1.5rem;">Zikra</h3>
+                <span class="badge" style="margin:0;">For Teams</span>
+            </div>
+            <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.975rem;">
+                PostgreSQL + pgvector + n8n. Every developer on every machine shares the same memory.
+                Requirements written in London are visible in Singapore within seconds.
+            </p>
+            <ul class="check-list" style="margin-bottom:2rem;">
+                <li>Multi-machine shared memory pool</li>
+                <li>Multi-user RBAC token management</li>
+                <li>n8n workflow integration</li>
+                <li>Cross-location requirement sync</li>
+            </ul>
+            <a href="pro.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">
+                Explore Zikra →
+            </a>
+        </div>
+    </div>
+
+    <p style="text-align:center;color:var(--muted);font-size:0.9rem;">
+        Same API. Same commands. Same JSON shapes. Upgrade is just changing a URL.
+    </p>
+</section>
+
+<!-- ── Honest note ───────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <div style="max-width:720px;margin:0 auto;">
+        <div class="card glass" style="padding:2.5rem 3rem;text-align:center;">
+            <div style="font-size:2rem;margin-bottom:1.25rem;">👋</div>
+            <h3 style="font-size:1.6rem;margin-bottom:1rem;">We hope it helps your team too</h3>
+            <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:1.5rem;">
+                Zikra started as an internal tool. We weren't trying to build a product — we were just
+                trying to stop wasting time. If you're hitting the same wall, Zikra Lite is free
+                and takes about a minute to set up.
+                If it helps, that's great. If something's broken, open an issue.
+            </p>
+            <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:2rem;">
+                We're actively using both versions ourselves, so issues get fixed fast.
+            </p>
+            <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+                <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Install Zikra Lite</a>
+                <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github btn-lg" target="_blank" rel="noopener">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    Star on GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="footer-inner">
+        <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+        <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
+        <div class="footer-links">
+            <a href="lite.html">Zikra Lite</a>
+            <a href="pro.html">Zikra</a>
+            <a href="license.html">License</a>
+            <a href="https://github.com/getzikra/zikra-lite" target="_blank" rel="noopener">GitHub Lite</a>
+            <a href="https://github.com/getzikra/zikra" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

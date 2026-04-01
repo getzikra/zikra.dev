@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zikra Lite — Zero-Dependency Memory for Solo Devs</title>
+    <meta name="description" content="Zikra Lite is a self-contained AI memory server. FastAPI + SQLite + sqlite-vec. pip install zikra-lite and start remembering in 60 seconds.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav class="navbar glass">
+    <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="lite.html">Zikra Lite</a>
+        <a href="pro.html">Zikra</a>
+        <a href="license.html">License</a>
+    </div>
+    <div class="nav-actions">
+        <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github" target="_blank" rel="noopener">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            GitHub
+        </a>
+        <a href="pro.html" class="btn btn-primary">Explore Zikra</a>
+    </div>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<header class="hero-inner reveal" style="padding-top:9rem;padding-bottom:2rem;text-align:center;">
+    <div class="container">
+        <div class="badge">MIT · Free Forever</div>
+        <h1 class="hero-title">Zikra <span class="gradient-text">Lite</span></h1>
+        <p class="hero-sub" style="margin:1.25rem auto 2.5rem;">
+            A self-contained memory server for solo developers. No Docker, no PostgreSQL, no n8n.
+            One Python process. One SQLite file. Full API surface.
+        </p>
+        <div class="stack-row">
+            <span class="stack-pill">Python 3.11+</span>
+            <span class="stack-pill">FastAPI</span>
+            <span class="stack-pill">SQLite</span>
+            <span class="stack-pill">sqlite-vec</span>
+            <span class="stack-pill">httpx</span>
+            <span class="stack-pill">uvicorn</span>
+        </div>
+        <div class="hero-cta">
+            <a href="https://github.com/getzikra/zikra-lite" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="margin-right:0.3rem;vertical-align:middle"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                View on GitHub
+            </a>
+            <a href="pro.html" class="btn btn-ghost btn-lg">Need team features? Try Zikra →</a>
+        </div>
+    </div>
+</header>
+
+<!-- ── Install ───────────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <h2 class="section-title">Up in 60 seconds</h2>
+    <p class="section-subtitle">Three commands and your agent has persistent memory.</p>
+
+    <div style="max-width:680px;margin:0 auto;">
+        <div class="code-block">
+<span class="c-comment"># Install</span>
+<span><span class="c-prompt">$</span> pip install zikra-lite</span>
+
+<span class="c-comment"># Configure — set OPENAI_API_KEY and ZIKRA_TOKEN</span>
+<span><span class="c-prompt">$</span> cp .env.example .env &amp;&amp; nano .env</span>
+
+<span class="c-comment"># Start the server</span>
+<span><span class="c-prompt">$</span> python -m zikra</span>
+<span class="c-out">Zikra Lite running at http://localhost:7723/webhook/zikra</span>
+        </div>
+
+        <p style="color:var(--muted);font-size:0.9rem;margin-top:1.25rem;text-align:center;">
+            Or clone from <a href="https://github.com/getzikra/zikra-lite" style="color:var(--primary);" target="_blank" rel="noopener">github.com/getzikra/zikra-lite</a> and run <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">pip install -r requirements.txt</code>
+        </p>
+    </div>
+</section>
+
+<!-- ── Commands ──────────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <h2 class="section-title">Every command available</h2>
+    <p class="section-subtitle">All sent as <code style="font-family:'JetBrains Mono',monospace;font-size:0.95rem;color:#FFB77A;">POST /webhook/zikra</code> with a Bearer token.</p>
+
+    <div class="grid-3" style="margin-bottom:3.5rem;">
+        <div class="card glass">
+            <div class="card-icon">🔍</div>
+            <h3>search</h3>
+            <p>Hybrid vector + keyword search across all memories. Returns ranked results with scores and snippets. Token budget applied automatically.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: find · query · recall · retrieve</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">💾</div>
+            <h3>save_memory</h3>
+            <p>Save any context — decisions, patterns, errors — with an embedding. Deduplicates by title + type. Access count tracked per memory.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: save · store · write</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">📖</div>
+            <h3>get_memory</h3>
+            <p>Retrieve a specific memory by title or ID. Returns full content, tags, resolution, and timestamps.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: fetch_memory · read_memory</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">📋</div>
+            <h3>get_prompt</h3>
+            <p>Retrieve a named runbook prompt by title. Increments access count. Use to store and retrieve reusable agent instructions.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: fetch_prompt · run_prompt</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">📝</div>
+            <h3>log_run</h3>
+            <p>Log a completed agent session with status, token counts, cost, and a summary. Builds an audit trail of AI activity.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: log_session · end_session</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🐛</div>
+            <h3>log_error</h3>
+            <p>Log errors and failures with type, message, stack trace, and context. Query later to spot recurring patterns.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: log_bug · report_error</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">📌</div>
+            <h3>save_requirement</h3>
+            <p>Save a project requirement with searchable content. Stored as a memory with type <code style="font-size:0.82rem;color:#FFB77A;">requirement</code> — searchable alongside all other context.</p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🗃️</div>
+            <h3>get_schema</h3>
+            <p>Return the full SQLite schema — all table definitions. Useful for debugging and confirming Lite is running correctly.</p>
+            <p style="margin-top:1rem;font-size:0.82rem;font-family:'JetBrains Mono',monospace;color:var(--muted);">aliases: schema</p>
+        </div>
+    </div>
+
+    <!-- Full command reference table -->
+    <div class="glass" style="border-radius:14px;overflow:hidden;margin-top:1rem;">
+        <table class="cmd-table">
+            <thead>
+                <tr>
+                    <th>Command</th>
+                    <th>Aliases</th>
+                    <th>Required fields</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="cmd-name">search</span></td>
+                    <td><span class="cmd-aliases">find, query, recall, retrieve, remember</span></td>
+                    <td><span class="cmd-aliases">query</span></td>
+                    <td class="cmd-desc">Hybrid search. Optional: limit (default 5), max_tokens (default 2000), project</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">save_memory</span></td>
+                    <td><span class="cmd-aliases">save, store, write, add_memory</span></td>
+                    <td><span class="cmd-aliases">title</span></td>
+                    <td class="cmd-desc">Save memory. Optional: content_md, memory_type, tags, project, module, created_by</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">get_memory</span></td>
+                    <td><span class="cmd-aliases">fetch_memory, read_memory, load_memory</span></td>
+                    <td><span class="cmd-aliases">title or id</span></td>
+                    <td class="cmd-desc">Get a single memory by title or ID. Optional: memory_type for disambiguation</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">get_prompt</span></td>
+                    <td><span class="cmd-aliases">fetch_prompt, run_prompt, load_prompt</span></td>
+                    <td><span class="cmd-aliases">prompt_name</span></td>
+                    <td class="cmd-desc">Get a named prompt (memory_type='prompt'). Increments access_count</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">log_run</span></td>
+                    <td><span class="cmd-aliases">log_session, end_session, finish_run</span></td>
+                    <td><span class="cmd-aliases">—</span></td>
+                    <td class="cmd-desc">Log a run. Optional: project, runner, status, output_summary, tokens_input, tokens_output, cost_usd</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">log_error</span></td>
+                    <td><span class="cmd-aliases">log_bug, report_error, save_error</span></td>
+                    <td><span class="cmd-aliases">message</span></td>
+                    <td class="cmd-desc">Log an error. Optional: project, runner, error_type, stack_trace, context_md</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">save_requirement</span></td>
+                    <td><span class="cmd-aliases">—</span></td>
+                    <td><span class="cmd-aliases">title</span></td>
+                    <td class="cmd-desc">Save a requirement (stored as memory_type='requirement'). Optional: content_md, project, tags</td>
+                </tr>
+                <tr>
+                    <td><span class="cmd-name">get_schema</span></td>
+                    <td><span class="cmd-aliases">schema</span></td>
+                    <td><span class="cmd-aliases">—</span></td>
+                    <td class="cmd-desc">Return SQLite table schema. No required fields</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ── Config ────────────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <h2 class="section-title">Configuration</h2>
+    <p class="section-subtitle">Two required variables. Everything else has sane defaults.</p>
+
+    <div class="glass" style="border-radius:14px;overflow:hidden;max-width:900px;margin:0 auto;">
+        <table class="env-table">
+            <thead>
+                <tr>
+                    <th>Variable</th>
+                    <th>Required</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="env-name">OPENAI_API_KEY</span></td>
+                    <td><span class="env-req">yes</span></td>
+                    <td><span class="env-default">—</span></td>
+                    <td class="cmd-desc">OpenAI key for text-embedding-3-small. Swap OPENAI_API_BASE for local models.</td>
+                </tr>
+                <tr>
+                    <td><span class="env-name">ZIKRA_TOKEN</span></td>
+                    <td><span class="env-req">yes</span></td>
+                    <td><span class="env-default">—</span></td>
+                    <td class="cmd-desc">Bearer token — all requests must include Authorization: Bearer &lt;token&gt;</td>
+                </tr>
+                <tr>
+                    <td><span class="env-name">ZIKRA_PORT</span></td>
+                    <td><span class="env-opt">no</span></td>
+                    <td><span class="env-default">7723</span></td>
+                    <td class="cmd-desc">HTTP port for the FastAPI server</td>
+                </tr>
+                <tr>
+                    <td><span class="env-name">ZIKRA_DB_PATH</span></td>
+                    <td><span class="env-opt">no</span></td>
+                    <td><span class="env-default">./zikra.db</span></td>
+                    <td class="cmd-desc">Path to the SQLite database file</td>
+                </tr>
+                <tr>
+                    <td><span class="env-name">OPENAI_API_BASE</span></td>
+                    <td><span class="env-opt">no</span></td>
+                    <td><span class="env-default">https://api.openai.com/v1</span></td>
+                    <td class="cmd-desc">Swap for a local Ollama or compatible embedding endpoint</td>
+                </tr>
+                <tr>
+                    <td><span class="env-name">ZIKRA_EMBEDDING_MODEL</span></td>
+                    <td><span class="env-opt">no</span></td>
+                    <td><span class="env-default">text-embedding-3-small</span></td>
+                    <td class="cmd-desc">Embedding model name — must produce 1536-dim vectors</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ── GitHub CTA ─────────────────────────────────────────────────────────────── -->
+<section class="reveal">
+    <div class="cta-band">
+        <h2>100% open source. <span class="gradient-text">MIT licensed.</span></h2>
+        <p>Fork it, embed it, ship it. No attribution required beyond the license header. Star the repo if Zikra Lite saves you time.</p>
+        <div class="btn-row">
+            <a href="https://github.com/getzikra/zikra-lite" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="margin-right:0.35rem;vertical-align:middle"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                github.com/getzikra/zikra-lite
+            </a>
+            <a href="pro.html" class="btn btn-ghost btn-lg">Need team features? Try Zikra →</a>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="footer-inner">
+        <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+        <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="pro.html">Pro</a>
+            <a href="license.html">License</a>
+            <a href="https://github.com/getzikra/zikra-lite" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
