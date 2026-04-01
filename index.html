@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zikra — Persistent Memory for AI Agents</title>
-    <meta name="description" content="We built Zikra because our AI agents kept forgetting everything. Decisions, schemas, errors — gone every session. So we fixed it. Now we're sharing it.">
+    <title>Zikra — Shared Memory Layer for AI Agents</title>
+    <meta name="description" content="I built Zikra because Claude Web and Claude Code wouldn't talk to each other. Now they share memory. So does my whole team. — Mukarram">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,16 +32,17 @@
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
 <header class="hero reveal">
-    <div class="badge pulse">Built for our team — now open source</div>
-    <h1 class="hero-title">We got tired of AI agents that <span class="gradient-text">forget everything</span>.</h1>
+    <div class="badge pulse">Built out of frustration — not a pitch deck</div>
+    <h1 class="hero-title">My AIs had <span class="gradient-text">no shared memory.</span><br>So I built one.</h1>
     <p class="hero-sub">
-        Every session ended, and all that context vanished. Decisions re-explained.
-        Bugs re-diagnosed. Architecture re-described. We built Zikra to stop that.
-        It worked for us — so we're sharing it.
+        I'm Mukarram. I do research on Claude Web, run code on Claude Code.
+        They don't talk to each other. Spent an hour designing architecture —
+        then had to re-explain every decision from scratch. Zikra is the memory
+        layer that connects them.
     </p>
     <div class="hero-cta">
-        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Start with Lite — Free</a>
-        <a href="#story" class="btn btn-ghost btn-lg">Read the story ↓</a>
+        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Get Zikra Lite — Free</a>
+        <a href="#problem" class="btn btn-ghost btn-lg">See the problem ↓</a>
     </div>
 
     <div class="terminal glass float reveal">
@@ -63,58 +64,152 @@
     </div>
 </header>
 
-<!-- ── The story ─────────────────────────────────────────────────────────────── -->
+<!-- ── The Problem ───────────────────────────────────────────────────────────── -->
+<section id="problem" class="section reveal">
+    <h2 class="section-title">The problem, clearly</h2>
+    <p class="section-subtitle">Claude Web and Claude Code are strangers. Every new session is a blank slate.</p>
+
+    <div class="before-after">
+        <div class="ba-panel ba-before glass">
+            <div class="ba-label">Without Zikra</div>
+            <div class="session-card">
+                <div class="session-title">Session 1 — Claude Web</div>
+                <div class="agents-row">
+                    <div class="agent-chip av-human">M</div>
+                    <div class="agent-line connected"></div>
+                    <div class="agent-chip av-cweb">CW</div>
+                </div>
+                <div class="session-outputs">
+                    <span class="so-ok">✓ auth: JWT, 7-day expiry</span>
+                    <span class="so-ok">✓ DB: PostgreSQL + pgvector</span>
+                    <span class="so-ok">✓ arch: microservices on Railway</span>
+                </div>
+            </div>
+            <div class="session-break">— new session —</div>
+            <div class="session-card">
+                <div class="session-title">Session 2 — Claude Code</div>
+                <div class="agents-row">
+                    <div class="agent-chip av-human">M</div>
+                    <div class="agent-line broken"></div>
+                    <div class="agent-chip av-ccode">CC</div>
+                </div>
+                <div class="session-outputs">
+                    <span class="so-err">? "What auth approach are you using?"</span>
+                    <span class="so-err">? "Can you describe the DB schema?"</span>
+                    <span class="so-err">× Back to square one. Again.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ba-panel ba-after glass">
+            <div class="ba-label">With Zikra</div>
+            <div class="hub-spoke">
+                <div class="hub-agents">
+                    <div class="hub-agent">
+                        <div class="agent-chip av-human">M</div>
+                        <span>Mukarram</span>
+                    </div>
+                    <div class="hub-agent">
+                        <div class="agent-chip av-team">T</div>
+                        <span>Team</span>
+                    </div>
+                    <div class="hub-agent">
+                        <div class="agent-chip av-cweb">CW</div>
+                        <span>Claude Web</span>
+                    </div>
+                    <div class="hub-agent">
+                        <div class="agent-chip av-ccode">CC</div>
+                        <span>Claude Code</span>
+                    </div>
+                    <div class="hub-agent">
+                        <div class="agent-chip av-gpt">GPT</div>
+                        <span>ChatGPT</span>
+                    </div>
+                </div>
+                <div class="hub-arrows">↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓</div>
+                <div class="hub-center">
+                    <div class="logo" style="font-size:1.6rem;text-decoration:none;"><span class="z">Z</span><span class="ikra">ikra</span></div>
+                    <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem;font-family:'JetBrains Mono',monospace;">shared memory</div>
+                </div>
+                <div class="hub-result">
+                    <span class="so-ok">✓ Every session starts with full context</span>
+                    <span class="so-ok">✓ Any agent. Any machine. Any location.</span>
+                    <span class="so-ok">✓ Doesn't matter which AI you're using</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── The Journey ───────────────────────────────────────────────────────────── -->
 <section id="story" class="section reveal">
-    <h2 class="section-title">Here's what actually happened</h2>
+    <h2 class="section-title">How we got here</h2>
     <p class="section-subtitle">No polished origin story. Just a real problem that kept getting worse.</p>
 
-    <div class="grid-3">
-        <div class="card glass">
-            <div class="card-icon">😤</div>
-            <h3>The third time explaining the same thing</h3>
-            <p>
-                We'd start a new Claude session and spend the first 20 minutes re-explaining the database schema,
-                the auth approach, the deployment setup. Every. Single. Time. It wasn't Claude's fault —
-                it just couldn't remember. But it was eating our days.
-            </p>
+    <div class="journey-timeline">
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-lg">M</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The frustration</span>
+                <p>"I like doing my architecture and research on Claude Web. It can browse sites, do deep research, give real suggestions on system design. But when it came time to actually run the code — that's Claude Code's job. The problem? They don't talk to each other. Every new session, you're starting from scratch. Claude Code had no idea what Claude Web and I had just spent an hour designing."</p>
+                <cite>— Mukarram, founder</cite>
+            </div>
         </div>
-        <div class="card glass">
-            <div class="card-icon">🤝</div>
-            <h3>The team made it worse</h3>
-            <p>
-                When more people joined, the problem multiplied. Decisions made in one session were invisible to everyone else.
-                Two developers working in parallel would arrive at contradictory solutions and not find out until
-                a late-night code review argument.
-            </p>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-lg">M</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The first build</span>
+                <p>Started with a simple webhook and SQLite. Then added vector search. Then wired it into Claude Code stop hooks so it ran automatically at the end of every session. You never had to type "save this" — it just happened. Months later it was saving hours a week. We called it Zikra — Arabic for memory.</p>
+            </div>
         </div>
-        <div class="card glass">
-            <div class="card-icon">🔧</div>
-            <h3>So we built the fix ourselves</h3>
-            <p>
-                We started with a simple webhook and a SQLite database. Then added vector search.
-                Then shared it across machines. Then wired it into our hooks so it ran automatically.
-                Six months later it was saving us hours a week. We called it Zikra.
-            </p>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-sm">M</div>
+                <div class="agent-chip av-team av-sm">A</div>
+                <div class="agent-chip av-team av-sm">R</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The team joined</span>
+                <p>More people joined the project. Suddenly one person is on Claude Web doing research, another validating requirements and writing prompts, Claude Code just executing. Decisions made in one session were invisible to everyone else — two developers would build in opposite directions and not find out until a late-night code review argument. That's when Lite wasn't enough. We needed Postgres.</p>
+            </div>
+        </div>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-cweb av-sm">CW</div>
+                <div class="agent-chip av-ccode av-sm">CC</div>
+                <div class="agent-chip av-gpt av-sm">GPT</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">Agent agnostic</span>
+                <p>"We even use ChatGPT sometimes when Claude Web is being stubborn about writing a prompt. Doesn't matter. The same MCP server works for all of them. That's Zikra. Not built for a pitch deck. Built because we actually needed it."</p>
+                <cite>— Mukarram</cite>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- ── What it actually does ─────────────────────────────────────────────────── -->
 <section class="section reveal">
-
     <div class="feature-row">
         <div class="feature-text">
             <span class="step-tag">The core idea</span>
-            <h3>Your agents read from the same memory</h3>
+            <h3>One memory. Every agent reads from it.</h3>
             <p>
                 Zikra is a small server that sits between your AI tools and a database.
-                Every agent — Claude, Cursor, Gemini, whatever you use — can save and search
-                the same pool of context. Architecture decisions, error patterns, requirements,
-                runbook prompts.
+                Every agent — Claude, Cursor, Gemini, ChatGPT — can save and search
+                the same pool of context. Architecture decisions, error patterns,
+                requirements, runbook prompts.
             </p>
             <p>
-                One POST request to save something. Another to find it later.
-                It's not magic — it's just memory that actually persists.
+                One POST to save. One POST to search. It's not magic — it's just
+                memory that actually persists.
             </p>
             <ul class="check-list">
                 <li>Hybrid vector + keyword search — finds things by meaning, not just exact words</li>
@@ -128,7 +223,7 @@
 <span class="c-key">{</span>
   <span class="c-key">"command"</span>:    <span class="c-val">"save_memory"</span>,
   <span class="c-key">"title"</span>:      <span class="c-val">"auth uses JWT tokens"</span>,
-  <span class="c-key">"content_md"</span>: <span class="c-val">"We use JWT with 7-day expiry. Refresh tokens stored in httpOnly cookies. No sessions table."</span>,
+  <span class="c-key">"content_md"</span>: <span class="c-val">"JWT with 7-day expiry. Refresh tokens in httpOnly cookies."</span>,
   <span class="c-key">"project"</span>:    <span class="c-val">"myapp"</span>
 <span class="c-key">}</span>
 <span class="c-success">→ saved</span>
@@ -146,16 +241,16 @@
     <div class="feature-row flip">
         <div class="feature-text">
             <span class="step-tag">The part we're proudest of</span>
-            <h3>It runs automatically — you don't have to think about it</h3>
+            <h3>Automatic. You don't think about it.</h3>
             <p>
-                The hardest part of any memory system is actually using it consistently.
-                We solved this with Claude Code hooks. A Stop hook fires the moment a session ends
-                and logs everything automatically. You never have to type "save this" — it just happens.
+                The hardest part of any memory system is using it consistently.
+                Claude Code hooks solve that. A Stop hook fires the moment a session ends
+                and logs everything automatically. You never type "save this" — it just happens.
             </p>
             <p>
                 The statusline shows your memory count and session stats right in your terminal.
-                After a while you stop noticing it's there — you just notice that Claude always
-                seems to know your codebase.
+                After a while you stop noticing it's there — you just notice Claude
+                always seems to know your codebase.
             </p>
             <ul class="check-list">
                 <li>Stop hook logs every Claude Code session on close</li>
@@ -165,93 +260,151 @@
         </div>
         <div class="feature-visual">
             <div class="code-block">
-<span class="c-comment"># What Claude sees at the start of every session</span>
-<span class="c-comment"># (injected automatically from CLAUDE.md)</span>
+<span class="c-comment"># What Claude sees at session start</span>
+<span class="c-comment"># (injected from CLAUDE.md automatically)</span>
 
 <span class="c-out">## Recent memory — myapp</span>
 <span class="c-out"></span>
-<span class="c-success">▸ auth uses JWT tokens (score 0.94)</span>
+<span class="c-success">▸ auth uses JWT tokens (0.94)</span>
 <span class="c-out">  JWT with 7-day expiry. Refresh in httpOnly cookie.</span>
 <span class="c-out"></span>
-<span class="c-success">▸ payments use Stripe (score 0.88)</span>
-<span class="c-out">  Stripe Checkout. No card data touches our servers.</span>
+<span class="c-success">▸ payments use Stripe (0.88)</span>
+<span class="c-out">  Stripe Checkout. No card data on our servers.</span>
 <span class="c-out"></span>
-<span class="c-out">  17 runs logged · 847 memories · last sync 2m ago</span>
+<span class="c-out">  17 runs · 847 memories · last sync 2m ago</span>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ── Two versions ──────────────────────────────────────────────────────────── -->
-<section class="section reveal">
-    <h2 class="section-title">Two ways to use it</h2>
+<!-- ── Two versions ───────────────────────────────────────────────────────────── -->
+<section id="versions" class="section reveal">
+    <h2 class="section-title">Two versions, one API</h2>
     <p class="section-subtitle">
-        Start with Lite on your own machine. Move to Zikra when your team needs shared context.
-        Same commands either way — no migration.
+        Lite is where Zikra started — one developer, one machine, 60 seconds to set up.
+        The full stack is what we built when the team joined. Same commands either way.
+        Upgrade is just changing a URL.
     </p>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
-        <div class="card glass" style="border-color:rgba(232,115,10,0.2);">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
-                <h3 style="font-size:1.5rem;">Zikra Lite</h3>
-                <span class="badge" style="margin:0;">MIT · Free</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+        <div class="card glass" style="border-color:rgba(74,222,128,0.2);">
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
+                <div class="agent-chip av-ccode" style="width:42px;height:42px;font-size:0.72rem;border-radius:10px;">Lite</div>
+                <div>
+                    <h3 style="font-size:1.3rem;">Zikra Lite</h3>
+                    <span style="font-size:0.8rem;color:var(--muted);">SQLite · Python · MIT Free</span>
+                </div>
             </div>
-            <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.975rem;">
-                A single Python process. SQLite database. No infrastructure. Works on your laptop
-                in 60 seconds. This is what most solo developers need.
+            <p style="color:var(--muted);margin-bottom:1.25rem;font-size:0.95rem;">
+                Where it started. A single Python process, SQLite database, zero infrastructure.
+                Works in 60 seconds on your laptop. This is what most solo developers need —
+                and exactly what fixed my Claude Web ↔ Claude Code problem.
             </p>
             <ul class="check-list" style="margin-bottom:2rem;">
                 <li>pip install zikra-lite</li>
                 <li>Zero Docker, zero PostgreSQL</li>
-                <li>Full command surface — search, save, log, prompts</li>
-                <li>All 8 commands, all aliases</li>
+                <li>All 8 commands, full API surface</li>
+                <li>sqlite-vec for vector search</li>
             </ul>
-            <a href="lite.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">
-                Get Zikra Lite →
-            </a>
+            <a href="lite.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">Get Zikra Lite →</a>
         </div>
 
         <div class="card glass" style="border-color:rgba(232,115,10,0.35);">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
-                <h3 style="font-size:1.5rem;">Zikra</h3>
-                <span class="badge" style="margin:0;">For Teams</span>
+            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
+                <div class="agent-chip av-human" style="width:42px;height:42px;font-size:0.72rem;border-radius:10px;">Pro</div>
+                <div>
+                    <h3 style="font-size:1.3rem;">Zikra</h3>
+                    <span style="font-size:0.8rem;color:var(--muted);">Postgres + n8n · For Teams</span>
+                </div>
             </div>
-            <p style="color:var(--muted);margin-bottom:1.5rem;font-size:0.975rem;">
-                PostgreSQL + pgvector + n8n. Every developer on every machine shares the same memory.
-                Requirements written in London are visible in Singapore within seconds.
+            <p style="color:var(--muted);margin-bottom:1.25rem;font-size:0.95rem;">
+                What we built when the team joined. PostgreSQL + pgvector + n8n.
+                Every developer on every machine shares the same memory pool.
+                Requirements written in London visible in Singapore within seconds.
             </p>
             <ul class="check-list" style="margin-bottom:2rem;">
                 <li>Multi-machine shared memory pool</li>
                 <li>Multi-user RBAC token management</li>
-                <li>n8n workflow integration</li>
-                <li>Cross-location requirement sync</li>
+                <li>n8n workflow integration + scheduling</li>
+                <li>pgvector at billions-of-rows scale</li>
             </ul>
-            <a href="pro.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">
-                Explore Zikra →
-            </a>
+            <a href="pro.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">Explore Zikra →</a>
         </div>
     </div>
 
-    <p style="text-align:center;color:var(--muted);font-size:0.9rem;">
+    <div class="glass" style="border-radius:14px;overflow:hidden;">
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="col-lite">Lite<br><small style="font-size:0.72rem;font-weight:400;opacity:0.7;">SQLite · Free</small></th>
+                    <th class="col-pro">Zikra<br><small style="font-size:0.72rem;font-weight:400;opacity:0.7;">Postgres + n8n</small></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Concurrent writes</td>
+                    <td><span class="partial">Limited</span></td>
+                    <td><span class="tick">✓</span> Unlimited</td>
+                </tr>
+                <tr>
+                    <td>Vector search</td>
+                    <td style="color:#FFB77A;font-family:'JetBrains Mono',monospace;font-size:0.85rem;">sqlite-vec</td>
+                    <td style="color:#FFB77A;font-family:'JetBrains Mono',monospace;font-size:0.85rem;">pgvector</td>
+                </tr>
+                <tr>
+                    <td>Scale</td>
+                    <td><span class="partial">Millions of rows</span></td>
+                    <td><span class="tick">✓</span> Billions of rows</td>
+                </tr>
+                <tr>
+                    <td>n8n workflows</td>
+                    <td><span class="cross">✕</span></td>
+                    <td><span class="tick">✓</span> Visual editor, scheduling</td>
+                </tr>
+                <tr>
+                    <td>Decay scoring</td>
+                    <td style="color:var(--muted);">Manual</td>
+                    <td><span class="tick">✓</span> Automated via n8n schedule</td>
+                </tr>
+                <tr>
+                    <td>Admin UI</td>
+                    <td style="color:var(--muted);">Basic</td>
+                    <td style="color:#FFB77A;">Django admin</td>
+                </tr>
+                <tr>
+                    <td>Backup</td>
+                    <td style="color:var(--muted);">Copy one file</td>
+                    <td style="color:#FFB77A;">pg_dump, managed</td>
+                </tr>
+                <tr>
+                    <td>Setup time</td>
+                    <td><span class="tick">✓</span> 60 seconds</td>
+                    <td><span class="partial">30–60 minutes</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:0.88rem;margin-top:1.5rem;">
         Same API. Same commands. Same JSON shapes. Upgrade is just changing a URL.
     </p>
 </section>
 
-<!-- ── Honest note ───────────────────────────────────────────────────────────── -->
+<!-- ── From Mukarram ─────────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:720px;margin:0 auto;">
         <div class="card glass" style="padding:2.5rem 3rem;text-align:center;">
-            <div style="font-size:2rem;margin-bottom:1.25rem;">👋</div>
-            <h3 style="font-size:1.6rem;margin-bottom:1rem;">We hope it helps your team too</h3>
-            <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:1.5rem;">
-                Zikra started as an internal tool. We weren't trying to build a product — we were just
-                trying to stop wasting time. If you're hitting the same wall, Zikra Lite is free
-                and takes about a minute to set up.
-                If it helps, that's great. If something's broken, open an issue.
+            <div class="agent-chip av-human av-xl" style="margin:0 auto 1.5rem;">M</div>
+            <h3 style="font-size:1.6rem;margin-bottom:1rem;">This isn't a product pitch. It's a tool we use every day.</h3>
+            <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:1rem;">
+                Zikra started as an internal tool. We weren't trying to build a product —
+                we were just trying to stop wasting time. Zikra Lite is free and takes about
+                a minute to set up. If it helps, great. If something's broken, open an issue.
             </p>
-            <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:2rem;">
+            <p style="color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:2rem;">
                 We're actively using both versions ourselves, so issues get fixed fast.
             </p>
+            <p style="color:#FFB77A;font-size:0.95rem;margin-bottom:2rem;">— Mukarram</p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
                 <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Install Zikra Lite</a>
                 <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github btn-lg" target="_blank" rel="noopener">
