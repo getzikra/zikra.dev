@@ -390,6 +390,51 @@
     </p>
 </section>
 
+<!-- ── Share with your team ──────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <h2 class="section-title">Share with your team</h2>
+    <p class="section-subtitle">
+        Zikra Lite runs on your machine by default. Getting teammates connected
+        takes one of three approaches depending on where they are.
+    </p>
+
+    <div class="grid-3">
+        <div class="card glass">
+            <div class="card-icon">🏠</div>
+            <h3>Same network</h3>
+            <p>
+                Start Zikra with <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">--host 0.0.0.0</code>
+                and share your local IP. Anyone on the same wifi or office
+                network connects to <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">http://YOUR-IP:7723</code>
+                and they're in. Nothing else to install.
+            </p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🌐</div>
+            <h3>Remote teammates — Cloudflare Tunnel</h3>
+            <p>
+                One-time setup, five minutes, free forever. Cloudflare gives your
+                local Zikra a permanent public URL like
+                <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">zikra.yourteam.com</code>
+                — no ports to open, no router config, no commands to run each time.
+                See the <a href="https://github.com/getzikra/zikra-lite#sharing-zikra-with-your-team" style="color:var(--primary);" target="_blank" rel="noopener">setup steps in the README</a>.
+            </p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🖥️</div>
+            <h3>Real server — Zikra Full</h3>
+            <p>
+                When your team needs something that runs permanently without your
+                laptop being on, Zikra Full runs on any VPS with one
+                <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">docker compose up</code>.
+                Same API, same commands, same Claude Code config — just a real
+                server instead of your machine.
+                <a href="pro.html" style="color:var(--primary);">See Zikra →</a>
+            </p>
+        </div>
+    </div>
+</section>
+
 <!-- ── From Mukarram ─────────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:720px;margin:0 auto;">
