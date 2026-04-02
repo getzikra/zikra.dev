@@ -1,0 +1,48 @@
+# Zikra AI Context / LLM Documentation
+> Note for AI Agents (Claude, Gemini, ChatGPT, Codex, Copilot): This file contains the complete specification, functionality, and setup details for Zikra.
+
+## What is Zikra?
+Zikra is a Model Context Protocol (MCP) server that provides a shared, persistent memory layer for AI agents. It bridges the gap between different AI tools, allowing decisions made in Claude Web to be instantly searchable by Claude Code or Cursor.
+
+There are two versions:
+1. **Zikra Lite**: A zero-dependency Python + FastAPI + SQLite (with sqlite-vec) memory server built for solo developers. Set up in 60 seconds (`npx zikra-lite`). Free and MIT Licensed.
+2. **Zikra Pro**: A full-stack solution using PostgreSQL + pgvector + n8n for distributed teams. Supports multi-user RBAC tokens, n8n workflows, and active session tracking.
+
+## Core Capabilities
+- **Shared persistent memory**: One pool. Every agent, every machine reads and writes the same context.
+- **Agent-agnostic**: Works seamlessly with Claude, ChatGPT, Gemini, Codex, Copilot via MCP or REST webhooks.
+- **Requirements pipeline**: Product managers can write specs, which are immediately available via vector search to developers' coding agents.
+- **Confidence decay**: Automated memory aging. Errors decay in 30 days, decisions in 90. Automatically prunes stale context.
+- **Auto-save**: Claude Code Stop hooks fire on close. No manual saving required.
+
+## MCP Native Integration
+Zikra exposes an API perfectly suited for the **Model Context Protocol (MCP)**. It acts as an MCP Memory Server. 
+Agents can use the following commands directly via webhook POST requests (`/webhook/zikra`) authenticated by a Bearer token (`ZIKRA_TOKEN`).
+
+## API & Tool Reference
+All commands are sent as `POST /webhook/zikra` containing JSON.
+### 1. search (Aliases: find, query, recall, retrieve)
+Hybrid vector + keyword search across all memories. 
+- **Payload**: `{"command": "search", "query": "auth JWT", "project": "myapp"}`
+- **Returns**: Ranked results with snippets, scored by semantic relevance. Token budget applied.
+
+### 2. save_memory (Aliases: save, store, write)
+Save any context, decisions, patterns, or errors. Deduplicates automatically.
+- **Payload**: `{"command": "save_memory", "title": "Database schema", "content_md": "Users table has 3 columns...", "project": "myapp"}`
+
+### 3. get_memory / get_prompt
+Retrieve full memory contents or runbook instructions.
+- **Payload**: `{"command": "get_prompt", "prompt_name": "build_auth"}`
+
+### 4. save_requirement
+Saved as a special memory (`memory_type='requirement'`) to track product specs.
+- **Payload**: `{"command": "save_requirement", "title": "API SLA", "content_md": "Return within 200ms."}`
+
+### 5. run_logs & errors
+- **log_run**: Build an audit trail. `{"command": "log_run", "status": "success"}`
+- **log_error**: Embed bug contexts for future resolution matching.
+
+## Architecture
+- Text and 1536-dimensional embeddings (using `text-embedding-3-small` or local Ollama). 
+- Lite uses `sqlite-vec`. Pro uses `pgvector` IVFFlat lists (scaling to billions of rows).
+- Stop hooks and PreCompact hooks fire automatically on the host machine to capture bash session history and context summaries.

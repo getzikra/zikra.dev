@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zikra — Shared Memory Layer for AI Agents</title>
     <meta name="description" content="I built Zikra because Claude Web and Claude Code wouldn't talk to each other. Now they share memory. So does my whole team. — Mukarram">
+    <link rel="llms-txt" href="/llms.txt" />
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,6 +64,130 @@
         </div>
     </div>
 </header>
+
+<!-- ── Features Table ──────────────────────────────────────────────────────────── -->
+<section id="capabilities" class="section reveal">
+    <h2 class="section-title">What Zikra does</h2>
+    <p class="section-subtitle">One memory protocol for every AI agent. Sync context across your whole environment.</p>
+
+    <div style="margin-bottom: 4rem;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">Core capabilities</h3>
+        <div class="glass" style="border-radius:14px;overflow:hidden;">
+            <table class="cmd-table" style="width: 100%;">
+                <thead>
+                    <tr><th>Feature</th><th>What it does</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="cmd-name">Shared persistent memory</span></td>
+                        <td class="cmd-desc">One PostgreSQL pool. Every agent, every machine, every session reads and writes the same context. Decisions made in Claude Web are visible in Claude Code seconds later.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="cmd-name">Agent-agnostic</span></td>
+                        <td class="cmd-desc">Claude Code, Claude Web, ChatGPT, Gemini, Codex, Copilot. Same webhook. Same token. Same memory. No per-agent integration required.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="cmd-name">Role-based access</span></td>
+                        <td class="cmd-desc">Owner, collaborator, guest. Enforced at the router. Owners create tokens and promote requirements. Collaborators write and search. Guests read only.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="cmd-name">Confidence decay</span></td>
+                        <td class="cmd-desc">Memories age automatically. Errors decay in 30 days, decisions in 90, schemas in 180. Below 0.2 confidence — flagged stale. Below 0.05 — deleted. No manual cleanup.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="cmd-name">Requirements pipeline</span></td>
+                        <td class="cmd-desc">A business user writes a requirement in Copilot or any AI. Owner promotes it. Developer pulls and executes it in Claude Code. Full traceability from spec to execution.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">Full feature set</h3>
+        <div class="glass" style="border-radius:14px;overflow:hidden;">
+            <table class="cmd-table" style="width: 100%;">
+                <thead>
+                    <tr><th>Feature</th><th>Purpose</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><span class="cmd-name">Hybrid search</span></td><td class="cmd-desc">70% semantic vector + 30% keyword. Finds by meaning, not exact match.</td></tr>
+                    <tr><td><span class="cmd-name">Token-budget results</span></td><td class="cmd-desc">Results are tiered and capped. Never floods your context window.</td></tr>
+                    <tr><td><span class="cmd-name">Auto-save on session end</span></td><td class="cmd-desc">Claude Code Stop hook fires on close. No manual saving.</td></tr>
+                    <tr><td><span class="cmd-name">PreCompact hook</span></td><td class="cmd-desc">Saves a summary before Claude's context resets. Nothing lost at compaction.</td></tr>
+                    <tr><td><span class="cmd-name">Multi-user tokens</span></td><td class="cmd-desc">Each person gets a scoped bearer token. Identity tracked on every write.</td></tr>
+                    <tr><td><span class="cmd-name">Promote to prompt</span></td><td class="cmd-desc">Owner approves a requirement — it becomes a live executable prompt.</td></tr>
+                    <tr><td><span class="cmd-name">Automated cleanup</span></td><td class="cmd-desc">Weekly cron removes old conversations, resolved errors, orphaned runs, old schema versions.</td></tr>
+                    <tr><td><span class="cmd-name">Schema storage</span></td><td class="cmd-desc">Store and retrieve DB schema per project and module. Any agent pulls current version before touching backend code.</td></tr>
+                    <tr><td><span class="cmd-name">Error logging</span></td><td class="cmd-desc">Any agent logs a bug with full context. Vector-embedded, searchable, tracked to resolution.</td></tr>
+                    <tr><td><span class="cmd-name">Debug protocol</span></td><td class="cmd-desc">Named prompt: read the error, search memory, check resolutions, fix, log. Any agent follows it.</td></tr>
+                    <tr><td><span class="cmd-name">Session tracking</span></td><td class="cmd-desc">Every run logged — tokens, cost, files modified, status, linked to the prompt that triggered it.</td></tr>
+                    <tr><td><span class="cmd-name">Active runs table</span></td><td class="cmd-desc">See which machine is running which prompt in real time across your team.</td></tr>
+                    <tr><td><span class="cmd-name">Statusline bar</span></td><td class="cmd-desc">Live in your terminal. Run count, memory count, model, project, context usage. Skull at 600K tokens.</td></tr>
+                    <tr><td><span class="cmd-name">Django admin UI</span></td><td class="cmd-desc">Web interface for browsing, searching, and managing all memories.</td></tr>
+                    <tr><td><span class="cmd-name">MCP native</span></td><td class="cmd-desc">Claude connects via MCP trigger. No custom integration.</td></tr>
+                    <tr><td><span class="cmd-name">Alias normaliser</span></td><td class="cmd-desc">"find", "recall", "remember", "query" all route correctly. Agents don't need exact command names.</td></tr>
+                    <tr><td><span class="cmd-name">Self-documenting API</span></td><td class="cmd-desc">Unknown command returns full reference with examples. No external docs needed at runtime.</td></tr>
+                    <tr><td><span class="cmd-name">Lite version</span></td><td class="cmd-desc">SQLite, Python, zero Docker. 60-second setup. Same API. Upgrade is one URL change.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ── The Journey ───────────────────────────────────────────────────────────── -->
+<section id="story" class="section reveal">
+    <h2 class="section-title">How we got here</h2>
+    <p class="section-subtitle">No polished origin story. Just a real problem that kept getting worse.</p>
+
+    <div class="journey-timeline">
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-lg">M</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The frustration</span>
+                <p>"I like doing my architecture and research on Claude Web. It can browse sites, do deep research, give real suggestions on system design. But when it came time to actually run the code — that's Claude Code's job. The problem? They don't talk to each other. Every new session, you're starting from scratch. Claude Code had no idea what Claude Web and I had just spent an hour designing."</p>
+                <cite>— Mukarram, founder</cite>
+            </div>
+        </div>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-lg">M</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The first build</span>
+                <p>Started with a simple webhook and SQLite. Then added vector search. Then wired it into Claude Code stop hooks so it ran automatically at the end of every session. You never had to type "save this" — it just happened. Months later it was saving hours a week. We called it Zikra — Arabic for memory.</p>
+            </div>
+        </div>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-human av-sm">M</div>
+                <div class="agent-chip av-team av-sm">A</div>
+                <div class="agent-chip av-team av-sm">R</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">The team joined</span>
+                <p>More people joined the project. Suddenly one person is on Claude Web doing research, another validating requirements and writing prompts, Claude Code just executing. Decisions made in one session were invisible to everyone else — two developers would build in opposite directions and not find out until a late-night code review argument. That's when Lite wasn't enough. We needed Postgres.</p>
+            </div>
+        </div>
+
+        <div class="jt-step reveal">
+            <div class="jt-avatars">
+                <div class="agent-chip av-cweb av-sm">CW</div>
+                <div class="agent-chip av-ccode av-sm">CC</div>
+                <div class="agent-chip av-gpt av-sm">GPT</div>
+            </div>
+            <div class="jt-content card glass">
+                <span class="step-tag">Agent agnostic</span>
+                <p>"We even use ChatGPT sometimes when Claude Web is being stubborn about writing a prompt. Doesn't matter. The same MCP server works for all of them. That's Zikra. Not built for a pitch deck. Built because we actually needed it."</p>
+                <cite>— Mukarram</cite>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- ── The Problem ───────────────────────────────────────────────────────────── -->
 <section id="problem" class="section reveal">
@@ -136,116 +261,6 @@
                     <span class="so-ok">✓ Any agent. Any machine. Any location.</span>
                     <span class="so-ok">✓ Doesn't matter which AI you're using</span>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="capabilities" class="capabilities-section">
-  <h2>What Zikra does</h2>
-
-  <h3>Core capabilities</h3>
-  <table class="feature-table">
-    <thead><tr><th>Feature</th><th>What it does</th></tr></thead>
-    <tbody>
-      <tr>
-        <td><strong>Shared persistent memory</strong></td>
-        <td>One PostgreSQL pool. Every agent, every machine, every session reads and writes the same context. Decisions made in Claude Web are visible in Claude Code seconds later.</td>
-      </tr>
-      <tr>
-        <td><strong>Agent-agnostic</strong></td>
-        <td>Claude Code, Claude Web, ChatGPT, Gemini, Codex, Copilot. Same webhook. Same token. Same memory. No per-agent integration required.</td>
-      </tr>
-      <tr>
-        <td><strong>Role-based access</strong></td>
-        <td>Owner, collaborator, guest. Enforced at the router. Owners create tokens and promote requirements. Collaborators write and search. Guests read only.</td>
-      </tr>
-      <tr>
-        <td><strong>Confidence decay</strong></td>
-        <td>Memories age automatically. Errors decay in 30 days, decisions in 90, schemas in 180. Below 0.2 confidence — flagged stale. Below 0.05 — deleted. No manual cleanup.</td>
-      </tr>
-      <tr>
-        <td><strong>Requirements pipeline</strong></td>
-        <td>A business user writes a requirement in Copilot or any AI. Owner promotes it. Developer pulls and executes it in Claude Code. Full traceability from spec to execution.</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <h3>Full feature set</h3>
-  <table class="feature-table">
-    <thead><tr><th>Feature</th><th>Purpose</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Hybrid search</strong></td><td>70% semantic vector + 30% keyword. Finds by meaning, not exact match.</td></tr>
-      <tr><td><strong>Token-budget results</strong></td><td>Results are tiered and capped. Never floods your context window.</td></tr>
-      <tr><td><strong>Auto-save on session end</strong></td><td>Claude Code Stop hook fires on close. No manual saving.</td></tr>
-      <tr><td><strong>PreCompact hook</strong></td><td>Saves a summary before Claude's context resets. Nothing lost at compaction.</td></tr>
-      <tr><td><strong>Multi-user tokens</strong></td><td>Each person gets a scoped bearer token. Identity tracked on every write.</td></tr>
-      <tr><td><strong>Promote to prompt</strong></td><td>Owner approves a requirement — it becomes a live executable prompt.</td></tr>
-      <tr><td><strong>Automated cleanup</strong></td><td>Weekly cron removes old conversations, resolved errors, orphaned runs, old schema versions.</td></tr>
-      <tr><td><strong>Schema storage</strong></td><td>Store and retrieve DB schema per project and module. Any agent pulls current version before touching backend code.</td></tr>
-      <tr><td><strong>Error logging</strong></td><td>Any agent logs a bug with full context. Vector-embedded, searchable, tracked to resolution.</td></tr>
-      <tr><td><strong>Debug protocol</strong></td><td>Named prompt: read the error, search memory, check resolutions, fix, log. Any agent follows it.</td></tr>
-      <tr><td><strong>Session tracking</strong></td><td>Every run logged — tokens, cost, files modified, status, linked to the prompt that triggered it.</td></tr>
-      <tr><td><strong>Active runs table</strong></td><td>See which machine is running which prompt in real time across your team.</td></tr>
-      <tr><td><strong>Statusline bar</strong></td><td>Live in your terminal. Run count, memory count, model, project, context usage. Skull at 600K tokens.</td></tr>
-      <tr><td><strong>Django admin UI</strong></td><td>Web interface for browsing, searching, and managing all memories.</td></tr>
-      <tr><td><strong>MCP native</strong></td><td>Claude connects via MCP trigger. No custom integration.</td></tr>
-      <tr><td><strong>Alias normaliser</strong></td><td>"find", "recall", "remember", "query" all route correctly. Agents don't need exact command names.</td></tr>
-      <tr><td><strong>Self-documenting API</strong></td><td>Unknown command returns full reference with examples. No external docs needed at runtime.</td></tr>
-      <tr><td><strong>Lite version</strong></td><td>SQLite, Python, zero Docker. 60-second setup. Same API. Upgrade is one URL change.</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- ── The Journey ───────────────────────────────────────────────────────────── -->
-<section id="story" class="section reveal">
-    <h2 class="section-title">How we got here</h2>
-    <p class="section-subtitle">No polished origin story. Just a real problem that kept getting worse.</p>
-
-    <div class="journey-timeline">
-        <div class="jt-step reveal">
-            <div class="jt-avatars">
-                <div class="agent-chip av-human av-lg">M</div>
-            </div>
-            <div class="jt-content card glass">
-                <span class="step-tag">The frustration</span>
-                <p>"I like doing my architecture and research on Claude Web. It can browse sites, do deep research, give real suggestions on system design. But when it came time to actually run the code — that's Claude Code's job. The problem? They don't talk to each other. Every new session, you're starting from scratch. Claude Code had no idea what Claude Web and I had just spent an hour designing."</p>
-                <cite>— Mukarram, founder</cite>
-            </div>
-        </div>
-
-        <div class="jt-step reveal">
-            <div class="jt-avatars">
-                <div class="agent-chip av-human av-lg">M</div>
-            </div>
-            <div class="jt-content card glass">
-                <span class="step-tag">The first build</span>
-                <p>Started with a simple webhook and SQLite. Then added vector search. Then wired it into Claude Code stop hooks so it ran automatically at the end of every session. You never had to type "save this" — it just happened. Months later it was saving hours a week. We called it Zikra — Arabic for memory.</p>
-            </div>
-        </div>
-
-        <div class="jt-step reveal">
-            <div class="jt-avatars">
-                <div class="agent-chip av-human av-sm">M</div>
-                <div class="agent-chip av-team av-sm">A</div>
-                <div class="agent-chip av-team av-sm">R</div>
-            </div>
-            <div class="jt-content card glass">
-                <span class="step-tag">The team joined</span>
-                <p>More people joined the project. Suddenly one person is on Claude Web doing research, another validating requirements and writing prompts, Claude Code just executing. Decisions made in one session were invisible to everyone else — two developers would build in opposite directions and not find out until a late-night code review argument. That's when Lite wasn't enough. We needed Postgres.</p>
-            </div>
-        </div>
-
-        <div class="jt-step reveal">
-            <div class="jt-avatars">
-                <div class="agent-chip av-cweb av-sm">CW</div>
-                <div class="agent-chip av-ccode av-sm">CC</div>
-                <div class="agent-chip av-gpt av-sm">GPT</div>
-            </div>
-            <div class="jt-content card glass">
-                <span class="step-tag">Agent agnostic</span>
-                <p>"We even use ChatGPT sometimes when Claude Web is being stubborn about writing a prompt. Doesn't matter. The same MCP server works for all of them. That's Zikra. Not built for a pitch deck. Built because we actually needed it."</p>
-                <cite>— Mukarram</cite>
             </div>
         </div>
     </div>
