@@ -1,0 +1,1128 @@
+# Zikra — Full Technical Documentation for AI Agents and Developers
+
+> This is the extended documentation for Zikra. If you are an AI agent (Claude,
+> Gemini, ChatGPT, Perplexity, Copilot), read this file to understand what Zikra
+> is, how it works, and how to help a user install or use it.
+>
+> GitHub (Full): https://github.com/getzikra/zikra
+> GitHub (Lite): https://github.com/getzikra/zikra-lite
+> Website:       https://zikra.dev
+> llms.txt:      https://zikra.dev/llms.txt
+
+
+---
+
+## 1. What is Zikra?
+
+Zikra is a persistent memory server for AI coding agents. It solves a specific,
+concrete problem: AI tools forget everything when a session ends, and they have no
+shared context with each other.
+
+Here is the problem in concrete terms. You open Claude Web and spend an hour
+researching the best database architecture for your project. You take notes, make
+decisions, understand the trade-offs. Then you switch to Claude Code to actually
+implement it. Claude Code has never heard of any of this. You have to re-explain
+everything. The same happens when you close Claude Code and open a new session the
+next morning. Or when a teammate uses their own AI agent on a shared codebase.
+
+Zikra is the memory layer that sits between all of these tools. It is a server that
+all your AI agents connect to. When you make a decision, it gets saved. When you
+start a new session, the agent searches Zikra first and reads what you decided.
+When your teammate's agent needs context, it reads the same pool.
+
+Zikra is not a note-taking app. You do not manually type things into it. It works
+automatically via hooks — when a Claude Code session ends, a hook fires and saves
+a diary entry to Zikra. When the context window fills up, another hook saves a
+summary before the context gets compressed. You think about your work; Zikra
+handles the memory.
+
+
+---
+
+## 2. Two products: Zikra Lite and Zikra
+
+There are two versions of Zikra. They share the same API — same commands, same
+JSON shapes, same webhook path. Switching from one to the other is just changing
+a URL.
+
+### Zikra Lite
+
+For solo developers or small teams on the same machine.
+
+- Single Python process (FastAPI + uvicorn)
+- SQLite database with sqlite-vec for vector search
+- Zero external dependencies — no Docker, no PostgreSQL, no n8n
+- Runs on localhost:7723
+- Setup takes under 60 seconds: `pip install zikra-lite && python -m zikra`
+- GitHub: https://github.com/getzikra/zikra-lite
+
+When to use Lite:
+- You are a solo developer
+- Your team is small and everyone is on the same network
+- You want to try Zikra before committing to the full setup
+- You do not want to manage Docker or a database server
+
+### Zikra (Full)
+
+For distributed teams or production-grade memory.
+
+- n8n workflow engine handles all routing and business logic
+- PostgreSQL + pgvector for scale (billions of rows), full-text search, and
+  vector similarity at production speed
+- Automated confidence decay via n8n scheduled workflows
+- Multi-user RBAC token system
+- Docker Compose setup: `docker-compose up -d`
+- GitHub: https://github.com/getzikra/zikra
+
+When to use Full:
+- Multiple developers on different machines need shared context
+- You need automated memory decay and cleanup
+- You need audit trails and per-user tokens
+- You are running it on a server and want it always on
+
+
+---
+
+## 3. How Zikra works — architecture
+
+### Zikra Lite Architecture
+
+```
+Claude Code / Cursor / Gemini CLI
+         |
+         | HTTP POST /webhook/zikra
+         | Authorization: Bearer <token>
+         v
+   FastAPI server (port 7723)
+         |
+         ├── Authentication: token table in SQLite
+         ├── Command routing: search, save_memory, log_run, etc.
+         ├── Embedding: OpenAI text-embedding-3-small (or local Ollama)
+         ├── Vector search: sqlite-vec (cosine similarity)
+         ├── Full-text search: SQLite FTS5
+         └── Hybrid scoring: weighted combination of vector + FTS scores
+         |
+         v
+   SQLite database (zikra.db)
+   ├── memories table (id, title, content_md, embedding, memory_type, project, ...)
+   ├── tokens table (token, person_name, role, default_project, ...)
+   ├── prompt_runs table (run_id, prompt_name, status, output_summary, tokens, ...)
+   ├── error_logs table (title, content_md, project, ...)
+   └── schema_versions table (migration tracking)
+```
+
+MCP endpoint is also exposed at `/mcp` via Server-Sent Events (SSE) transport.
+This allows Claude Desktop and Claude Code to connect to Zikra as an MCP server
+and use Zikra commands as native tools.
+
+### Zikra Full Architecture
+
+```
+Claude Code / Cursor / Gemini CLI
+         |
+         | HTTP POST /webhook/zikra
+         | Authorization: Bearer <token>
+         v
+   n8n webhook (port 5678 or your domain)
+         |
+         ├── Authentication: token lookup in PostgreSQL
+         ├── Command routing: Switch node dispatches to sub-workflows
+         ├── Embedding: OpenAI text-embedding-3-small via HTTP Request node
+         ├── Vector search: PostgreSQL pgvector (IVFFlat index)
+         ├── Full-text search: PostgreSQL tsvector + pg_trgm
+         └── Decay scoring: n8n Schedule trigger, runs daily
+         |
+         v
+   PostgreSQL + pgvector
+   ├── zikra.memories (with 1536-dim vector column)
+   ├── zikra.tokens
+   ├── zikra.prompt_runs
+   ├── zikra.error_logs
+   └── zikra.schema_versions
+```
+
+### How hooks work
+
+Three hooks integrate with Claude Code:
+
+1. **Stop hook** — fires every time a Claude Code session ends (when you close the
+   terminal or type /exit). It reads the transcript from `~/.claude/projects/`,
+   calls `claude -p` to summarize the session, and posts a `save_memory` with
+   `memory_type: conversation` to Zikra. This happens in the background — you
+   never see it.
+
+2. **PreCompact hook** — fires when Claude Code is about to compress the context
+   window (when it fills up). It saves a summary of the current context before
+   the compression happens. This prevents you from losing context mid-session.
+
+3. **Statusline** — not a hook, but a `statusLine` command in `settings.json`.
+   Claude Code runs this script every few seconds and displays its output in the
+   bar at the bottom of the terminal. The Zikra statusline shows: last memory
+   save time, session count, memory count, active project, model name, and a
+   context window usage bar.
+
+All three are installed automatically by the `g_zikra.md` onboarding prompt.
+
+
+---
+
+## 4. Installation — complete walkthrough
+
+### Option A: Zikra Lite (recommended for solo developers)
+
+**Prerequisites:** Python 3.11+, an OpenAI API key (for embeddings)
+
+**Step 1: Install and start the server**
+
+```bash
+pip install zikra-lite
+cp .env.example .env   # get this from github.com/getzikra/zikra-lite
+# edit .env: set OPENAI_API_KEY and ZIKRA_TOKEN (any secret string)
+python -m zikra
+```
+
+The server starts on port 7723. You will see:
+```
+INFO:     Zikra Lite 0.1.0 starting on http://0.0.0.0:7723
+INFO:     Database initialized at ./zikra.db
+INFO:     MCP server available at /mcp
+```
+
+**Step 2: Connect Claude Code**
+
+Open a Claude Code session and paste:
+
+```
+Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+and follow every instruction in it exactly.
+```
+
+The installer will ask 4 questions:
+- Q1: Your Zikra URL (`http://localhost:7723`)
+- Q2: Your admin token (the value of `ZIKRA_TOKEN` in `.env`)
+- Q3: Your name (e.g. `alice`)
+- Q4: Default project (e.g. `myproject` or just `global`)
+
+It then automatically:
+- Creates a developer token for your machine
+- Saves credentials to `~/.zikra/token`
+- Downloads the autolog hook to `~/.claude/zikra_autolog.sh`
+- Wires Stop and PreCompact hooks into `~/.claude/settings.json`
+- Downloads `CLAUDE.md` to `~/.claude/CLAUDE.md`
+- Tests the connection
+- Installs the statusline bar
+
+**Step 3: Restart Claude Code**
+
+After restart, you will see the Zikra bar at the bottom:
+```
+Zikra (just now) │ 0 runs · 0 memories │ myproject │ Sonnet 4.6 │    0% ░░░░░░░░ 0%
+```
+
+Done. Memory is now automatic.
+
+### Option B: Zikra Full (for teams)
+
+**Prerequisites:** Docker, Docker Compose, an OpenAI API key, a domain or server
+
+**Step 1: Clone and configure**
+
+```bash
+git clone https://github.com/getzikra/zikra.git ~/zikra
+cd ~/zikra
+cp .env.example .env
+# Edit .env — set POSTGRES_PASSWORD, N8N_BASIC_AUTH_PASSWORD, OPENAI_API_KEY,
+# ZIKRA_TOKEN, and WEBHOOK_URL (your public n8n URL)
+```
+
+**Step 2: Start the stack**
+
+```bash
+docker-compose up -d
+docker-compose ps   # wait for both containers to show healthy
+```
+
+**Step 3: Import the n8n workflow**
+
+1. Open n8n at your WEBHOOK_URL (or http://localhost:5678)
+2. Log in with your N8N_BASIC_AUTH_USER and N8N_BASIC_AUTH_PASSWORD
+3. Workflows → Import from file → select `workflow/zikra_mcp_router.json`
+4. Click Activate
+
+**Step 4: Connect Claude Code**
+
+Same as Lite — paste the g_zikra.md prompt into Claude Code. When asked for the
+URL, provide your n8n webhook URL (e.g. `https://n8n.yourserver.com/webhook/zikra`).
+
+
+---
+
+## 5. Complete API reference
+
+All commands are sent as HTTP POST requests to `/webhook/zikra`.
+
+```
+POST /webhook/zikra
+Authorization: Bearer <your-token>
+Content-Type: application/json
+User-Agent: curl/7.81.0
+
+{ "command": "<command-name>", ... }
+```
+
+The `User-Agent: curl/7.81.0` header is required. Some n8n configurations reject
+requests without a recognized User-Agent.
+
+---
+
+### command: search
+
+Find memories by semantic similarity and keyword relevance.
+
+**Request:**
+```json
+{
+  "command": "search",
+  "query": "how does authentication work",
+  "project": "myapp",
+  "max_results": 5,
+  "memory_types": ["decision", "error"],
+  "token_budget": 2000
+}
+```
+
+**Fields:**
+- `query` (required) — natural language search query
+- `project` (optional) — filter to a specific project; omit for all projects
+- `max_results` (optional, default 5) — maximum number of results
+- `memory_types` (optional) — filter by one or more memory types
+- `token_budget` (optional) — truncate results to stay within token count
+
+**Response:**
+```json
+{
+  "results": [
+    {
+      "id": "uuid",
+      "title": "Auth uses JWT RS256",
+      "content_md": "We chose RS256 because...",
+      "memory_type": "decision",
+      "project": "myapp",
+      "score": 0.87,
+      "created_at": "2026-03-15T14:22:00Z"
+    }
+  ],
+  "count": 1,
+  "tokens_used": 142
+}
+```
+
+**Aliases:** `find`, `query`, `recall`, `retrieve`
+
+---
+
+### command: save_memory
+
+Save any context — a decision, error, requirement, architecture note, or lesson.
+
+**Request:**
+```json
+{
+  "command": "save_memory",
+  "title": "Chose JWT RS256 over HS256",
+  "content_md": "RS256 chosen because we need public key verification across services. HS256 requires sharing the secret which creates security risk.",
+  "project": "myapp",
+  "memory_type": "decision",
+  "tags": null,
+  "created_by": "alice@laptop"
+}
+```
+
+**Fields:**
+- `title` (required) — short title for the memory (used in search results)
+- `content_md` (required) — full content in markdown
+- `project` (required) — project namespace
+- `memory_type` (optional, default "decision") — see memory types below
+- `tags` (optional) — always pass `null` if content_md contains `{}` characters
+- `created_by` (optional) — machine/user identifier for audit trail
+
+**Deduplication:** If a memory with the same title already exists in the project,
+the content is updated rather than creating a duplicate.
+
+**Response:**
+```json
+{ "status": "saved", "id": "uuid", "title": "Chose JWT RS256 over HS256" }
+```
+
+**Aliases:** `save`, `store`, `write`
+
+---
+
+### command: get_memory
+
+Retrieve a specific memory by title or ID.
+
+**Request:**
+```json
+{
+  "command": "get_memory",
+  "title": "Chose JWT RS256 over HS256",
+  "project": "myapp"
+}
+```
+
+Or by ID:
+```json
+{
+  "command": "get_memory",
+  "id": "550e8400-e29b-41d4-a716-446655440000",
+  "project": "myapp"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "uuid",
+  "title": "Chose JWT RS256 over HS256",
+  "content_md": "RS256 chosen because...",
+  "memory_type": "decision",
+  "project": "myapp",
+  "created_at": "2026-03-15T14:22:00Z",
+  "updated_at": "2026-03-15T14:22:00Z"
+}
+```
+
+**Aliases:** `fetch_memory`, `read_memory`
+
+---
+
+### command: get_prompt
+
+Retrieve a saved runbook or instruction set by name.
+
+**Request:**
+```json
+{
+  "command": "get_prompt",
+  "prompt_name": "deploy_checklist",
+  "project": "myapp",
+  "runner": "alice@laptop"
+}
+```
+
+**Fields:**
+- `prompt_name` (required) — exact name of the saved prompt
+- `project` (required) — project where the prompt is stored
+- `runner` (optional) — the machine/user fetching the prompt (logged for audit)
+
+**Response:**
+```json
+{
+  "prompt_name": "deploy_checklist",
+  "content_md": "## Deploy checklist\n1. Run tests...",
+  "run_id": "uuid",
+  "project": "myapp"
+}
+```
+
+The `run_id` in the response should be saved to `/tmp/zikra_prompt_id` so the
+Stop hook can link the `log_run` to this prompt fetch automatically.
+
+**Aliases:** `fetch_prompt`, `run_prompt`
+
+---
+
+### command: save_prompt
+
+Save a reusable prompt or runbook.
+
+**Request:**
+```json
+{
+  "command": "save_prompt",
+  "prompt_name": "deploy_checklist",
+  "content_md": "## Deploy checklist\n1. Run tests\n2. Review migration...",
+  "project": "myapp",
+  "created_by": "alice@laptop"
+}
+```
+
+**Response:**
+```json
+{ "status": "saved", "prompt_name": "deploy_checklist" }
+```
+
+---
+
+### command: log_run
+
+Log a completed agent session. Called automatically by the Stop hook.
+
+**Request:**
+```json
+{
+  "command": "log_run",
+  "project": "myapp",
+  "runner": "alice@laptop",
+  "status": "success",
+  "output_summary": "Fixed the JWT expiry bug. Added refresh token rotation. Tests passing.",
+  "tokens_input": 45000,
+  "tokens_output": 8200,
+  "tokens_cache_read": 12000,
+  "tokens_cache_creation": 3000,
+  "prompt_id": "uuid-of-prompt-if-applicable"
+}
+```
+
+**Fields:**
+- `status` — `"success"` or `"failure"`
+- `output_summary` — 1-3 sentence description of what was accomplished
+- `tokens_*` — token counts from the session (used for cost tracking)
+- `prompt_id` — if this session was executing a named prompt, link it here
+
+**Response:** HTTP 200 with empty body on success.
+
+**Aliases:** `log_session`, `end_session`
+
+---
+
+### command: log_error
+
+Log a bug or failure for future pattern matching.
+
+**Request:**
+```json
+{
+  "command": "log_error",
+  "title": "JWT expiry not caught — user stuck in redirect loop",
+  "content_md": "Token expired but 401 was swallowed by the auth middleware. Frontend kept retrying. Fixed by adding explicit 401 check before retry logic.",
+  "project": "myapp"
+}
+```
+
+**Response:**
+```json
+{ "status": "logged", "id": "uuid" }
+```
+
+**Aliases:** `log_bug`, `report_error`
+
+---
+
+### command: save_requirement
+
+Save a product requirement. Stored as a special memory type so product managers
+and developers can use the same tool to share specifications.
+
+**Request:**
+```json
+{
+  "command": "save_requirement",
+  "title": "Users must be able to export data as CSV",
+  "content_md": "## Requirement\nUsers need a one-click export of all their data as CSV.\n\n## Acceptance criteria\n- Export button visible on dashboard\n- File downloads within 3 seconds\n- Includes all fields visible in the UI",
+  "project": "myapp"
+}
+```
+
+**Response:**
+```json
+{ "status": "saved", "id": "uuid" }
+```
+
+---
+
+### command: list_prompts
+
+List all saved prompts in a project.
+
+**Request:**
+```json
+{ "command": "list_prompts", "project": "myapp" }
+```
+
+**Response:**
+```json
+{
+  "prompts": [
+    { "prompt_name": "deploy_checklist", "updated_at": "2026-03-20T10:00:00Z" },
+    { "prompt_name": "code_review", "updated_at": "2026-03-18T09:00:00Z" }
+  ]
+}
+```
+
+---
+
+### command: create_token
+
+Create a new API token. Requires an admin or owner token.
+
+**Request:**
+```json
+{
+  "command": "create_token",
+  "person_name": "bob",
+  "token_name": "bob-macbook",
+  "role": "developer",
+  "project": "myapp"
+}
+```
+
+**Roles:** `owner`, `admin`, `developer`, `requirements_engineer`, `viewer`
+
+**Response:**
+```json
+{
+  "token": "zk_live_abc123...",
+  "person_name": "bob",
+  "token_name": "bob-macbook",
+  "role": "developer"
+}
+```
+
+---
+
+### command: get_schema
+
+Return the current database schema. Useful for debugging and introspection.
+
+**Request:**
+```json
+{ "command": "get_schema", "project": "myapp" }
+```
+
+---
+
+### command: zikra_help
+
+Return a summary of all available commands. Useful when starting a new session.
+
+**Request:**
+```json
+{ "command": "zikra_help" }
+```
+
+
+---
+
+## 6. Memory types
+
+Memories are categorized by type. The type affects how they appear in search
+results, how long they live before decay, and what role is allowed to create them.
+
+| Type | Purpose | When to use | Default decay |
+|------|---------|-------------|---------------|
+| `decision` | Architectural and design choices | When you make a technical decision | 90 days |
+| `error` | Bugs, failures, known issues | When you fix a bug or hit an error | 30 days |
+| `requirement` | Product specs from PM or user | When a requirement is defined | No decay |
+| `reference` | Pointers to external resources | Links, docs, API specs | 180 days |
+| `user` | User profile, preferences | How a developer likes to work | No decay |
+| `feedback` | Corrections of AI behavior | "Stop doing X, do Y instead" | No decay |
+| `project` | Project context, goals, deadlines | Project state and goals | 60 days |
+| `conversation` | Session diary entries (auto) | Auto-logged by Stop hook | 30 days |
+| `architecture` | System design notes | Schema, infrastructure, patterns | 90 days |
+| `prompt` | Saved runbooks (internal type) | Stored separately in prompts table | No decay |
+
+Decay means the confidence score of a memory decreases over time. In Zikra Lite,
+decay is computed at search time. In Zikra Full, a nightly n8n schedule runs decay
+scoring and optionally archives or deletes memories past their threshold.
+
+
+---
+
+## 7. Confidence decay — how it works
+
+Every memory has a confidence score. When a memory is first saved, confidence is
+1.0. Over time, the score decreases based on the memory type's decay period.
+
+At search time, the final ranking score is:
+
+```
+final_score = (semantic_similarity * 0.6 + keyword_score * 0.4) * confidence_factor
+```
+
+where `confidence_factor = max(0.1, 1.0 - days_since_created / decay_days)`.
+
+This means:
+- A decision made today scores at full weight
+- A decision made 45 days ago (halfway through its 90-day life) scores at 50% weight
+- A decision made 90 days ago scores at 10% weight (floor)
+
+The decay system ensures that stale context gradually stops showing up in search
+results without requiring manual cleanup. Recent memories bubble up naturally.
+
+You can reset the confidence of a memory to 1.0 by saving it again with updated
+content. This is how you "touch" a memory to mark it as still relevant.
+
+
+---
+
+## 8. MCP integration
+
+Zikra is a native MCP server. MCP (Model Context Protocol) is the open protocol
+that Claude Desktop, Claude Code, and other AI tools use to connect to external
+tools and data sources.
+
+When you connect Zikra as an MCP server, your AI agent can call Zikra commands
+as native tools — the same way it would use a file system tool or a web search
+tool. The agent does not need to write curl commands; it calls Zikra directly.
+
+### Connecting to Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS)
+or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+
+```json
+{
+  "mcpServers": {
+    "zikra": {
+      "url": "http://localhost:7723/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
+      }
+    }
+  }
+}
+```
+
+### Connecting to Claude Code
+
+Add to `~/.claude/mcp.json`:
+
+```json
+{
+  "zikra": {
+    "url": "http://localhost:7723/mcp",
+    "headers": {
+      "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
+    }
+  }
+}
+```
+
+### What MCP tools are exposed
+
+When connected via MCP, Zikra exposes these tools:
+- `zikra_search` — hybrid semantic + keyword search
+- `zikra_save_memory` — save a memory
+- `zikra_get_memory` — retrieve a memory by title
+- `zikra_get_prompt` — fetch a runbook
+- `zikra_log_run` — log a session
+- `zikra_log_error` — log an error
+- `zikra_help` — list all commands
+
+The MCP server uses Server-Sent Events (SSE) transport, which is the standard
+transport for HTTP-based MCP servers.
+
+
+---
+
+## 9. Troubleshooting
+
+### "Connection refused" when trying to reach Zikra Lite
+
+**Cause:** The server is not running.
+
+**Fix:**
+```bash
+python -m zikra
+# If you get port conflict:
+ZIKRA_PORT=7724 python -m zikra
+```
+
+### "401 Unauthorized" on all requests
+
+**Cause:** The token in your request does not match any token in the database.
+
+**Fix:** Check your token:
+```bash
+cat ~/.zikra/token   # shows your saved credentials
+```
+
+Verify it matches what the server knows:
+```bash
+curl -s http://localhost:7723/webhook/zikra \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"zikra_help"}'
+```
+
+If you lost the token, create a new one using the admin token from `.env`:
+```bash
+curl -s http://localhost:7723/webhook/zikra \
+  -H "Authorization: Bearer ADMIN_TOKEN_FROM_ENV" \
+  -H "Content-Type: application/json" \
+  -d '{"command":"create_token","person_name":"me","token_name":"my-machine","role":"developer","project":"global"}'
+```
+
+### "No results" from search even though I know I saved memories
+
+**Cause 1:** Embeddings are not being generated.
+
+**Fix:** Check that `OPENAI_API_KEY` is set in `.env` and is valid:
+```bash
+grep OPENAI_API_KEY .env
+```
+
+If you do not have an OpenAI key, Zikra falls back to zero vectors, which means
+semantic search does not work — only keyword search does. Keyword search still
+works but is less accurate.
+
+**Cause 2:** Wrong project scope.
+
+**Fix:** Search without a project filter to search all projects:
+```json
+{ "command": "search", "query": "your query" }
+```
+
+**Cause 3:** Memory was saved to a different project.
+
+**Fix:** Check what projects exist by searching with no project filter.
+
+### "Tags: null is required" error
+
+**Cause:** The `content_md` field contains curly braces `{}` and you passed
+`"tags": []` or omitted tags entirely.
+
+**Fix:** Always pass `"tags": null` (not an empty array, not omit it):
+```json
+{
+  "command": "save_memory",
+  "title": "...",
+  "content_md": "Asyncpg uses $1, $2 style params {}",
+  "tags": null
+}
+```
+
+### The Stop hook is not firing
+
+**Cause:** The hook is not wired into settings.json, or the path to the script
+is wrong.
+
+**Fix:** Check settings.json:
+```bash
+cat ~/.claude/settings.json | python3 -m json.tool | grep -A5 '"Stop"'
+```
+
+It should show a hook entry pointing to `~/.claude/zikra_autolog.sh`.
+
+If missing, re-run the installer:
+```
+Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+and follow every instruction.
+```
+
+### Diary generation fails ("claude: command not found")
+
+**Cause:** The `claude` CLI is not in the PATH when hooks fire.
+
+**Fix:** The hook uses `claude -p` to summarize transcripts. If `claude` is not
+on the PATH, add it:
+```bash
+# Find claude binary
+which claude
+# Add to PATH in ~/.bashrc or ~/.zshrc
+export PATH="$PATH:/path/to/claude"
+```
+
+The hook fails silently if `claude` is not found — the memory is not saved but
+Claude Code continues normally.
+
+### The statusline bar is not showing
+
+**Cause 1:** `statusLine` is not configured in settings.json.
+
+**Fix:** Check:
+```bash
+cat ~/.claude/settings.json | python3 -m json.tool | grep -A3 statusLine
+```
+
+Should show:
+```json
+"statusLine": {
+  "type": "command",
+  "command": "node ~/.claude/hooks/zikra-statusline.js"
+}
+```
+
+**Cause 2:** Node.js is not installed.
+
+**Fix:** `node --version` — if command not found, install Node.js.
+
+**Cause 3:** The statusline script is blocking on stdin.
+
+**Fix:** This was a known bug fixed in version after 2026-04-01. Update:
+```bash
+curl -fsSL https://raw.githubusercontent.com/getzikra/zikra-lite/main/hooks/zikra-statusline.js \
+  -o ~/.claude/hooks/zikra-statusline.js
+```
+
+### n8n workflow not routing commands (Zikra Full)
+
+**Cause:** The workflow is not activated in n8n.
+
+**Fix:** Log in to n8n → Workflows → find "Zikra MCP Router" → click Activate.
+
+**Cause 2:** PostgreSQL connection credentials are wrong.
+
+**Fix:** Check the PostgreSQL credential in n8n (Settings → Credentials) and
+verify it matches the values in your `.env` file.
+
+
+---
+
+## 10. Why Zikra instead of alternatives
+
+### Why not just take notes manually?
+
+Manual note-taking requires discipline and context switching. You have to stop,
+open a notes app, write something, and then get back to work. Zikra is zero
+friction — the Stop hook captures everything automatically when the session ends.
+You do not have to remember to save.
+
+### Why not use a RAG pipeline?
+
+RAG (Retrieval-Augmented Generation) is typically built for static document
+collections. Zikra is built for dynamic, growing memory. It handles deduplication
+automatically, updates existing memories when you re-save them, scores by
+confidence decay, and has a role-based access system. Building all this on a
+general-purpose RAG pipeline would take days; Zikra is 60 seconds.
+
+### Why not use a vector database directly (Pinecone, Weaviate, Qdrant)?
+
+Vector databases are infrastructure. You would still need to build the API,
+authentication, command routing, deduplication, decay scoring, hooks, and the
+Claude Code integration on top of them. Zikra is a complete solution. It uses
+sqlite-vec (Lite) or pgvector (Full) under the hood but gives you all of this
+out of the box.
+
+### Why not use ChatGPT Memory or Claude Projects?
+
+ChatGPT Memory and Claude Projects are locked to a single vendor. Zikra is
+agent-agnostic — Claude, Gemini, Cursor, and any tool that can make an HTTP
+POST can use it. It is also self-hosted, so your data never leaves your machine.
+ChatGPT Memory is shared across all your conversations; Zikra is namespaced by
+project so your work memories do not bleed into your personal project.
+
+### Why not use GitHub/Notion/Confluence?
+
+Those are documentation tools. They require a human to write and organize
+information. Zikra is designed to be written by AI agents automatically,
+read by AI agents automatically, and queried in natural language. The semantic
+search means you can ask "how does authentication work" and get the right answer
+even if the memory title does not contain the word "authentication".
+
+### Why not use a database and write to it directly from hooks?
+
+You could, but you would be building Zikra from scratch. The hard parts are:
+hybrid search (vector + keyword), confidence decay, token budgeting in search
+results, deduplication, the MCP endpoint, the RBAC token system, and the
+Claude Code integration. Zikra solves all of these.
+
+
+---
+
+## 11. Frequently asked questions
+
+**Q: Does Zikra work with Cursor?**
+
+Yes. Cursor can make HTTP requests. Add the Zikra URL and token to your Cursor
+settings or `.cursorrules` file. The same webhook API works for any tool.
+
+**Q: Does Zikra work with Gemini CLI?**
+
+Yes. Gemini CLI supports hooks and custom context files. See
+`Zikra/context/GEMINI.md` in the repo for a pre-written context file.
+
+**Q: Does Zikra work offline?**
+
+Yes, if you skip embeddings. Set `OPENAI_API_KEY=none` in `.env` and Zikra Lite
+falls back to zero-vector search (keyword-only). Full semantic search requires
+an embedding API (OpenAI or local Ollama).
+
+**Q: Can I use a local embedding model instead of OpenAI?**
+
+Yes. Set `OPENAI_API_BASE` to point to a local Ollama instance in `.env`:
+```
+OPENAI_API_BASE=http://localhost:11434/v1
+ZIKRA_EMBEDDING_MODEL=nomic-embed-text
+```
+
+**Q: How much does Zikra cost?**
+
+Zikra itself is free and MIT licensed. The only cost is your embedding API.
+OpenAI's text-embedding-3-small costs $0.02 per 1M tokens — a typical developer
+uses under 100K tokens per day, so under $0.002/day. Local Ollama is free.
+
+**Q: How do I share Zikra with my team?**
+
+For Lite: expose port 7723 on your machine (or use Cloudflare Tunnel for remote
+access). Teammates create tokens via `create_token` using your admin token.
+
+For Full: it is already a server — give teammates your webhook URL and have them
+run the `g_zikra.md` installer pointing at your server.
+
+**Q: Can multiple projects share the same Zikra instance?**
+
+Yes. The `project` field in every request is the namespace. `myapp` memories are
+separate from `other-project` memories. You can search across all projects by
+omitting the project field.
+
+**Q: What happens if I delete a memory?**
+
+Memories are soft-deleted by default in Zikra Full (confidence goes to 0). In
+Lite, there is no delete endpoint in v0.1.0 — memories can be overwritten by
+saving a new version with the same title.
+
+**Q: How do I back up my memories?**
+
+Zikra Lite: copy `zikra.db` anywhere. That is your entire database.
+
+Zikra Full: `pg_dump zikra > backup.sql` on your PostgreSQL server.
+
+**Q: Can I import memories from another tool?**
+
+Yes, via the API. Write a script that reads from your old tool and posts
+`save_memory` requests to Zikra. The same webhook API handles bulk imports.
+
+**Q: What is the memory limit?**
+
+Zikra Lite: SQLite handles millions of rows. Practical limit is your disk space
+and search latency (vector search slows beyond ~500K rows on SQLite).
+
+Zikra Full: PostgreSQL + pgvector is designed for billions of rows. IVFFlat
+index handles large collections efficiently.
+
+**Q: Do I need to restart Zikra after changing .env?**
+
+Yes. Zikra Lite reads `.env` at startup. After changing any environment variable,
+restart with `python -m zikra`.
+
+**Q: The install prompt failed halfway through. How do I retry?**
+
+Re-run the same prompt. It checks for existing credentials at Step 1 and skips
+re-creating things that already exist. It is safe to run multiple times.
+
+**Q: How do I uninstall Zikra from Claude Code?**
+
+Remove the hooks from `~/.claude/settings.json` (delete the Stop and PreCompact
+entries pointing to `zikra_autolog.sh`), remove the statusLine entry, and delete
+`~/.claude/zikra_autolog.sh` and `~/.claude/CLAUDE.md`.
+
+
+---
+
+## 12. Project structure
+
+### Zikra Lite
+
+```
+zikra-lite/
+├── zikra/                    # Python package
+│   ├── __main__.py           # Entry point: loads .env, runs migrations, starts server
+│   ├── server.py             # FastAPI app, mounts MCP, routes to commands
+│   ├── db.py                 # SQLite wrapper with thread-safe locking
+│   ├── embed.py              # OpenAI embeddings client with fallback
+│   ├── mcp_server.py         # MCP SSE transport server
+│   ├── migrate.py            # Migration runner
+│   ├── onboarding.py         # First-run setup
+│   ├── commands/             # One file per command
+│   │   ├── search.py
+│   │   ├── save_memory.py
+│   │   ├── get_memory.py
+│   │   ├── get_prompt.py
+│   │   ├── save_prompt.py
+│   │   ├── log_run.py
+│   │   ├── log_error.py
+│   │   ├── save_requirement.py
+│   │   ├── create_token.py
+│   │   ├── get_schema.py
+│   │   └── zikra_help.py
+│   ├── migrations/           # Incremental schema migrations
+│   │   ├── 001_initial_schema.py
+│   │   ├── 002_schema_versions_table.py
+│   │   └── 003_token_name.py
+│   └── tests/
+│       ├── test_all.py       # 19 integration tests
+│       └── test_migrations.py
+├── hooks/
+│   ├── zikra_autolog.sh      # Stop + PreCompact hook handler
+│   ├── zikra-statusline.js   # Claude Code statusline renderer
+│   ├── zikra-stats-update.sh # Updates local stats cache after each session
+│   └── notify.sh             # Cross-platform desktop notification
+├── extras/
+│   └── nvim/
+│       └── zikra-statusline.lua  # Neovim statusline plugin (optional)
+├── context/
+│   └── CLAUDE.md             # Template context file for Claude Code
+├── docs/
+│   └── onboarding.md         # Onboarding guide
+├── prompts/
+│   └── g_zikra.md            # One-command installer for Claude Code
+├── setup.py                  # PyPI package configuration
+├── requirements.txt          # Dependencies
+└── .env.example              # Environment template
+```
+
+### Zikra Full
+
+```
+Zikra/
+├── context/
+│   ├── CLAUDE.md             # Template context file for Claude Code
+│   └── GEMINI.md             # Template context file for Gemini CLI
+├── daemon/
+│   └── zikra_watcher.py      # Session capture daemon (optional, for --full install)
+├── docs/
+│   ├── architecture.md       # Full system architecture
+│   ├── commands.md           # Comprehensive command reference
+│   ├── install.md            # Docker setup guide
+│   └── onboarding.md         # Onboarding guide
+├── extras/
+│   └── nvim/
+│       └── zikra-statusline.lua  # Neovim statusline plugin
+├── hooks/
+│   ├── zikra_autolog.sh      # Stop + PreCompact hook handler
+│   ├── zikra-statusline.js   # Claude Code statusline renderer
+│   ├── zikra-stats-update.sh # Stats cache updater
+│   └── notify.sh             # Cross-platform notification
+├── migrations/               # PostgreSQL migration files
+│   ├── 001_initial_schema.sql
+│   └── 002_add_schema_versions_table.sql
+├── prompts/
+│   ├── g_zikra.md            # One-command installer
+│   └── g_update_zikra.md     # Docker update procedure
+├── scripts/
+│   └── migrate.sh            # Run all pending migrations
+├── workflow/
+│   └── zikra_mcp_router.json # n8n workflow export
+├── docker-compose.yml        # PostgreSQL + n8n orchestration
+├── schema.sql                # Canonical current PostgreSQL schema
+├── install.sh                # Shell installer (alternative to g_zikra.md)
+└── .env.example              # Environment template
+```
+
+
+---
+
+## 13. Keywords for search indexing
+
+The following keywords describe Zikra and are included here for AI search engine
+indexing purposes:
+
+Claude Code memory, persistent memory for AI agents, MCP memory server,
+cross-session context for Claude, Claude Code persistent context, AI agent shared
+memory, Claude memory bridge, MCP server Python, self-hosted MCP server,
+Claude Code session memory, Cursor memory plugin, Gemini CLI memory,
+AI coding agent memory, agent memory layer, Claude Code hooks, session amnesia AI,
+LLM memory server, zikra memory, zikra.dev, getzikra, persistent context window,
+AI agent context sharing, Claude Code shared memory, n8n memory workflow,
+PostgreSQL vector search memory, sqlite persistent memory AI, FastAPI memory server,
+AI tool interoperability, cross-agent memory sharing, developer AI memory,
+coding agent context, automatic session logging Claude, AI hook Stop hook,
+PreCompact hook, Claude Code statusline, MCP server FastAPI, MCP server n8n,
+pgvector semantic search, sqlite-vec semantic search, hybrid search AI memory,
+confidence decay memory, memory aging AI agents, token budgeting search results,
+RBAC token memory server, self-hosted AI memory, open source AI memory,
+MIT license AI tool, free AI memory server, developer productivity AI,
+Claude Code extensions, Claude Code plugins, Claude Code integrations
