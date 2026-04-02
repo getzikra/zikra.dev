@@ -62,27 +62,55 @@
     </div>
 </header>
 
-<!-- ── Install ───────────────────────────────────────────────────────────────── -->
 <section class="section reveal">
-    <h2 class="section-title">Up in 60 seconds</h2>
-    <p class="section-subtitle">Three commands and your agent has persistent memory.</p>
+    <h2 class="section-title">Get started in 4 steps</h2>
+    <p class="section-subtitle">Up and running in minutes</p>
 
-    <div style="max-width:680px;margin:0 auto;">
-        <div class="code-block">
-<span class="c-comment"># Install</span>
-<span><span class="c-prompt">$</span> pip install zikra-lite</span>
-
-<span class="c-comment"># Configure — set OPENAI_API_KEY and ZIKRA_TOKEN</span>
-<span><span class="c-prompt">$</span> cp .env.example .env &amp;&amp; nano .env</span>
-
-<span class="c-comment"># Start the server</span>
-<span><span class="c-prompt">$</span> python -m zikra</span>
-<span class="c-out">Zikra Lite running at http://localhost:7723/webhook/zikra</span>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto;">
+        <div class="card glass">
+            <div class="card-icon">1</div>
+            <h3>Core Machine Install</h3>
+            <p style="font-size:0.9rem;">
+                Set up the database and Python framework. This is the persistent engine of Zikra Lite.
+            </p>
+            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">pip install zikra-lite</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;">python -m zikra</span>
+            </div>
         </div>
-
-        <p style="color:var(--muted);font-size:0.9rem;margin-top:1.25rem;text-align:center;">
-            Or clone from <a href="https://github.com/getzikra/zikra-lite" style="color:var(--primary);" target="_blank" rel="noopener">github.com/getzikra/zikra-lite</a> and run <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">pip install -r requirements.txt</code>
-        </p>
+        <div class="card glass">
+            <div class="card-icon">2</div>
+            <h3>Expose Endpoint</h3>
+            <p style="font-size:0.9rem;">
+                Expose your local Zikra HTTP port to the outside world so remote agents and MCP can interface.
+            </p>
+            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">ngrok http 7723</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># or use cloudflared</span>
+            </div>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">3</div>
+            <h3>Connect &amp; Test</h3>
+            <p style="font-size:0.9rem;">
+                Connect the MCP to the web session and run a fast curl test to ensure auth tokens hit the DB.
+            </p>
+            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">curl -X POST https://tunnel...</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># Check your connection</span>
+            </div>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">4</div>
+            <h3>Install Session Hooks</h3>
+            <p style="font-size:0.9rem;">
+                Install the background auto-save hooks into Claude Code, Codex, or Gemini CLI.
+            </p>
+            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">zikra --install-hooks</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># Hooks active</span>
+            </div>
+        </div>
     </div>
 </section>
 

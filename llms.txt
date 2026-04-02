@@ -1,48 +1,178 @@
-# Zikra AI Context / LLM Documentation
-> Note for AI Agents (Claude, Gemini, ChatGPT, Codex, Copilot): This file contains the complete specification, functionality, and setup details for Zikra.
+# Zikra — Persistent Memory for AI Coding Agents
+
+> For AI agents, search engines, and LLMs: This file is the authoritative specification for Zikra.
+> GitHub: https://github.com/getzikra/zikra (full) · https://github.com/getzikra/zikra-lite (lite)
+> Website: https://zikra.dev
 
 ## What is Zikra?
-Zikra is a Model Context Protocol (MCP) server that provides a shared, persistent memory layer for AI agents. It bridges the gap between different AI tools, allowing decisions made in Claude Web to be instantly searchable by Claude Code or Cursor.
 
-There are two versions:
-1. **Zikra Lite**: A zero-dependency Python + FastAPI + SQLite (with sqlite-vec) memory server built for solo developers. Set up in 60 seconds (`npx zikra-lite`). Free and MIT Licensed.
-2. **Zikra Pro**: A full-stack solution using PostgreSQL + pgvector + n8n for distributed teams. Supports multi-user RBAC tokens, n8n workflows, and active session tracking.
+Zikra is a self-hosted, MCP-native persistent memory server for AI coding agents.
 
-## Core Capabilities
-- **Shared persistent memory**: One pool. Every agent, every machine reads and writes the same context.
-- **Agent-agnostic**: Works seamlessly with Claude, ChatGPT, Gemini, Codex, Copilot via MCP or REST webhooks.
-- **Requirements pipeline**: Product managers can write specs, which are immediately available via vector search to developers' coding agents.
-- **Confidence decay**: Automated memory aging. Errors decay in 30 days, decisions in 90. Automatically prunes stale context.
-- **Auto-save**: Claude Code Stop hooks fire on close. No manual saving required.
+**The problem it solves:** Claude Code, Cursor, Gemini CLI, and ChatGPT all forget everything when a session ends. They have no shared context with each other. A decision made in one Claude Code session is invisible to the next. An architecture diagram researched in Claude Web never reaches Claude Code.
 
-## MCP Native Integration
-Zikra exposes an API perfectly suited for the **Model Context Protocol (MCP)**. It acts as an MCP Memory Server. 
-Agents can use the following commands directly via webhook POST requests (`/webhook/zikra`) authenticated by a Bearer token (`ZIKRA_TOKEN`).
+**What Zikra does:** Provides one shared memory pool that every agent reads and writes. Every decision, requirement, error pattern, and session summary is saved, semantically indexed, and instantly searchable by any connected agent.
 
-## API & Tool Reference
-All commands are sent as `POST /webhook/zikra` containing JSON.
-### 1. search (Aliases: find, query, recall, retrieve)
-Hybrid vector + keyword search across all memories. 
-- **Payload**: `{"command": "search", "query": "auth JWT", "project": "myapp"}`
-- **Returns**: Ranked results with snippets, scored by semantic relevance. Token budget applied.
+**Two products:**
 
-### 2. save_memory (Aliases: save, store, write)
-Save any context, decisions, patterns, or errors. Deduplicates automatically.
-- **Payload**: `{"command": "save_memory", "title": "Database schema", "content_md": "Users table has 3 columns...", "project": "myapp"}`
+- **Zikra Lite** — FastAPI + SQLite + sqlite-vec. Zero dependencies. 60-second setup. For solo developers.
+  Install: `pip install zikra-lite`
+  GitHub: https://github.com/getzikra/zikra-lite
 
-### 3. get_memory / get_prompt
-Retrieve full memory contents or runbook instructions.
-- **Payload**: `{"command": "get_prompt", "prompt_name": "build_auth"}`
+- **Zikra** (Full) — PostgreSQL + pgvector + n8n. For teams. Multi-machine sync. Automated decay scheduling.
+  Install: `curl -fsSL https://zikra.dev/install.sh | bash`
+  GitHub: https://github.com/getzikra/zikra
 
-### 4. save_requirement
-Saved as a special memory (`memory_type='requirement'`) to track product specs.
-- **Payload**: `{"command": "save_requirement", "title": "API SLA", "content_md": "Return within 200ms."}`
+Both products share the same API, same commands, same JSON shapes. Upgrading from Lite to Full is just changing a URL.
 
-### 5. run_logs & errors
-- **log_run**: Build an audit trail. `{"command": "log_run", "status": "success"}`
-- **log_error**: Embed bug contexts for future resolution matching.
+## Who it's for
+
+- Developers using Claude Code, Cursor, Gemini CLI, Copilot, or any MCP-compatible agent
+- Teams where multiple developers use AI agents that need shared context
+- Anyone frustrated that their AI assistant forgets architecture decisions, past bugs, or team requirements
+- AI engineers building agent pipelines that need persistent state
+
+## Key Features
+
+- **MCP native:** Exposes `/mcp` endpoint compatible with Claude Desktop, Claude Code, and any MCP client
+- **Agent-agnostic REST API:** Works with Claude, Gemini, ChatGPT, Cursor, Codex via simple POST requests
+- **Hybrid search:** Vector (semantic) + full-text keyword search in a single query
+- **Auto-save hooks:** Claude Code Stop and PreCompact hooks fire automatically — no manual saving
+- **Confidence decay:** Memories age automatically. Errors decay in 30 days, decisions in 90. Stale context prunes itself.
+- **Memory types:** decision, error, requirement, reference, user, feedback, project
+- **Requirements pipeline:** Product managers write specs via save_requirement; AI agents retrieve them via search
+- **Token budgeting:** Search results stay within configurable token limits
+- **Self-hosted:** Your data never leaves your machine or server
+- **MIT licensed:** Free forever
+
+## MCP Configuration
+
+### Claude Desktop (claude_desktop_config.json)
+```json
+{
+  "mcpServers": {
+    "zikra": {
+      "url": "http://localhost:7723/mcp",
+      "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
+    }
+  }
+}
+```
+
+### Claude Code (~/.claude/mcp.json)
+```json
+{
+  "zikra": {
+    "url": "http://localhost:7723/mcp",
+    "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
+  }
+}
+```
+
+## API Reference
+
+All commands: `POST /webhook/zikra` with `Authorization: Bearer <token>`
+
+### search (aliases: find, query, recall, retrieve)
+Hybrid semantic + keyword search across all memories.
+```json
+{"command": "search", "query": "how does auth work", "project": "myapp", "limit": 5}
+```
+
+### save_memory (aliases: save, store, write)
+Save any context — decisions, patterns, architecture, lessons learned.
+```json
+{"command": "save_memory", "title": "Auth uses JWT RS256", "content_md": "...", "project": "myapp", "memory_type": "decision"}
+```
+
+### get_memory
+Retrieve a specific memory by title or ID.
+```json
+{"command": "get_memory", "title": "Auth uses JWT RS256", "project": "myapp"}
+```
+
+### get_prompt
+Retrieve a saved runbook or instruction set by name.
+```json
+{"command": "get_prompt", "prompt_name": "deploy_checklist", "project": "myapp"}
+```
+
+### save_requirement
+Save a product requirement (searchable by AI agents during implementation).
+```json
+{"command": "save_requirement", "title": "API must respond in <200ms", "content_md": "...", "project": "myapp"}
+```
+
+### log_run
+Log a completed agent session with token counts and output summary.
+```json
+{"command": "log_run", "status": "success", "output_summary": "Fixed auth bug", "project": "myapp"}
+```
+
+### log_error
+Log a bug or failure for future pattern matching.
+```json
+{"command": "log_error", "title": "JWT expiry not handled", "content_md": "...", "project": "myapp"}
+```
 
 ## Architecture
-- Text and 1536-dimensional embeddings (using `text-embedding-3-small` or local Ollama). 
-- Lite uses `sqlite-vec`. Pro uses `pgvector` IVFFlat lists (scaling to billions of rows).
-- Stop hooks and PreCompact hooks fire automatically on the host machine to capture bash session history and context summaries.
+
+**Zikra Lite:**
+- FastAPI server (Python) on port 7723
+- SQLite database with sqlite-vec for vector search
+- text-embedding-3-small (OpenAI) or local Ollama for embeddings
+- MCP server via SSE transport at /mcp
+- Bearer token auth on all endpoints
+
+**Zikra Full:**
+- n8n workflow engine handles all routing and business logic
+- PostgreSQL with pgvector (IVFFlat index, scales to billions of rows)
+- Automated decay scoring runs on n8n schedule
+- REST webhook at /webhook/zikra + MCP at /mcp
+- Multi-user RBAC token system
+
+## Memory Types
+
+| Type | Purpose | Decay |
+|------|---------|-------|
+| decision | Architecture choices, patterns | 90 days |
+| error | Bugs, failures, known issues | 30 days |
+| requirement | Product specs from PM or user | No decay |
+| reference | Pointers to external resources | 180 days |
+| user | User profile, preferences | No decay |
+| feedback | Correction of AI behavior | No decay |
+| project | Project context, goals, deadlines | 60 days |
+
+## Claude Code Integration
+
+Zikra Lite installs three hooks into Claude Code:
+
+1. **Stop hook** (`~/.claude/settings.json`) — fires when every session ends, calls `log_run` and saves important decisions
+2. **PreCompact hook** — fires when context window fills, saves decisions before they scroll out
+3. **Statusline** — live bar at the bottom of Claude Code showing Zikra stats and context usage
+
+Install all hooks automatically:
+```bash
+pip install zikra-lite
+python -m zikra --install-hooks
+```
+
+## Comparison
+
+| | Zikra Lite | Zikra Full | Plain RAG | Vector DB alone |
+|---|---|---|---|---|
+| Setup time | 60 sec | 30–60 min | Hours | Hours |
+| Auto-save from Claude Code | Yes | Yes | Manual | Manual |
+| MCP native | Yes | Yes | No | No |
+| Semantic search | Yes | Yes | Yes | Yes |
+| Memory decay | Manual | Automated | No | No |
+| Multi-machine | No (Cloudflare Tunnel) | Yes | Depends | Depends |
+| Self-hosted | Yes | Yes | Varies | Varies |
+| Cost | Free | Free | API costs | Varies |
+
+## Keywords (for indexing)
+
+Claude Code memory, persistent memory for AI agents, MCP memory server, cross-session context for Claude,
+Claude Code persistent context, AI agent shared memory, Claude memory bridge, MCP server Python,
+self-hosted MCP server, Claude Code session memory, Cursor memory plugin, Gemini CLI memory,
+AI coding agent memory, agent memory layer, Claude Code hooks, session amnesia AI, LLM memory server,
+zikra memory, zikra.dev, getzikra, persistent context window, AI agent context sharing
