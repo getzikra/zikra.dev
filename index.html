@@ -25,7 +25,7 @@
         <a href="license.html">License</a>
     </div>
     <div class="nav-actions">
-        <a href="lite.html" class="btn btn-ghost">Try Lite Free</a>
+        <a href="lite.html" class="btn btn-ghost">Get Zikra Lite</a>
         <a href="pro.html" class="btn btn-primary">Explore Zikra</a>
     </div>
 </nav>
@@ -41,7 +41,7 @@
         layer that connects them.
     </p>
     <div class="hero-cta">
-        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Get Zikra Lite — Free</a>
+        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Get Zikra Lite</a>
         <a href="#problem" class="btn btn-ghost btn-lg">See the problem ↓</a>
     </div>
 
@@ -139,6 +139,62 @@
             </div>
         </div>
     </div>
+</section>
+
+<section id="capabilities" class="capabilities-section">
+  <h2>What Zikra does</h2>
+
+  <h3>Core capabilities</h3>
+  <table class="feature-table">
+    <thead><tr><th>Feature</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Shared persistent memory</strong></td>
+        <td>One PostgreSQL pool. Every agent, every machine, every session reads and writes the same context. Decisions made in Claude Web are visible in Claude Code seconds later.</td>
+      </tr>
+      <tr>
+        <td><strong>Agent-agnostic</strong></td>
+        <td>Claude Code, Claude Web, ChatGPT, Gemini, Codex, Copilot. Same webhook. Same token. Same memory. No per-agent integration required.</td>
+      </tr>
+      <tr>
+        <td><strong>Role-based access</strong></td>
+        <td>Owner, collaborator, guest. Enforced at the router. Owners create tokens and promote requirements. Collaborators write and search. Guests read only.</td>
+      </tr>
+      <tr>
+        <td><strong>Confidence decay</strong></td>
+        <td>Memories age automatically. Errors decay in 30 days, decisions in 90, schemas in 180. Below 0.2 confidence — flagged stale. Below 0.05 — deleted. No manual cleanup.</td>
+      </tr>
+      <tr>
+        <td><strong>Requirements pipeline</strong></td>
+        <td>A business user writes a requirement in Copilot or any AI. Owner promotes it. Developer pulls and executes it in Claude Code. Full traceability from spec to execution.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Full feature set</h3>
+  <table class="feature-table">
+    <thead><tr><th>Feature</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Hybrid search</strong></td><td>70% semantic vector + 30% keyword. Finds by meaning, not exact match.</td></tr>
+      <tr><td><strong>Token-budget results</strong></td><td>Results are tiered and capped. Never floods your context window.</td></tr>
+      <tr><td><strong>Auto-save on session end</strong></td><td>Claude Code Stop hook fires on close. No manual saving.</td></tr>
+      <tr><td><strong>PreCompact hook</strong></td><td>Saves a summary before Claude's context resets. Nothing lost at compaction.</td></tr>
+      <tr><td><strong>Multi-user tokens</strong></td><td>Each person gets a scoped bearer token. Identity tracked on every write.</td></tr>
+      <tr><td><strong>Promote to prompt</strong></td><td>Owner approves a requirement — it becomes a live executable prompt.</td></tr>
+      <tr><td><strong>Automated cleanup</strong></td><td>Weekly cron removes old conversations, resolved errors, orphaned runs, old schema versions.</td></tr>
+      <tr><td><strong>Schema storage</strong></td><td>Store and retrieve DB schema per project and module. Any agent pulls current version before touching backend code.</td></tr>
+      <tr><td><strong>Error logging</strong></td><td>Any agent logs a bug with full context. Vector-embedded, searchable, tracked to resolution.</td></tr>
+      <tr><td><strong>Debug protocol</strong></td><td>Named prompt: read the error, search memory, check resolutions, fix, log. Any agent follows it.</td></tr>
+      <tr><td><strong>Session tracking</strong></td><td>Every run logged — tokens, cost, files modified, status, linked to the prompt that triggered it.</td></tr>
+      <tr><td><strong>Active runs table</strong></td><td>See which machine is running which prompt in real time across your team.</td></tr>
+      <tr><td><strong>Statusline bar</strong></td><td>Live in your terminal. Run count, memory count, model, project, context usage. Skull at 600K tokens.</td></tr>
+      <tr><td><strong>Django admin UI</strong></td><td>Web interface for browsing, searching, and managing all memories.</td></tr>
+      <tr><td><strong>MCP native</strong></td><td>Claude connects via MCP trigger. No custom integration.</td></tr>
+      <tr><td><strong>Alias normaliser</strong></td><td>"find", "recall", "remember", "query" all route correctly. Agents don't need exact command names.</td></tr>
+      <tr><td><strong>Self-documenting API</strong></td><td>Unknown command returns full reference with examples. No external docs needed at runtime.</td></tr>
+      <tr><td><strong>Lite version</strong></td><td>SQLite, Python, zero Docker. 60-second setup. Same API. Upgrade is one URL change.</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <!-- ── The Journey ───────────────────────────────────────────────────────────── -->
