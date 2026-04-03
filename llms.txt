@@ -51,7 +51,7 @@ Both products share the same API, same commands, same JSON shapes. Upgrading fro
 {
   "mcpServers": {
     "zikra": {
-      "url": "http://localhost:7723/mcp",
+      "url": "http://localhost:7723/mcp/sse",
       "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
     }
   }
@@ -62,7 +62,7 @@ Both products share the same API, same commands, same JSON shapes. Upgrading fro
 ```json
 {
   "zikra": {
-    "url": "http://localhost:7723/mcp",
+    "url": "http://localhost:7723/mcp/sse",
     "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
   }
 }
