@@ -133,8 +133,8 @@
                         <td class="cmd-desc">Owner, collaborator, guest. Enforced at the router. Owners create tokens and promote requirements. Collaborators write and search. Guests read only.</td>
                     </tr>
                     <tr>
-                        <td><span class="cmd-name">Confidence decay</span></td>
-                        <td class="cmd-desc">Memories age automatically. Errors decay in 30 days, decisions in 90, schemas in 180. Below 0.2 confidence — flagged stale. Below 0.05 — deleted. No manual cleanup.</td>
+                        <td><span class="cmd-name">Smart ranking</span></td>
+                        <td class="cmd-desc">Search results are re-ranked by age, access frequency, and confidence — recent and well-used memories surface first.</td>
                     </tr>
                     <tr>
                         <td><span class="cmd-name">Requirements pipeline</span></td>
@@ -476,9 +476,9 @@
                     <td><span class="tick">✓</span> Visual editor, scheduling</td>
                 </tr>
                 <tr>
-                    <td>Decay scoring</td>
-                    <td style="color:var(--muted);">Manual</td>
-                    <td><span class="tick">✓</span> Automated via n8n schedule</td>
+                    <td>Smart ranking</td>
+                    <td><span class="tick">✓</span> Age + frequency + confidence</td>
+                    <td><span class="tick">✓</span> Age + frequency + confidence</td>
                 </tr>
                 <tr>
                     <td>Admin UI</td>
