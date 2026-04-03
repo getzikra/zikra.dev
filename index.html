@@ -53,6 +53,36 @@
         then had to re-explain every decision from scratch. Zikra is the memory
         layer that connects them.
     </p>
+    <div style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
+        <div class="card glass" style="padding:1.25rem 2rem;text-align:left;min-width:260px;">
+            <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Solo developer</div>
+            <div style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem;">Zikra Lite</div>
+            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">SQLite · No Docker · 3 steps · Free forever</div>
+            <div style="display:flex;gap:0.75rem;">
+                <a href="lite.html" class="btn btn-primary btn-glow" style="font-size:0.85rem;padding:0.5rem 1rem;">Get started</a>
+                <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github" style="font-size:0.85rem;padding:0.5rem 1rem;" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+        <div class="card glass" style="padding:1.25rem 2rem;text-align:left;min-width:260px;">
+            <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Teams</div>
+            <div style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem;">Zikra Full</div>
+            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">PostgreSQL + n8n · Multi-machine · Docker</div>
+            <div style="display:flex;gap:0.75rem;">
+                <a href="pro.html" class="btn btn-ghost" style="font-size:0.85rem;padding:0.5rem 1rem;">Explore</a>
+                <a href="https://github.com/getzikra/zikra" class="btn btn-github" style="font-size:0.85rem;padding:0.5rem 1rem;" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Try Zikra Lite in 60 seconds:</p>
+        <div class="code-block" style="font-size:0.85rem;padding:1.25rem;max-width:600px;margin:0 auto;text-align:left;background:rgba(255,183,122,0.05);border:1px solid rgba(255,183,122,0.15);border-radius:10px;">
+            <span style="color:var(--muted);display:block;margin-bottom:0.25rem;">Step 1 — pip install zikra-lite &amp;&amp; cp .env.example .env &amp;&amp; python -m zikra</span>
+            <span style="color:var(--muted);display:block;margin-bottom:0.25rem;">Step 2 — Add MCP to ~/.claude/mcp.json</span>
+            <span style="color:#FFB77A;display:block;">Step 3 — Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md and follow every instruction in it.</span>
+        </div>
+    </div>
+
     <div class="hero-cta">
         <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Get Zikra Lite</a>
         <a href="#problem" class="btn btn-ghost btn-lg">See the problem ↓</a>
@@ -520,52 +550,43 @@
 
 <!-- ── Get started in 3 steps ─────────────────────────────────────────────────── -->
 <section id="onboarding" class="section reveal">
-    <h2 class="section-title">Get started in 4 steps</h2>
+    <h2 class="section-title">Get started in 3 steps</h2>
     <p class="section-subtitle">From zero to persistent memory across every session.</p>
 
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;">
         <div class="card glass">
             <div class="card-icon">1</div>
-            <h3>Core Machine Install</h3>
+            <h3>Start the server</h3>
             <p style="font-size:0.9rem;">
-                Set up the database and Python framework. This is the persistent engine of Zikra Lite.
+                Install, copy the env file, and start. One Python process on port 7723.
             </p>
             <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
                 <span style="color:#FFB77A;">pip install zikra-lite</span>
-                <span style="color:var(--muted);display:block;margin-top:0.5rem;">python -m zikra</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;">cp .env.example .env</span>
+                <span style="color:var(--muted);display:block;margin-top:0.25rem;">python -m zikra</span>
             </div>
         </div>
         <div class="card glass">
             <div class="card-icon">2</div>
-            <h3>Expose Endpoint</h3>
+            <h3>Connect MCP</h3>
             <p style="font-size:0.9rem;">
-                Expose your local Zikra HTTP port to the outside world so remote agents and MCP can interface.
+                Add to <code style="font-size:0.8rem;color:#FFB77A;">~/.claude/mcp.json</code> (Claude Code) or <code style="font-size:0.8rem;color:#FFB77A;">claude_desktop_config.json</code> (Claude Desktop).
             </p>
-            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
-                <span style="color:#FFB77A;">ngrok http 7723</span>
-                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># or use cloudflared</span>
+            <div class="code-block" style="font-size:0.75rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">{"zikra": {"url": "http://localhost:7723/mcp",</span>
+                <span style="color:#FFB77A;display:block;">"headers": {"Authorization": "Bearer YOUR_TOKEN"}}}</span>
             </div>
         </div>
         <div class="card glass">
             <div class="card-icon">3</div>
-            <h3>Connect &amp; Test</h3>
+            <h3>Onboard Claude Code</h3>
             <p style="font-size:0.9rem;">
-                Connect the MCP to the web session and run a fast curl test to ensure auth tokens hit the DB.
+                Paste into any Claude Code session. Installs Stop hook, PreCompact hook, and statusline bar automatically.
             </p>
-            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
-                <span style="color:#FFB77A;">curl -X POST https://tunnel...</span>
-                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># Check your connection</span>
-            </div>
-        </div>
-        <div class="card glass">
-            <div class="card-icon">4</div>
-            <h3>Install Session Hooks</h3>
-            <p style="font-size:0.9rem;">
-                Install the background auto-save hooks into Claude Code, Codex, or Gemini CLI.
-            </p>
-            <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
-                <span style="color:#FFB77A;">zikra --install-hooks</span>
-                <span style="color:var(--muted);display:block;margin-top:0.5rem;"># Hooks active</span>
+            <div class="code-block" style="font-size:0.75rem;padding:1rem;margin-top:1rem;">
+                <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/</span>
+                <span style="color:#FFB77A;display:block;">getzikra/zikra-lite/main/prompts/g_zikra.md</span>
+                <span style="color:#FFB77A;display:block;">and follow every instruction in it.</span>
             </div>
         </div>
     </div>
