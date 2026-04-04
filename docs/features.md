@@ -12,12 +12,12 @@ Tokens and prompt budgets shouldn't be wasted on outdated information.
 Zikra incorporates automated confidence decay:
 - **Errors**: Age out completely in 30 days. No manual cleanup outdating older bugs.
 - **Decisions & Architectures**: Age in 90 to 180 days.
-- **Auto-Deletion**: Memories falling below a dynamic baseline threshold (< 0.05 score) are quietly pruned to save compute and tokens.
+- **Decay Floor**: Memories decay to a minimum relevance floor of 0.05 over time but are never automatically deleted. Manual deletion is available via the API.
 
-### 3. Asymmetric Hybrid Search
-Find context by meaning or strict text matches:
-- 70% semantic vector match using 1536-dimensional embeddings (OpenAI `text-embedding-3-small` or local offline equivalents).
-- 30% strict keyword match (using standard text search utilities within PostgreSQL/SQLite depending on Lite vs Pro versions).
+### 3. Hybrid Search
+Find context by meaning or exact keyword match:
+- Vector search with keyword fallback — semantic embeddings when available, full-text keyword search when embeddings are unavailable.
+- Uses 1536-dimensional embeddings (OpenAI `text-embedding-3-small` or local offline equivalents) via PostgreSQL/SQLite depending on Lite vs Pro versions.
 
 ### 4. Zero-Friction Hook System
 The most tedious part of any LLM-based memory is telling the LLM to 'remember this'.
