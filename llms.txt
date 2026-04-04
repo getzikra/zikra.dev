@@ -150,10 +150,11 @@ Zikra Lite installs three hooks into Claude Code:
 2. **PreCompact hook** — fires when context window fills, saves decisions before they scroll out
 3. **Statusline** — live bar at the bottom of Claude Code showing Zikra stats and context usage
 
-Install all hooks automatically:
-```bash
-pip install zikra-lite
-python -m zikra --install-hooks
+Install all hooks automatically by pasting this into a Claude Code session:
+
+```
+Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+and follow every instruction in it.
 ```
 
 ## Comparison

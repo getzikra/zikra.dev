@@ -36,10 +36,13 @@ curl -X POST https://your-tunnel-url.ngrok.app/webhook/zikra \
 ```
 
 ### 4. Install Session Hooks
-Install the background auto-save hooks into your CLI environments. Supported agents include Claude Code, Codex, and Gemini CLI. 
+Install the background auto-save hooks into your CLI environments. Supported agents include Claude Code, Codex, and Gemini CLI.
 
-```bash
-# Automatically sets up the Stop / PreCompact hooks in your .zshrc/.bashrc
-zikra --install-hooks
+Paste the following into a Claude Code session to install Stop, PreCompact, and statusline hooks automatically:
+
 ```
+Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+and follow every instruction in it.
+```
+
 Once complete, agents will auto-save context dynamically on loop exit or context limits.
