@@ -52,7 +52,7 @@ Fetch a single memory by its UUID. Unlocks large blocks without flooding context
 ```json
 {
   "command": "get_memory",
-  "memory_id": "uuid-here",
+  "id": "uuid-here",
   "project": "myapp"
 }
 ```
@@ -118,7 +118,7 @@ Store an error before attempting to fix it. This registers a memory with type `e
   "command": "log_error",
   "project": "myapp",
   "title": "500 Internal Server on payment route",
-  "content_md": "Stacktrace and context..."
+  "context_md": "Stacktrace and context..."
 }
 ```
 

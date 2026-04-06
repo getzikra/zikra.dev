@@ -33,59 +33,28 @@
     <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
     <div class="nav-links">
         <a href="index.html">Home</a>
-        <a href="lite.html">Zikra Lite</a>
-        <a href="pro.html">Zikra</a>
         <a href="license.html">License</a>
     </div>
     <div class="nav-actions">
-        <a href="lite.html" class="btn btn-ghost">Get Zikra Lite</a>
-        <a href="pro.html" class="btn btn-primary">Explore Zikra</a>
+        <a href="/docs/installation.md" class="btn btn-ghost">Docs</a>
+        <a href="https://github.com/GetZikra/zikra" class="btn btn-primary" target="_blank" rel="noopener">GitHub</a>
     </div>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
 <header class="hero reveal">
     <div class="badge pulse">Built out of frustration — not a pitch deck</div>
-    <h1 class="hero-title">My AIs had <span class="gradient-text">no shared memory.</span><br>So I built one.</h1>
+    <h1 class="hero-title">The first persistent memory layer <span class="gradient-text">built for AI agent teams</span></h1>
     <p class="hero-sub">
-        I'm Mukarram. I do research on Claude Web, run code on Claude Code.
-        They don't talk to each other. Spent an hour designing architecture —
-        then had to re-explain every decision from scratch. Zikra is the memory
-        layer that connects them.
+        Zikra gives every AI agent on your team — Claude, Codex, and Gemini — shared memory that survives across sessions, roles, and platforms.
     </p>
-    <div style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
-        <div class="card glass" style="padding:1.25rem 2rem;text-align:left;min-width:260px;">
-            <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Solo developer</div>
-            <div style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem;">Zikra Lite</div>
-            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">SQLite · No Docker · 3 steps · Free forever</div>
-            <div style="display:flex;gap:0.75rem;">
-                <a href="lite.html" class="btn btn-primary btn-glow" style="font-size:0.85rem;padding:0.5rem 1rem;">Get started</a>
-                <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github" style="font-size:0.85rem;padding:0.5rem 1rem;" target="_blank" rel="noopener">GitHub</a>
-            </div>
-        </div>
-        <div class="card glass" style="padding:1.25rem 2rem;text-align:left;min-width:260px;">
-            <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;">Teams</div>
-            <div style="font-size:1.05rem;font-weight:600;margin-bottom:0.25rem;">Zikra Full</div>
-            <div style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">PostgreSQL + n8n · Multi-machine · Docker</div>
-            <div style="display:flex;gap:0.75rem;">
-                <a href="pro.html" class="btn btn-ghost" style="font-size:0.85rem;padding:0.5rem 1rem;">Explore</a>
-                <a href="https://github.com/getzikra/zikra" class="btn btn-github" style="font-size:0.85rem;padding:0.5rem 1rem;" target="_blank" rel="noopener">GitHub</a>
-            </div>
-        </div>
-    </div>
-
-    <div style="margin-bottom:2rem;">
-        <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0.5rem;">Try Zikra Lite in 60 seconds:</p>
-        <div class="code-block" style="font-size:0.85rem;padding:1.25rem;max-width:600px;margin:0 auto;text-align:left;background:rgba(255,183,122,0.05);border:1px solid rgba(255,183,122,0.15);border-radius:10px;">
-            <span style="color:var(--muted);display:block;margin-bottom:0.25rem;">Step 1 — pip install zikra-lite &amp;&amp; cp .env.example .env &amp;&amp; python -m zikra</span>
-            <span style="color:var(--muted);display:block;margin-bottom:0.25rem;">Step 2 — Add MCP to ~/.claude/mcp.json</span>
-            <span style="color:#FFB77A;display:block;">Step 3 — Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md and follow every instruction in it.</span>
-        </div>
-    </div>
+    <p class="hero-sub" style="font-size:1rem;margin-top:-0.5rem;margin-bottom:2rem;">
+        Stop losing context when you switch agents. Stop re-explaining your project to every new session. One memory layer. Every agent. Every team member.
+    </p>
 
     <div class="hero-cta">
-        <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Get Zikra Lite</a>
-        <a href="#problem" class="btn btn-ghost btn-lg">See the problem ↓</a>
+        <a href="https://github.com/GetZikra/zikra" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Star on GitHub</a>
+        <a href="/docs/installation.md" class="btn btn-ghost btn-lg">Read the docs</a>
     </div>
 
     <div class="terminal glass float reveal">
@@ -126,11 +95,11 @@
                     </tr>
                     <tr>
                         <td><span class="cmd-name">Agent-agnostic</span></td>
-                        <td class="cmd-desc">Claude Code, Claude Web, ChatGPT, Gemini, Codex, Copilot. Same webhook. Same token. Same memory. No per-agent integration required.</td>
+                        <td class="cmd-desc">Claude Code (MCP native at <code style="font-family:'JetBrains Mono',monospace;font-size:0.85em;">/mcp/sse</code>), OpenAI Codex (webhook at <code style="font-family:'JetBrains Mono',monospace;font-size:0.85em;">/webhook/zikra</code>), Gemini CLI (webhook at <code style="font-family:'JetBrains Mono',monospace;font-size:0.85em;">/webhook/zikra</code>), any MCP client (standard MCP protocol). Same token. Same memory pool.</td>
                     </tr>
                     <tr>
                         <td><span class="cmd-name">Role-based access</span></td>
-                        <td class="cmd-desc">Owner, collaborator, guest. Enforced at the router. Owners create tokens and promote requirements. Collaborators write and search. Guests read only.</td>
+                        <td class="cmd-desc">owner, admin, developer, viewer. Enforced at the router. Owners create tokens and promote requirements. Developers write and search. Viewers read only.</td>
                     </tr>
                     <tr>
                         <td><span class="cmd-name">Smart ranking</span></td>
@@ -159,7 +128,6 @@
                     <tr><td><span class="cmd-name">PreCompact hook</span></td><td class="cmd-desc">Saves a summary before Claude's context resets. Nothing lost at compaction.</td></tr>
                     <tr><td><span class="cmd-name">Multi-user tokens</span></td><td class="cmd-desc">Each person gets a scoped bearer token. Identity tracked on every write.</td></tr>
                     <tr><td><span class="cmd-name">Promote to prompt</span></td><td class="cmd-desc">Owner approves a requirement — it becomes a live executable prompt.</td></tr>
-                    <tr><td><span class="cmd-name">Automated cleanup</span></td><td class="cmd-desc">Weekly cron removes old conversations, resolved errors, orphaned runs, old schema versions.</td></tr>
                     <tr><td><span class="cmd-name">Schema storage</span></td><td class="cmd-desc">Store and retrieve DB schema per project and module. Any agent pulls current version before touching backend code.</td></tr>
                     <tr><td><span class="cmd-name">Error logging</span></td><td class="cmd-desc">Any agent logs a bug with full context. Vector-embedded, searchable, tracked to resolution.</td></tr>
                     <tr><td><span class="cmd-name">Debug protocol</span></td><td class="cmd-desc">Named prompt: read the error, search memory, check resolutions, fix, log. Any agent follows it.</td></tr>
@@ -170,7 +138,6 @@
                     <tr><td><span class="cmd-name">MCP native</span></td><td class="cmd-desc">Claude connects via MCP trigger. No custom integration.</td></tr>
                     <tr><td><span class="cmd-name">Alias normaliser</span></td><td class="cmd-desc">"find", "recall", "remember", "query" all route correctly. Agents don't need exact command names.</td></tr>
                     <tr><td><span class="cmd-name">Self-documenting API</span></td><td class="cmd-desc">Unknown command returns full reference with examples. No external docs needed at runtime.</td></tr>
-                    <tr><td><span class="cmd-name">Lite version</span></td><td class="cmd-desc">SQLite, Python, zero Docker. 60-second setup. Same API. Upgrade is one URL change.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -212,7 +179,7 @@
             </div>
             <div class="jt-content card glass">
                 <span class="step-tag">The team joined</span>
-                <p>More people joined the project. Suddenly one person is on Claude Web doing research, another validating requirements and writing prompts, Claude Code just executing. Decisions made in one session were invisible to everyone else — two developers would build in opposite directions and not find out until a late-night code review argument. That's when Lite wasn't enough. We needed Postgres.</p>
+                <p>More people joined the project. Suddenly one person is on Claude Web doing research, another validating requirements and writing prompts, Claude Code just executing. Decisions made in one session were invisible to everyone else — two developers would build in opposite directions and not find out until a late-night code review argument. That's when we needed a shared memory layer with real concurrency. We moved to Postgres.</p>
             </div>
         </div>
 
@@ -234,78 +201,32 @@
 <!-- ── The Problem ───────────────────────────────────────────────────────────── -->
 <section id="problem" class="section reveal">
     <h2 class="section-title">The problem, clearly</h2>
-    <p class="section-subtitle">Claude Web and Claude Code are strangers. Every new session is a blank slate.</p>
+    <p class="section-subtitle">Your agents are stateless. Your team isn't. Zikra bridges the gap.</p>
 
-    <div class="before-after">
-        <div class="ba-panel ba-before glass">
-            <div class="ba-label">Without Zikra</div>
-            <div class="session-card">
-                <div class="session-title">Session 1 — Claude Web</div>
-                <div class="agents-row">
-                    <div class="agent-chip av-human">M</div>
-                    <div class="agent-line connected"></div>
-                    <div class="agent-chip av-cweb">CW</div>
-                </div>
-                <div class="session-outputs">
-                    <span class="so-ok">✓ auth: JWT, 7-day expiry</span>
-                    <span class="so-ok">✓ DB: PostgreSQL + pgvector</span>
-                    <span class="so-ok">✓ arch: microservices on Railway</span>
-                </div>
-            </div>
-            <div class="session-break">— new session —</div>
-            <div class="session-card">
-                <div class="session-title">Session 2 — Claude Code</div>
-                <div class="agents-row">
-                    <div class="agent-chip av-human">M</div>
-                    <div class="agent-line broken"></div>
-                    <div class="agent-chip av-ccode">CC</div>
-                </div>
-                <div class="session-outputs">
-                    <span class="so-err">? "What auth approach are you using?"</span>
-                    <span class="so-err">? "Can you describe the DB schema?"</span>
-                    <span class="so-err">× Back to square one. Again.</span>
-                </div>
-            </div>
+    <div class="grid-3">
+        <div class="card glass">
+            <div class="card-icon">🧠</div>
+            <h3>Team memory</h3>
+            <p>
+                Your AI agents don't remember yesterday. Your team does — but they're spending hours re-explaining context to every new session. Zikra fixes this. One persistent memory layer shared by every agent on your team, across every platform you use.
+            </p>
         </div>
-
-        <div class="ba-panel ba-after glass">
-            <div class="ba-label">With Zikra</div>
-            <div class="hub-spoke">
-                <div class="hub-agents">
-                    <div class="hub-agent">
-                        <div class="agent-chip av-human">M</div>
-                        <span>Mukarram</span>
-                    </div>
-                    <div class="hub-agent">
-                        <div class="agent-chip av-team">T</div>
-                        <span>Team</span>
-                    </div>
-                    <div class="hub-agent">
-                        <div class="agent-chip av-cweb">CW</div>
-                        <span>Claude Web</span>
-                    </div>
-                    <div class="hub-agent">
-                        <div class="agent-chip av-ccode">CC</div>
-                        <span>Claude Code</span>
-                    </div>
-                    <div class="hub-agent">
-                        <div class="agent-chip av-gpt">GPT</div>
-                        <span>ChatGPT</span>
-                    </div>
-                </div>
-                <div class="hub-arrows">↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓&nbsp;&nbsp;↓</div>
-                <div class="hub-center">
-                    <div class="logo" style="font-size:1.6rem;text-decoration:none;"><span class="z">Z</span><span class="ikra">ikra</span></div>
-                    <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem;font-family:'JetBrains Mono',monospace;">shared memory</div>
-                </div>
-                <div class="hub-result">
-                    <span class="so-ok">✓ Every session starts with full context</span>
-                    <span class="so-ok">✓ Any agent. Any machine. Any location.</span>
-                    <span class="so-ok">✓ Doesn't matter which AI you're using</span>
-                </div>
-            </div>
+        <div class="card glass">
+            <div class="card-icon">🔗</div>
+            <h3>Cross-platform continuity</h3>
+            <p>
+                Your Claude, Codex, and Gemini subscriptions are running in silos. Memory written in one platform disappears the moment you switch. Zikra connects them. Run your tests in Claude Code. Validate the results in Gemini CLI. Review in Codex. The memory follows the work, not the platform.
+            </p>
+        </div>
+        <div class="card glass">
+            <div class="card-icon">🔑</div>
+            <h3>Role-based access</h3>
+            <p>
+                Not every agent needs to see everything. Zikra gives owners, admins, developers, and viewers scoped access to memories, prompts, requirements, and session logs — per project, per run.
+            </p>
         </div>
     </div>
+
 </section>
 
 <!-- ── What it actually does ─────────────────────────────────────────────────── -->
@@ -332,21 +253,26 @@
         </div>
         <div class="feature-visual">
             <div class="code-block">
-<span class="c-comment"># Save something once</span>
+<span class="c-comment"># Step 1 — Claude Code saves a test result to shared memory</span>
+<span class="c-out">POST /webhook/zikra</span>
+<span class="c-out">Authorization: Bearer &lt;your-token&gt;</span>
 <span class="c-key">{</span>
-  <span class="c-key">"command"</span>:    <span class="c-val">"save_memory"</span>,
-  <span class="c-key">"title"</span>:      <span class="c-val">"auth uses JWT tokens"</span>,
-  <span class="c-key">"content_md"</span>: <span class="c-val">"JWT with 7-day expiry. Refresh tokens in httpOnly cookies."</span>,
-  <span class="c-key">"project"</span>:    <span class="c-val">"myapp"</span>
+  <span class="c-key">"command"</span>:      <span class="c-val">"save_memory"</span>,
+  <span class="c-key">"project"</span>:      <span class="c-val">"payments-api"</span>,
+  <span class="c-key">"title"</span>:        <span class="c-val">"Auth flow test — passed"</span>,
+  <span class="c-key">"content"</span>:      <span class="c-val">"OAuth2 PKCE flow validated on staging. Token refresh working correctly."</span>,
+  <span class="c-key">"memory_type"</span>:  <span class="c-val">"test_result"</span>
 <span class="c-key">}</span>
-<span class="c-success">→ saved</span>
 
-<span class="c-comment"># Find it weeks later, in any session</span>
+<span class="c-comment"># Step 2 — Gemini CLI reads it on a different machine, minutes later</span>
+<span class="c-out">POST /webhook/zikra</span>
+<span class="c-out">Authorization: Bearer &lt;your-token&gt;</span>
 <span class="c-key">{</span>
   <span class="c-key">"command"</span>: <span class="c-val">"search"</span>,
-  <span class="c-key">"query"</span>:   <span class="c-val">"how do users log in"</span>
+  <span class="c-key">"project"</span>: <span class="c-val">"payments-api"</span>,
+  <span class="c-key">"query"</span>:   <span class="c-val">"auth flow test results"</span>
 <span class="c-key">}</span>
-<span class="c-success">→ score 0.91  auth uses JWT tokens</span>
+<span class="c-success"># Returns the memory Claude wrote — same project, same context, different platform</span>
             </div>
         </div>
     </div>
@@ -390,124 +316,11 @@
     </div>
 </section>
 
-<!-- ── Two versions ───────────────────────────────────────────────────────────── -->
-<section id="versions" class="section reveal">
-    <h2 class="section-title">Two versions, one API</h2>
-    <p class="section-subtitle">
-        Lite is where Zikra started — one developer, one machine, 60 seconds to set up.
-        The full stack is what we built when the team joined. Same commands either way.
-        Upgrade is just changing a URL.
-    </p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
-        <div class="card glass" style="border-color:rgba(74,222,128,0.2);">
-            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
-                <div class="agent-chip av-ccode" style="width:42px;height:42px;font-size:0.72rem;border-radius:10px;">Lite</div>
-                <div>
-                    <h3 style="font-size:1.3rem;">Zikra Lite</h3>
-                    <span style="font-size:0.8rem;color:var(--muted);">SQLite · Python · MIT Free</span>
-                </div>
-            </div>
-            <p style="color:var(--muted);margin-bottom:1.25rem;font-size:0.95rem;">
-                Where it started. A single Python process, SQLite database, zero infrastructure.
-                Works in 60 seconds on your laptop. This is what most solo developers need —
-                and exactly what fixed my Claude Web ↔ Claude Code problem.
-            </p>
-            <ul class="check-list" style="margin-bottom:2rem;">
-                <li>pip install zikra-lite</li>
-                <li>Zero Docker, zero PostgreSQL</li>
-                <li>All 8 commands, full API surface</li>
-                <li>sqlite-vec for vector search</li>
-            </ul>
-            <a href="lite.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">Get Zikra Lite →</a>
-        </div>
-
-        <div class="card glass" style="border-color:rgba(232,115,10,0.35);">
-            <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;">
-                <div class="agent-chip av-human" style="width:42px;height:42px;font-size:0.72rem;border-radius:10px;">Pro</div>
-                <div>
-                    <h3 style="font-size:1.3rem;">Zikra</h3>
-                    <span style="font-size:0.8rem;color:var(--muted);">Postgres + n8n · For Teams</span>
-                </div>
-            </div>
-            <p style="color:var(--muted);margin-bottom:1.25rem;font-size:0.95rem;">
-                What we built when the team joined. PostgreSQL + pgvector + n8n.
-                Every developer on every machine shares the same memory pool.
-                Requirements written in London visible in Singapore within seconds.
-            </p>
-            <ul class="check-list" style="margin-bottom:2rem;">
-                <li>Multi-machine shared memory pool</li>
-                <li>Multi-user RBAC token management</li>
-                <li>n8n workflow integration + scheduling</li>
-                <li>pgvector at billions-of-rows scale</li>
-            </ul>
-            <a href="pro.html" class="btn btn-primary btn-glow" style="display:block;text-align:center;padding:0.85rem;">Explore Zikra →</a>
-        </div>
-    </div>
-
-    <div class="glass" style="border-radius:14px;overflow:hidden;">
-        <table class="compare-table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th class="col-lite">Lite<br><small style="font-size:0.72rem;font-weight:400;opacity:0.7;">SQLite · Free</small></th>
-                    <th class="col-pro">Zikra<br><small style="font-size:0.72rem;font-weight:400;opacity:0.7;">Postgres + n8n</small></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Concurrent writes</td>
-                    <td><span class="partial">Limited</span></td>
-                    <td><span class="tick">✓</span> Unlimited</td>
-                </tr>
-                <tr>
-                    <td>Vector search</td>
-                    <td style="color:#FFB77A;font-family:'JetBrains Mono',monospace;font-size:0.85rem;">sqlite-vec</td>
-                    <td style="color:#FFB77A;font-family:'JetBrains Mono',monospace;font-size:0.85rem;">pgvector</td>
-                </tr>
-                <tr>
-                    <td>Scale</td>
-                    <td><span class="partial">Millions of rows</span></td>
-                    <td><span class="tick">✓</span> Billions of rows</td>
-                </tr>
-                <tr>
-                    <td>n8n workflows</td>
-                    <td><span class="cross">✕</span></td>
-                    <td><span class="tick">✓</span> Visual editor, scheduling</td>
-                </tr>
-                <tr>
-                    <td>Smart ranking</td>
-                    <td><span class="tick">✓</span> Age + frequency + confidence</td>
-                    <td><span class="tick">✓</span> Age + frequency + confidence</td>
-                </tr>
-                <tr>
-                    <td>Admin UI</td>
-                    <td style="color:var(--muted);">Basic</td>
-                    <td style="color:#FFB77A;">n8n dashboard + direct DB</td>
-                </tr>
-                <tr>
-                    <td>Backup</td>
-                    <td style="color:var(--muted);">Copy one file</td>
-                    <td style="color:#FFB77A;">pg_dump, managed</td>
-                </tr>
-                <tr>
-                    <td>Setup time</td>
-                    <td><span class="tick">✓</span> 60 seconds</td>
-                    <td><span class="partial">30–60 minutes</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <p style="text-align:center;color:var(--muted);font-size:0.88rem;margin-top:1.5rem;">
-        Same API. Same commands. Same JSON shapes. Upgrade is just changing a URL.
-    </p>
-</section>
-
 <!-- ── Share with your team ──────────────────────────────────────────────────── -->
 <section class="section reveal">
     <h2 class="section-title">Share with your team</h2>
     <p class="section-subtitle">
-        Zikra Lite runs on your machine by default. Getting teammates connected
+        Zikra runs on your machine or your server. Getting teammates connected
         takes one of three approaches depending on where they are.
     </p>
 
@@ -518,7 +331,7 @@
             <p>
                 Start Zikra with <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">--host 0.0.0.0</code>
                 and share your local IP. Anyone on the same wifi or office
-                network connects to <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">http://YOUR-IP:7723</code>
+                network connects to <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">http://YOUR-IP:8000</code>
                 and they're in. Nothing else to install.
             </p>
         </div>
@@ -530,19 +343,17 @@
                 local Zikra a permanent public URL like
                 <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">zikra.yourteam.com</code>
                 — no ports to open, no router config, no commands to run each time.
-                See the <a href="https://github.com/getzikra/zikra-lite#sharing-zikra-with-your-team" style="color:var(--primary);" target="_blank" rel="noopener">setup steps in the README</a>.
+                See the <a href="https://github.com/GetZikra/zikra" style="color:var(--primary);" target="_blank" rel="noopener">setup steps in the README</a>.
             </p>
         </div>
         <div class="card glass">
             <div class="card-icon">🖥️</div>
-            <h3>Real server — Zikra Full</h3>
+            <h3>Real server — PostgreSQL backend</h3>
             <p>
-                When your team needs something that runs permanently without your
-                laptop being on, Zikra Full runs on any VPS with one
-                <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">docker compose up</code>.
-                Same API, same commands, same Claude Code config — just a real
-                server instead of your machine.
-                <a href="pro.html" style="color:var(--primary);">See Zikra →</a>
+                When your team needs something that runs permanently with shared
+                concurrent writes, set <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">DB_BACKEND=postgres</code>
+                in your <code style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:#FFB77A;">.env</code>.
+                Same API, same commands, same Claude Code config — backed by PostgreSQL + pgvector.
             </p>
         </div>
     </div>
@@ -556,24 +367,25 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;max-width:1000px;margin:0 auto;">
         <div class="card glass">
             <div class="card-icon">1</div>
-            <h3>Start the server</h3>
+            <h3>Install and configure</h3>
             <p style="font-size:0.9rem;">
-                Install, copy the env file, and start. One Python process on port 7723.
+                Clone, install, run the interactive installer. One Python process on port 8000.
             </p>
             <div class="code-block" style="font-size:0.8rem;padding:1rem;margin-top:1rem;">
-                <span style="color:#FFB77A;">pip install zikra-lite</span>
-                <span style="color:var(--muted);display:block;margin-top:0.5rem;">cp .env.example .env</span>
-                <span style="color:var(--muted);display:block;margin-top:0.25rem;">python -m zikra</span>
+                <span style="color:#FFB77A;">git clone https://github.com/GetZikra/zikra</span>
+                <span style="color:var(--muted);display:block;margin-top:0.5rem;">cd zikra &amp;&amp; pip install -e .</span>
+                <span style="color:var(--muted);display:block;margin-top:0.25rem;">python3 installer.py</span>
+                <span style="color:var(--muted);display:block;margin-top:0.25rem;">python3 -m zikra --no-onboarding</span>
             </div>
         </div>
         <div class="card glass">
             <div class="card-icon">2</div>
             <h3>Connect MCP</h3>
             <p style="font-size:0.9rem;">
-                Add to <code style="font-size:0.8rem;color:#FFB77A;">~/.claude/mcp.json</code> (Claude Code) or <code style="font-size:0.8rem;color:#FFB77A;">claude_desktop_config.json</code> (Claude Desktop).
+                The installer registers Zikra in <code style="font-size:0.8rem;color:#FFB77A;">~/.claude/settings.json</code> automatically. Or add manually:
             </p>
             <div class="code-block" style="font-size:0.75rem;padding:1rem;margin-top:1rem;">
-                <span style="color:#FFB77A;">{"zikra": {"url": "http://localhost:7723/mcp/sse",</span>
+                <span style="color:#FFB77A;">{"zikra": {"url": "http://localhost:8000/mcp/sse",</span>
                 <span style="color:#FFB77A;display:block;">"headers": {"Authorization": "Bearer YOUR_TOKEN"}}}</span>
             </div>
         </div>
@@ -585,7 +397,7 @@
             </p>
             <div class="code-block" style="font-size:0.75rem;padding:1rem;margin-top:1rem;">
                 <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/</span>
-                <span style="color:#FFB77A;display:block;">getzikra/zikra-lite/main/prompts/g_zikra.md</span>
+                <span style="color:#FFB77A;display:block;">GetZikra/zikra/main/prompts/g_zikra.md</span>
                 <span style="color:#FFB77A;display:block;">and follow every instruction in it.</span>
             </div>
         </div>
@@ -600,16 +412,16 @@
             <h3 style="font-size:1.6rem;margin-bottom:1rem;">This isn't a product pitch. It's a tool we use every day.</h3>
             <p style="color:var(--muted);font-size:1.05rem;line-height:1.8;margin-bottom:1rem;">
                 Zikra started as an internal tool. We weren't trying to build a product —
-                we were just trying to stop wasting time. Zikra Lite is free and takes about
-                a minute to set up. If it helps, great. If something's broken, open an issue.
+                we were just trying to stop wasting time. It's free, self-hosted, and takes
+                about two minutes to set up. If it helps, great. If something's broken, open an issue.
             </p>
             <p style="color:var(--muted);font-size:1rem;line-height:1.8;margin-bottom:2rem;">
-                We're actively using both versions ourselves, so issues get fixed fast.
+                We're actively using it ourselves, so issues get fixed fast.
             </p>
             <p style="color:#FFB77A;font-size:0.95rem;margin-bottom:2rem;">— Mukarram</p>
             <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-                <a href="lite.html" class="btn btn-primary btn-lg btn-glow">Install Zikra Lite</a>
-                <a href="https://github.com/getzikra/zikra-lite" class="btn btn-github btn-lg" target="_blank" rel="noopener">
+                <a href="/docs/installation.md" class="btn btn-primary btn-lg btn-glow">Read the docs</a>
+                <a href="https://github.com/GetZikra/zikra" class="btn btn-github btn-lg" target="_blank" rel="noopener">
                     <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
                     Star on GitHub
                 </a>
@@ -623,11 +435,9 @@
         <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
         <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
         <div class="footer-links">
-            <a href="lite.html">Zikra Lite</a>
-            <a href="pro.html">Zikra</a>
             <a href="license.html">License</a>
-            <a href="https://github.com/getzikra/zikra-lite" target="_blank" rel="noopener">GitHub Lite</a>
-            <a href="https://github.com/getzikra/zikra" target="_blank" rel="noopener">GitHub</a>
+            <a href="/docs/installation.md">Docs</a>
+            <a href="https://github.com/GetZikra/zikra" target="_blank" rel="noopener">GitHub</a>
         </div>
     </div>
 </footer>
