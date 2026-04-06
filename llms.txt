@@ -51,7 +51,7 @@ Both products share the same API, same commands, same JSON shapes. Upgrading fro
 {
   "mcpServers": {
     "zikra": {
-      "url": "http://localhost:7723/mcp/sse",
+      "url": "http://localhost:8000/mcp/sse",
       "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
     }
   }
@@ -62,7 +62,7 @@ Both products share the same API, same commands, same JSON shapes. Upgrading fro
 ```json
 {
   "zikra": {
-    "url": "http://localhost:7723/mcp/sse",
+    "url": "http://localhost:8000/mcp/sse",
     "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
   }
 }
@@ -117,7 +117,7 @@ Log a bug or failure for future pattern matching.
 ## Architecture
 
 **Zikra Lite:**
-- FastAPI server (Python) on port 7723
+- FastAPI server (Python) on port 8000
 - SQLite database with sqlite-vec for vector search
 - text-embedding-3-small (OpenAI) or local Ollama for embeddings
 - MCP server via SSE transport at /mcp

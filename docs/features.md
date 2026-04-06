@@ -10,7 +10,7 @@ A unified memory store shared natively between different AI agents. Whether an A
 ### 2. Decay Scoring & Stale Memory Management
 Tokens and prompt budgets shouldn't be wasted on outdated information.
 Zikra incorporates search-time confidence decay:
-- **Decay Floor**: Memories decay to a minimum relevance floor of 0.05 over time but are never automatically deleted. Manual deletion is available via the API.
+- **Decay Floor**: Memories decay to a minimum relevance floor of 0.05 over time but are never automatically deleted. Manual deletion: not yet implemented. Planned for a future release.
 
 ### 3. Hybrid Search
 Find context by meaning or exact keyword match:
@@ -21,7 +21,6 @@ Find context by meaning or exact keyword match:
 The most tedious part of any LLM-based memory is telling the LLM to 'remember this'.
 Zikra solves this via hooks:
 - **Stop Hook**: Fires on Claude Code/Cursor session end. It automatically summarizes the terminal session and writes to memory implicitly.
-- **PreCompact Hook**: Prevents memory loss when the agent encounters context length limits by compressing and offloading the oldest session data to Zikra right before truncation.
 - **Statusline Bar**: Terminals instantly render the number of active runs and project memory size dynamically.
 
 ### 5. Storage Backends

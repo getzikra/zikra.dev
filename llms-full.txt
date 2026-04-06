@@ -52,7 +52,7 @@ For solo developers or small teams on the same machine.
 - Single Python process (FastAPI + uvicorn)
 - SQLite database with sqlite-vec for vector search
 - Zero external dependencies — no Docker, no PostgreSQL, no n8n
-- Runs on localhost:7723
+- Runs on localhost:8000
 - Setup takes under 60 seconds: `pip install zikra-lite && python -m zikra`
 - GitHub: https://github.com/getzikra/zikra-lite
 
@@ -93,7 +93,7 @@ Claude Code / Cursor / Gemini CLI
          | HTTP POST /webhook/zikra
          | Authorization: Bearer <token>
          v
-   FastAPI server (port 7723)
+   FastAPI server (port 8000)
          |
          ├── Authentication: token table in SQLite
          ├── Command routing: search, save_memory, log_run, etc.
@@ -181,9 +181,9 @@ cp .env.example .env   # get this from github.com/getzikra/zikra-lite
 python -m zikra
 ```
 
-The server starts on port 7723. You will see:
+The server starts on port 8000. You will see:
 ```
-INFO:     Zikra Lite 0.1.0 starting on http://0.0.0.0:7723
+INFO:     Zikra Lite 0.1.0 starting on http://0.0.0.0:8000
 INFO:     Database initialized at ./zikra.db
 INFO:     MCP server available at /mcp
 ```
@@ -198,7 +198,7 @@ and follow every instruction in it exactly.
 ```
 
 The installer will ask 4 questions:
-- Q1: Your Zikra URL (`http://localhost:7723`)
+- Q1: Your Zikra URL (`http://localhost:8000`)
 - Q2: Your admin token (the value of `ZIKRA_TOKEN` in `.env`)
 - Q3: Your name (e.g. `alice`)
 - Q4: Default project (e.g. `myproject` or just `global`)
@@ -676,7 +676,7 @@ or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 {
   "mcpServers": {
     "zikra": {
-      "url": "http://localhost:7723/mcp/sse",
+      "url": "http://localhost:8000/mcp/sse",
       "headers": {
         "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
       }
@@ -692,7 +692,7 @@ Add to `~/.claude/mcp.json`:
 ```json
 {
   "zikra": {
-    "url": "http://localhost:7723/mcp/sse",
+    "url": "http://localhost:8000/mcp/sse",
     "headers": {
       "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
     }
@@ -741,7 +741,7 @@ cat ~/.zikra/token   # shows your saved credentials
 
 Verify it matches what the server knows:
 ```bash
-curl -s http://localhost:7723/webhook/zikra \
+curl -s http://localhost:8000/webhook/zikra \
   -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"command":"zikra_help"}'
@@ -749,7 +749,7 @@ curl -s http://localhost:7723/webhook/zikra \
 
 If you lost the token, create a new one using the admin token from `.env`:
 ```bash
-curl -s http://localhost:7723/webhook/zikra \
+curl -s http://localhost:8000/webhook/zikra \
   -H "Authorization: Bearer ADMIN_TOKEN_FROM_ENV" \
   -H "Content-Type: application/json" \
   -d '{"command":"create_token","person_name":"me","token_name":"my-machine","role":"developer","project":"global"}'
@@ -956,7 +956,7 @@ uses under 100K tokens per day, so under $0.002/day. Local Ollama is free.
 
 **Q: How do I share Zikra with my team?**
 
-For Lite: expose port 7723 on your machine (or use Cloudflare Tunnel for remote
+For Lite: expose port 8000 on your machine (or use Cloudflare Tunnel for remote
 access). Teammates create tokens via `create_token` using your admin token.
 
 For Full: it is already a server — give teammates your webhook URL and have them
