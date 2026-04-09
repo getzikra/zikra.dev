@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.2</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.3</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,22 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.3</span>
+                <span class="changelog-date">2026-04-09</span>
+            </h3>
+            <ul>
+                <li><strong>Version badge direction fixed</strong> — the topbar update indicator now only shows <code>v→ vX.X.X</code> when GitHub has a strictly newer release. Previously showed a downward arrow when running ahead of the latest tag.</li>
+                <li><strong>Favicon</strong> — browser tab now shows the Zikra <code>Z</code> icon via an inline SVG link. No external file required.</li>
+                <li><strong>Memory titles no longer cut off</strong> — sidebar card titles use the full available width before truncating with <code>…</code>. A CSS property mismatch (<code>flex:1</code> on a non-flex child) was causing mid-word clipping.</li>
+                <li><strong>Access counter now increments</strong> — <code>get_memory</code> calls <code>bump_access_count</code> on every read. Search results also expose <code>access_count</code> so the <code>accessed N×</code> label in the sidebar is accurate.</li>
+                <li><strong>Memory decay gauge fixed</strong> — the circular health gauge and recency/frequency/confidence bars now compute correctly. Root cause: search results were not returning <code>access_count</code> or <code>confidence_score</code>, and the UI was reading the wrong field. Gauge now reads the server-computed <code>score</code> (0–1); bars are derived independently from <code>created_at</code>, <code>access_count</code>, and <code>confidence_score</code>.</li>
+                <li><strong>Added <code>compute_score()</code> to scoring module</strong> — standalone memory health score (decay × frequency × confidence × pin boost), independent of search query. Applied to all search results so the UI always has an accurate health signal.</li>
+                <li><strong>Version file synced</strong> — <code>version.py</code> bumped to <code>1.0.3</code> and git tag <code>v1.0.3</code> pushed so the GitHub Tags API reflects the current release.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>
