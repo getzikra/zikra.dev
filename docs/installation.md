@@ -1,49 +1,130 @@
 # Zikra Installation Guide
 
-These instructions map out the complete path for taking Zikra from zero to persistent memory across any terminal-based LLM.
+From zero to persistent memory across every AI session. Takes about 5 minutes.
 
-### 1. Install and Configure
+---
+
+## Step 1 — Install the server
+
+Clone the repo and run the interactive installer. Zikra is a single Python process — no Docker required.
 
 ```bash
 git clone https://github.com/GetZikra/zikra
 cd zikra
+python3 -m venv .venv
+source .venv/bin/activate    # Windows: .venv\Scripts\activate
 pip install -e .
-python3 installer.py
-python3 -m zikra --no-onboarding
+python3 installer.py         # interactive, ~2 minutes
+python3 -m zikra
 ```
 
-> The installer is interactive. Run it in a real terminal, not inside a CI pipeline or agent task.
+The installer creates a `.env` file and generates your admin token. The server binds to `http://localhost:8000` by default.
 
-### 2. Expose Endpoint 
-Expose your local Zikra HTTP port (default 8000) to the outside world. This allows remote agents or external MCP implementations to hit the webhook reliably.
+> **Run `python3 -m zikra` from the same directory as your `.env` file.**
+
+### Expose it to other machines (optional)
+
+To reach your server from remote teammates or other devices, use a Cloudflare Tunnel — free, permanent, no ports to open:
 
 ```bash
-# Expose port via ngrok
-ngrok http 8000
-
-# (or using cloudflared)
 cloudflared tunnel --url http://localhost:8000
 ```
 
-### 3. Connect & Test
-Connect your MCP or agent to the web session and run a fast curl test to ensure your authorization token hits the database correctly.
+This gives you a stable public URL like `https://zikra.yourteam.com` that you can share with the team.
 
-```bash
-# Provide the tunnel URL and your secret token
-curl -X POST https://your-tunnel-url.ngrok.app/webhook/zikra \
-     -H "Authorization: Bearer <your_token>" \
-     -H "Content-Type: application/json" \
-     -d '{"command": "get_schema"}'
+---
+
+## Step 2 — Enable MCP in Claude Code
+
+Open **Claude Code → Settings → MCP → Add Server** and paste your server's MCP endpoint:
+
+```json
+{
+  "mcpServers": {
+    "zikra": {
+      "url": "http://your-server:8000/mcp/sse",
+      "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
+    }
+  }
+}
 ```
 
-### 4. Install Session Hooks
-Install the background auto-save hooks into your CLI environments. Supported agents include Claude Code, Codex, and Gemini CLI.
+Replace `your-server:8000` with `localhost:8000` for local installs, or your public tunnel URL for remote servers.
 
-Paste the following into a Claude Code session to install Stop, PreCompact, and statusline hooks automatically:
+> The installer does this automatically for local installs — you can skip this step if you ran `python3 installer.py` on the same machine as Claude Code.
+
+---
+
+## Step 3 — Run the onboarding prompt in Claude Code
+
+Paste this into any Claude Code session:
 
 ```
 Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/g_zikra.md
 and follow every instruction in it.
 ```
 
-Once complete, agents will auto-save context dynamically on loop exit or context limits.
+Claude will:
+1. Ask for your Zikra server URL and your token
+2. Install the **Stop hook** — auto-saves a memory at the end of every session
+3. Install the **PreCompact hook** — saves before context is compacted
+4. Install the **statusline bar** — shows live run counts and memory stats in your terminal
+5. Test the connection and confirm everything works
+
+Once complete, memory is active from the first message of every new session.
+
+---
+
+## Updating Zikra
+
+### Update the server
+
+Pull the latest code and restart:
+
+```bash
+git pull origin main
+pip install -e .
+python3 -m zikra   # or restart your systemd service
+```
+
+No config changes needed. Your `.env` and database are untouched.
+
+### Update Claude Code hooks
+
+Re-run the same onboarding prompt:
+
+```
+Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/g_zikra.md
+and follow every instruction in it.
+```
+
+The prompt detects your existing install and only refreshes what changed. Your token, credentials, and project config are preserved.
+
+> The MCP server entry in Claude Code settings never needs to be updated manually — it reads from your server dynamically.
+
+---
+
+## PostgreSQL (teams with concurrent writes)
+
+For teams that need a permanently running server with shared concurrent writes, add the following to your `.env`:
+
+```
+DB_BACKEND=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=ai_zikra
+DB_USER=postgres
+DB_PASSWORD=yourpassword
+```
+
+Install with Postgres support:
+
+```bash
+pip install -e ".[postgres]"
+```
+
+Same API, same Claude Code config — backed by PostgreSQL + pgvector.
+
+---
+
+For full command reference and API docs, see the [README](https://github.com/GetZikra/zikra).
