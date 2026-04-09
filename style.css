@@ -412,7 +412,7 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
     text-align: center;
 }
 .compare-table td:first-child { text-align: left; color: #e2e8f0; }
-.compare-table .col-lite { color: #FFB77A; font-weight: 700; font-size: 1.1rem; }
+.compare-table .col-zikra { color: #FFB77A; font-weight: 700; font-size: 1.1rem; }
 .compare-table .col-pro  { color: var(--primary); font-weight: 700; font-size: 1.1rem; }
 .tick { color: #4ade80; font-size: 1.1rem; }
 .cross { color: #475569; font-size: 1.1rem; }

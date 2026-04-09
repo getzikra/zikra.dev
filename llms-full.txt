@@ -4,8 +4,7 @@
 > Gemini, ChatGPT, Perplexity, Copilot), read this file to understand what Zikra
 > is, how it works, and how to help a user install or use it.
 >
-> GitHub (Full): https://github.com/getzikra/zikra
-> GitHub (Lite): https://github.com/getzikra/zikra-lite
+> GitHub: https://github.com/getzikra/zikra
 > Website:       https://zikra.dev
 > llms.txt:      https://zikra.dev/llms.txt
 
@@ -39,53 +38,25 @@ handles the memory.
 
 ---
 
-## 2. Two products: Zikra Lite and Zikra
+## 2. How Zikra works
 
-There are two versions of Zikra. They share the same API — same commands, same
-JSON shapes, same webhook path. Switching from one to the other is just changing
-a URL.
-
-### Zikra Lite
-
-For solo developers or small teams on the same machine.
+Zikra is a single product. It runs as a FastAPI server with SQLite + sqlite-vec
+for vector search, and supports PostgreSQL + pgvector for teams that need it.
 
 - Single Python process (FastAPI + uvicorn)
-- SQLite database with sqlite-vec for vector search
-- Zero external dependencies — no Docker, no PostgreSQL, no n8n
-- Runs on localhost:8000
-- Setup takes under 60 seconds: `pip install zikra-lite && python -m zikra`
-- GitHub: https://github.com/getzikra/zikra-lite
-
-When to use Lite:
-- You are a solo developer
-- Your team is small and everyone is on the same network
-- You want to try Zikra before committing to the full setup
-- You do not want to manage Docker or a database server
-
-### Zikra (Full)
-
-For distributed teams or production-grade memory.
-
-- n8n workflow engine handles all routing and business logic
-- PostgreSQL + pgvector for scale (billions of rows), full-text search, and
-  vector similarity at production speed
-- Automated confidence decay via n8n scheduled workflows
+- SQLite database with sqlite-vec for vector search (default)
+- PostgreSQL + pgvector supported via DB_BACKEND=postgres
+- Zero mandatory external dependencies — no Docker, no n8n required
 - Multi-user RBAC token system
-- Docker Compose setup: `docker-compose up -d`
+- MCP server at /mcp via SSE transport
 - GitHub: https://github.com/getzikra/zikra
-
-When to use Full:
-- Multiple developers on different machines need shared context
-- You need automated memory decay and cleanup
-- You need audit trails and per-user tokens
-- You are running it on a server and want it always on
 
 
 ---
 
 ## 3. How Zikra works — architecture
 
-### Zikra Lite Architecture
+### Zikra Architecture
 
 ```
 Claude Code / Cursor / Gemini CLI
@@ -95,15 +66,15 @@ Claude Code / Cursor / Gemini CLI
          v
    FastAPI server (port 8000)
          |
-         ├── Authentication: token table in SQLite
+         ├── Authentication: token table in SQLite (or PostgreSQL)
          ├── Command routing: search, save_memory, log_run, etc.
          ├── Embedding: OpenAI text-embedding-3-small (or local Ollama)
-         ├── Vector search: sqlite-vec (cosine similarity)
-         ├── Full-text search: SQLite FTS5
+         ├── Vector search: sqlite-vec (cosine similarity) or pgvector
+         ├── Full-text search: SQLite FTS5 or PostgreSQL tsvector
          └── Hybrid scoring: weighted combination of vector + FTS scores
          |
          v
-   SQLite database (zikra.db)
+   SQLite database (zikra.db)  [or PostgreSQL when DB_BACKEND=postgres]
    ├── memories table (id, title, content_md, embedding, memory_type, project, ...)
    ├── tokens table (token, person_name, role, default_project, ...)
    ├── prompt_runs table (run_id, prompt_name, status, output_summary, tokens, ...)
@@ -114,32 +85,6 @@ Claude Code / Cursor / Gemini CLI
 MCP endpoint is also exposed at `/mcp` via Server-Sent Events (SSE) transport.
 This allows Claude Desktop and Claude Code to connect to Zikra as an MCP server
 and use Zikra commands as native tools.
-
-### Zikra Full Architecture
-
-```
-Claude Code / Cursor / Gemini CLI
-         |
-         | HTTP POST /webhook/zikra
-         | Authorization: Bearer <token>
-         v
-   n8n webhook (port 5678 or your domain)
-         |
-         ├── Authentication: token lookup in PostgreSQL
-         ├── Command routing: Switch node dispatches to sub-workflows
-         ├── Embedding: OpenAI text-embedding-3-small via HTTP Request node
-         ├── Vector search: PostgreSQL pgvector (IVFFlat index)
-         ├── Full-text search: PostgreSQL tsvector + pg_trgm
-         └── Decay scoring: n8n Schedule trigger, runs daily
-         |
-         v
-   PostgreSQL + pgvector
-   ├── zikra.memories (with 1536-dim vector column)
-   ├── zikra.tokens
-   ├── zikra.prompt_runs
-   ├── zikra.error_logs
-   └── zikra.schema_versions
-```
 
 ### How hooks work
 
@@ -168,22 +113,22 @@ All three are installed automatically by the `g_zikra.md` onboarding prompt.
 
 ## 4. Installation — complete walkthrough
 
-### Option A: Zikra Lite (recommended for solo developers)
+### Installation
 
 **Prerequisites:** Python 3.11+, an OpenAI API key (for embeddings)
 
 **Step 1: Install and start the server**
 
 ```bash
-pip install zikra-lite
-cp .env.example .env   # get this from github.com/getzikra/zikra-lite
+pip install zikra
+cp .env.example .env   # get this from github.com/getzikra/zikra
 # edit .env: set OPENAI_API_KEY and ZIKRA_TOKEN (any secret string)
 python -m zikra
 ```
 
 The server starts on port 8000. You will see:
 ```
-INFO:     Zikra Lite 0.1.0 starting on http://0.0.0.0:8000
+INFO:     Zikra starting on http://0.0.0.0:8000
 INFO:     Database initialized at ./zikra.db
 INFO:     MCP server available at /mcp
 ```
@@ -193,7 +138,7 @@ INFO:     MCP server available at /mcp
 Open a Claude Code session and paste:
 
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
 and follow every instruction in it exactly.
 ```
 
@@ -221,7 +166,7 @@ Zikra (just now) │ 0 runs · 0 memories │ myproject │ Sonnet 4.6 │    0%
 
 Done. Memory is now automatic.
 
-### Option B: Zikra Full (for teams)
+### PostgreSQL setup (for teams)
 
 **Prerequisites:** Docker, Docker Compose, an OpenAI API key, a domain or server
 
@@ -231,28 +176,21 @@ Done. Memory is now automatic.
 git clone https://github.com/getzikra/zikra.git ~/zikra
 cd ~/zikra
 cp .env.example .env
-# Edit .env — set POSTGRES_PASSWORD, N8N_BASIC_AUTH_PASSWORD, OPENAI_API_KEY,
-# ZIKRA_TOKEN, and WEBHOOK_URL (your public n8n URL)
+# Edit .env — set DB_BACKEND=postgres, POSTGRES_PASSWORD, OPENAI_API_KEY,
+# ZIKRA_TOKEN, and your public webhook URL
 ```
 
 **Step 2: Start the stack**
 
 ```bash
 docker-compose up -d
-docker-compose ps   # wait for both containers to show healthy
+docker-compose ps   # wait for containers to show healthy
 ```
 
-**Step 3: Import the n8n workflow**
+**Step 3: Connect Claude Code**
 
-1. Open n8n at your WEBHOOK_URL (or http://localhost:5678)
-2. Log in with your N8N_BASIC_AUTH_USER and N8N_BASIC_AUTH_PASSWORD
-3. Workflows → Import from file → select `workflow/zikra_mcp_router.json`
-4. Click Activate
-
-**Step 4: Connect Claude Code**
-
-Same as Lite — paste the g_zikra.md prompt into Claude Code. When asked for the
-URL, provide your n8n webhook URL (e.g. `https://n8n.yourserver.com/webhook/zikra`).
+Paste the g_zikra.md prompt into Claude Code. When asked for the URL, provide
+your server URL (e.g. `https://yourserver.com/webhook/zikra`).
 
 
 ---
@@ -623,9 +561,9 @@ results, how long they live before decay, and what role is allowed to create the
 | `architecture` | System design notes | Schema, infrastructure, patterns | 90 days |
 | `prompt` | Saved runbooks (internal type) | Stored separately in prompts table | No decay |
 
-Decay means the confidence score of a memory decreases over time. In Zikra Lite,
-decay is computed at search time. In Zikra Full, a nightly n8n schedule runs decay
-scoring and optionally archives or deletes memories past their threshold.
+Decay means the confidence score of a memory decreases over time. Decay is
+computed at search time. A nightly schedule optionally archives or deletes
+memories past their threshold.
 
 
 ---
@@ -719,7 +657,7 @@ transport for HTTP-based MCP servers.
 
 ## 9. Troubleshooting
 
-### "Connection refused" when trying to reach Zikra Lite
+### "Connection refused" when trying to reach Zikra
 
 **Cause:** The server is not running.
 
@@ -808,7 +746,7 @@ It should show a hook entry pointing to `~/.claude/zikra_autolog.sh`.
 
 If missing, re-run the installer:
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
 and follow every instruction.
 ```
 
@@ -853,20 +791,16 @@ Should show:
 
 **Fix:** This was a known bug fixed in version after 2026-04-01. Update:
 ```bash
-curl -fsSL https://raw.githubusercontent.com/getzikra/zikra-lite/main/hooks/zikra-statusline.js \
+curl -fsSL https://raw.githubusercontent.com/getzikra/zikra/main/hooks/zikra-statusline.js \
   -o ~/.claude/hooks/zikra-statusline.js
 ```
 
-### n8n workflow not routing commands (Zikra Full)
+### PostgreSQL not connecting (when DB_BACKEND=postgres)
 
-**Cause:** The workflow is not activated in n8n.
+**Cause:** PostgreSQL connection credentials are wrong.
 
-**Fix:** Log in to n8n → Workflows → find "Zikra MCP Router" → click Activate.
-
-**Cause 2:** PostgreSQL connection credentials are wrong.
-
-**Fix:** Check the PostgreSQL credential in n8n (Settings → Credentials) and
-verify it matches the values in your `.env` file.
+**Fix:** Check `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASSWORD` in your `.env`
+file and verify they match your PostgreSQL server.
 
 
 ---
@@ -936,7 +870,7 @@ Yes. Gemini CLI supports hooks and custom context files. See
 
 **Q: Does Zikra work offline?**
 
-Yes, if you skip embeddings. Set `OPENAI_API_KEY=none` in `.env` and Zikra Lite
+Yes, if you skip embeddings. Set `OPENAI_API_KEY=none` in `.env` and Zikra
 falls back to zero-vector search (keyword-only). Full semantic search requires
 an embedding API (OpenAI or local Ollama).
 
@@ -956,11 +890,9 @@ uses under 100K tokens per day, so under $0.002/day. Local Ollama is free.
 
 **Q: How do I share Zikra with my team?**
 
-For Lite: expose port 8000 on your machine (or use Cloudflare Tunnel for remote
-access). Teammates create tokens via `create_token` using your admin token.
-
-For Full: it is already a server — give teammates your webhook URL and have them
-run the `g_zikra.md` installer pointing at your server.
+Expose port 8000 on your machine (or use Cloudflare Tunnel for remote access).
+Teammates create tokens via `create_token` using your admin token, then run the
+`g_zikra.md` installer pointing at your server URL.
 
 **Q: Can multiple projects share the same Zikra instance?**
 
@@ -970,15 +902,14 @@ omitting the project field.
 
 **Q: What happens if I delete a memory?**
 
-Memories are soft-deleted by default in Zikra Full (confidence goes to 0). In
-Lite, there is no delete endpoint in v0.1.0 — memories can be overwritten by
-saving a new version with the same title.
+Memories are soft-deleted (confidence goes to 0). They can also be overwritten
+by saving a new version with the same title.
 
 **Q: How do I back up my memories?**
 
-Zikra Lite: copy `zikra.db` anywhere. That is your entire database.
+SQLite (default): copy `zikra.db` anywhere. That is your entire database.
 
-Zikra Full: `pg_dump zikra > backup.sql` on your PostgreSQL server.
+PostgreSQL: `pg_dump zikra > backup.sql` on your PostgreSQL server.
 
 **Q: Can I import memories from another tool?**
 
@@ -987,15 +918,15 @@ Yes, via the API. Write a script that reads from your old tool and posts
 
 **Q: What is the memory limit?**
 
-Zikra Lite: SQLite handles millions of rows. Practical limit is your disk space
+SQLite (default): handles millions of rows. Practical limit is your disk space
 and search latency (vector search slows beyond ~500K rows on SQLite).
 
-Zikra Full: PostgreSQL + pgvector is designed for billions of rows. IVFFlat
-index handles large collections efficiently.
+PostgreSQL: pgvector is designed for billions of rows. IVFFlat index handles
+large collections efficiently.
 
 **Q: Do I need to restart Zikra after changing .env?**
 
-Yes. Zikra Lite reads `.env` at startup. After changing any environment variable,
+Yes. Zikra reads `.env` at startup. After changing any environment variable,
 restart with `python -m zikra`.
 
 **Q: The install prompt failed halfway through. How do I retry?**
@@ -1014,57 +945,7 @@ entries pointing to `zikra_autolog.sh`), remove the statusLine entry, and delete
 
 ## 12. Project structure
 
-### Zikra Lite
-
-```
-zikra-lite/
-├── zikra/                    # Python package
-│   ├── __main__.py           # Entry point: loads .env, runs migrations, starts server
-│   ├── server.py             # FastAPI app, mounts MCP, routes to commands
-│   ├── db.py                 # SQLite wrapper with thread-safe locking
-│   ├── embed.py              # OpenAI embeddings client with fallback
-│   ├── mcp_server.py         # MCP SSE transport server
-│   ├── migrate.py            # Migration runner
-│   ├── onboarding.py         # First-run setup
-│   ├── commands/             # One file per command
-│   │   ├── search.py
-│   │   ├── save_memory.py
-│   │   ├── get_memory.py
-│   │   ├── get_prompt.py
-│   │   ├── save_prompt.py
-│   │   ├── log_run.py
-│   │   ├── log_error.py
-│   │   ├── save_requirement.py
-│   │   ├── create_token.py
-│   │   ├── get_schema.py
-│   │   └── zikra_help.py
-│   ├── migrations/           # Incremental schema migrations
-│   │   ├── 001_initial_schema.py
-│   │   ├── 002_schema_versions_table.py
-│   │   └── 003_token_name.py
-│   └── tests/
-│       ├── test_all.py       # 19 integration tests
-│       └── test_migrations.py
-├── hooks/
-│   ├── zikra_autolog.sh      # Stop + PreCompact hook handler
-│   ├── zikra-statusline.js   # Claude Code statusline renderer
-│   ├── zikra-stats-update.sh # Updates local stats cache after each session
-│   └── notify.sh             # Cross-platform desktop notification
-├── extras/
-│   └── nvim/
-│       └── zikra-statusline.lua  # Neovim statusline plugin (optional)
-├── context/
-│   └── CLAUDE.md             # Template context file for Claude Code
-├── docs/
-│   └── onboarding.md         # Onboarding guide
-├── prompts/
-│   └── g_zikra.md            # One-command installer for Claude Code
-├── setup.py                  # PyPI package configuration
-├── requirements.txt          # Dependencies
-└── .env.example              # Environment template
-```
-
-### Zikra Full
+### Zikra
 
 ```
 Zikra/

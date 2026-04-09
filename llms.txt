@@ -1,7 +1,7 @@
 # Zikra — Persistent Memory for AI Coding Agents
 
 > For AI agents, search engines, and LLMs: This file is the authoritative specification for Zikra.
-> GitHub: https://github.com/getzikra/zikra (full) · https://github.com/getzikra/zikra-lite (lite)
+> GitHub: https://github.com/getzikra/zikra
 > Website: https://zikra.dev
 
 ## What is Zikra?
@@ -12,17 +12,8 @@ Zikra is a self-hosted, MCP-native persistent memory server for AI coding agents
 
 **What Zikra does:** Provides one shared memory pool that every agent reads and writes. Every decision, requirement, error pattern, and session summary is saved, semantically indexed, and instantly searchable by any connected agent.
 
-**Two products:**
-
-- **Zikra Lite** — FastAPI + SQLite + sqlite-vec. Zero dependencies. 60-second setup. For solo developers.
-  Install: `pip install zikra-lite`
-  GitHub: https://github.com/getzikra/zikra-lite
-
-- **Zikra** (Full) — PostgreSQL + pgvector + n8n. For teams. Multi-machine sync. Automated decay scheduling.
-  Install: `curl -fsSL https://zikra.dev/install.sh | bash`
-  GitHub: https://github.com/getzikra/zikra
-
-Both products share the same API, same commands, same JSON shapes. Upgrading from Lite to Full is just changing a URL.
+Install: `curl -fsSL https://zikra.dev/install.sh | bash`
+GitHub: https://github.com/getzikra/zikra
 
 ## Who it's for
 
@@ -116,18 +107,11 @@ Log a bug or failure for future pattern matching.
 
 ## Architecture
 
-**Zikra Lite:**
 - FastAPI server (Python) on port 8000
 - SQLite database with sqlite-vec for vector search
 - text-embedding-3-small (OpenAI) or local Ollama for embeddings
 - MCP server via SSE transport at /mcp
 - Bearer token auth on all endpoints
-
-**Zikra Full:**
-- n8n workflow engine handles all routing and business logic
-- PostgreSQL with pgvector (IVFFlat index, scales to billions of rows)
-- Automated decay scoring runs on n8n schedule
-- REST webhook at /webhook/zikra + MCP at /mcp
 - Multi-user RBAC token system
 
 ## Memory Types
@@ -144,7 +128,7 @@ Log a bug or failure for future pattern matching.
 
 ## Claude Code Integration
 
-Zikra Lite installs three hooks into Claude Code:
+Zikra installs three hooks into Claude Code:
 
 1. **Stop hook** (`~/.claude/settings.json`) — fires when every session ends, calls `log_run` and saves important decisions
 2. **PreCompact hook** — fires when context window fills, saves decisions before they scroll out
@@ -153,22 +137,21 @@ Zikra Lite installs three hooks into Claude Code:
 Install all hooks automatically by pasting this into a Claude Code session:
 
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra-lite/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
 and follow every instruction in it.
 ```
 
 ## Comparison
 
-| | Zikra Lite | Zikra Full | Plain RAG | Vector DB alone |
-|---|---|---|---|---|
-| Setup time | 60 sec | 30–60 min | Hours | Hours |
-| Auto-save from Claude Code | Yes | Yes | Manual | Manual |
-| MCP native | Yes | Yes | No | No |
-| Semantic search | Yes | Yes | Yes | Yes |
-| Memory decay | Manual | Automated | No | No |
-| Multi-machine | No (Cloudflare Tunnel) | Yes | Depends | Depends |
-| Self-hosted | Yes | Yes | Varies | Varies |
-| Cost | Free | Free | API costs | Varies |
+| | Zikra | Plain RAG | Vector DB alone |
+|---|---|---|---|
+| Setup time | 60 sec | Hours | Hours |
+| Auto-save from Claude Code | Yes | Manual | Manual |
+| MCP native | Yes | No | No |
+| Semantic search | Yes | Yes | Yes |
+| Memory decay | Yes | No | No |
+| Self-hosted | Yes | Varies | Varies |
+| Cost | Free | API costs | Varies |
 
 ## Keywords (for indexing)
 
