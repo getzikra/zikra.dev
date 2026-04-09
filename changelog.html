@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.3</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.4</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,21 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.4</span>
+                <span class="changelog-date">2026-04-09</span>
+            </h3>
+            <ul>
+                <li><strong>MCP transport migrated to Streamable HTTP</strong> — the <code>/mcp</code> endpoint now speaks the MCP 2025-03-26 Streamable HTTP spec (stateless POST, JSON-RPC 2.0). Container restarts and proxy reconnects no longer drop sessions. The deprecated SSE endpoint at <code>/mcp/sse</code> is kept for backward compatibility with a logged warning.</li>
+                <li><strong>Safe update script (<code>update.sh</code>)</strong> — one command to pull, detect Docker vs. bare-Python, and restart. Checks for uncommitted changes before pulling, snapshots a WIP branch if any exist, then restores after the update. Docker: detects bind-mount or compose and restarts accordingly.</li>
+                <li><strong>Server update prompt (<code>prompts/zikra-server-update.md</code>)</strong> — Claude Code prompt that walks through the same update steps for users who prefer not to run scripts directly.</li>
+                <li><strong>Onboarding prompt renamed</strong> — <code>prompts/g_zikra.md</code> → <code>prompts/zikra-cli-install-update.md</code> to better describe what it does (configures Claude Code client hooks only). A disclaimer at the top clarifies the scope: hooks, statusline, MCP token — not server updates.</li>
+                <li><strong>SQLite concurrency warning</strong> — installer now warns when SQLite is selected with a non-localhost bind address. Single-writer limitation documented in README profiles table.</li>
+                <li><strong>SQLite runtime files untracked</strong> — <code>*.db-shm</code> and <code>*.db-wal</code> added to <code>.gitignore</code>. WAL-mode journal files were being accidentally staged on some systems.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>
