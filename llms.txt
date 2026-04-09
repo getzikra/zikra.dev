@@ -137,7 +137,7 @@ Zikra installs three hooks into Claude Code:
 Install all hooks automatically by pasting this into a Claude Code session:
 
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/zikra-claude-code-setup.md
 and follow every instruction in it.
 ```
 

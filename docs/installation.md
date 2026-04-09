@@ -60,7 +60,7 @@ Replace `your-server:8000` with `localhost:8000` for local installs, or your pub
 Paste this into any Claude Code session:
 
 ```
-Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/zikra-claude-code-setup.md
 and follow every instruction in it.
 ```
 
@@ -94,7 +94,7 @@ No config changes needed. Your `.env` and database are untouched.
 Re-run the same onboarding prompt:
 
 ```
-Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/zikra-claude-code-setup.md
 and follow every instruction in it.
 ```
 

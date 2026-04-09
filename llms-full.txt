@@ -106,7 +106,7 @@ Three hooks integrate with Claude Code:
    save time, session count, memory count, active project, model name, and a
    context window usage bar.
 
-All three are installed automatically by the `g_zikra.md` onboarding prompt.
+All three are installed automatically by the `zikra-claude-code-setup.md` onboarding prompt.
 
 
 ---
@@ -138,7 +138,7 @@ INFO:     MCP server available at /mcp
 Open a Claude Code session and paste:
 
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/zikra-claude-code-setup.md
 and follow every instruction in it exactly.
 ```
 
@@ -189,7 +189,7 @@ docker-compose ps   # wait for containers to show healthy
 
 **Step 3: Connect Claude Code**
 
-Paste the g_zikra.md prompt into Claude Code. When asked for the URL, provide
+Paste the zikra-claude-code-setup.md prompt into Claude Code. When asked for the URL, provide
 your server URL (e.g. `https://yourserver.com/webhook/zikra`).
 
 
@@ -746,7 +746,7 @@ It should show a hook entry pointing to `~/.claude/zikra_autolog.sh`.
 
 If missing, re-run the installer:
 ```
-Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/g_zikra.md
+Fetch https://raw.githubusercontent.com/getzikra/zikra/main/prompts/zikra-claude-code-setup.md
 and follow every instruction.
 ```
 
@@ -892,7 +892,7 @@ uses under 100K tokens per day, so under $0.002/day. Local Ollama is free.
 
 Expose port 8000 on your machine (or use Cloudflare Tunnel for remote access).
 Teammates create tokens via `create_token` using your admin token, then run the
-`g_zikra.md` installer pointing at your server URL.
+`zikra-claude-code-setup.md` installer pointing at your server URL.
 
 **Q: Can multiple projects share the same Zikra instance?**
 
@@ -971,7 +971,7 @@ Zikra/
 │   ├── 001_initial_schema.sql
 │   └── 002_add_schema_versions_table.sql
 ├── prompts/
-│   ├── g_zikra.md            # One-command installer
+│   ├── zikra-claude-code-setup.md            # One-command installer
 │   └── g_update_zikra.md     # Docker update procedure
 ├── scripts/
 │   └── migrate.sh            # Run all pending migrations
@@ -979,7 +979,7 @@ Zikra/
 │   └── zikra_mcp_router.json # n8n workflow export
 ├── docker-compose.yml        # PostgreSQL + n8n orchestration
 ├── schema.sql                # Canonical current PostgreSQL schema
-├── install.sh                # Shell installer (alternative to g_zikra.md)
+├── install.sh                # Shell installer (alternative to zikra-claude-code-setup.md)
 └── .env.example              # Environment template
 ```
 
