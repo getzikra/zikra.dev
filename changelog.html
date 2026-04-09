@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zikra — Changelog</title>
+    <meta name="description" content="Zikra version history and release notes.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav class="navbar glass">
+    <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+    <div class="nav-links">
+        <a href="index.html">Zikra</a>
+        <a href="install.html">How to Install</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="license.html">MIT</a>
+    </div>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.2</a>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
+<header style="padding:9rem 5% 2rem;text-align:center;" class="reveal">
+    <div class="container">
+        <div class="badge">Release History</div>
+        <h1 class="hero-title">What's <span class="gradient-text">Changed</span></h1>
+        <p class="hero-sub" style="margin:1.25rem auto 0;">
+            Every release. Every fix. Every improvement.
+        </p>
+    </div>
+</header>
+
+<!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.2</span>
+                <span class="changelog-date">2026-04-09</span>
+            </h3>
+            <ul>
+                <li><strong>Single version source of truth</strong> — <code>version.py</code> now drives everything: FastAPI, <code>/health</code>, <code>debug_protocol</code>, and the <code>version</code> command. No more three different hardcoded strings.</li>
+                <li><strong>Server-side GitHub version check</strong> — <code>/health</code> and the <code>version</code> command return <code>latest_version</code> when a newer GitHub tag exists. One daily API call, cached in memory, shared by all endpoints.</li>
+                <li><strong>Web UI version indicator</strong> — the topbar now shows the running server version on connect. Turns orange with <code>v1.0.1 → v1.1.0</code> if GitHub has a newer release.</li>
+                <li><strong>Stop hook race condition fixed</strong> — lock moved to main shell (before the background fork). Was inside the subshell, causing 30-80× duplicate diaries per session.</li>
+                <li><strong>Stop hook: macOS portability</strong> — portable lock: <code>flock</code> on Linux/WSL, atomic <code>mkdir</code> fallback on macOS. Hook now works correctly on all platforms.</li>
+                <li><strong>Stop hook: diary title includes time</strong> — title is now <code>diary:YYYY-MM-DD-HHMM:host</code> instead of <code>diary:YYYY-MM-DD:host</code>. Multiple sessions per day are preserved instead of being silently overwritten.</li>
+                <li><strong>Stop hook: transcript byte cap</strong> — adaptive tail (80–200 lines) + 200KB <code>head -c</code> cap prevents megabytes of JSONL tool results being fed to <code>claude -p</code>.</li>
+                <li><strong>Stop hook: claude -p timeout</strong> — <code>timeout 120</code> (or <code>gtimeout</code> on macOS) prevents a hung call from holding the lock indefinitely.</li>
+                <li><strong>Removed zikra-lite</strong> — all references to the discontinued <code>zikra-lite</code> product removed from installer, hooks, docs, and website. One product, one repo.</li>
+                <li><strong>Installer fix</strong> — <code>g_zikra.md</code> no longer has a localhost → <code>zikra-lite</code> branch that silently pulled stale hooks from the old repo.</li>
+            </ul>
+        </div>
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.1</span>
+                <span class="changelog-date">2026-04-08</span>
+            </h3>
+            <ul>
+                <li><strong>Statusline: server version display</strong> — the Claude Code statusline now shows the running server version fetched from the Zikra API, not a hardcoded local string. Compares against GitHub tags and highlights in orange if an update is available.</li>
+                <li><strong>New <code>version</code> command</strong> — returns <code>{"version": "1.0.1", "server": "zikra"}</code>. Accessible to any <code>viewer</code> role token. Aliases: <code>ver</code>, <code>server_version</code>.</li>
+                <li><strong>Stats hook: server version cache</strong> — <code>zikra-stats-update.sh</code> fetches the server version each run and caches it in <code>~/.claude/cache/zikra-stats.json</code>.</li>
+                <li><strong>Statusline fallback</strong> — shows <code>(update if ●)</code> with an orange dot when server version is not yet cached, prompting the user to run <code>zikra update</code>.</li>
+            </ul>
+        </div>
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.0</span>
+                <span class="changelog-date">2026-04-01</span>
+            </h3>
+            <ul>
+                <li><strong>Initial release</strong> — FastAPI + SQLite + sqlite-vec. Zero external dependencies.</li>
+                <li><strong>MCP server</strong> — SSE transport at <code>/mcp</code>, compatible with Claude Desktop and Claude Code.</li>
+                <li><strong>Hybrid search</strong> — semantic (vector cosine) + keyword (FTS5), weighted scoring with confidence decay.</li>
+                <li><strong>Claude Code hooks</strong> — Stop hook auto-logs session diaries; PreCompact hook saves summaries before context compression; statusline shows live stats.</li>
+                <li><strong>Multi-user RBAC</strong> — owner, admin, developer, requirements_engineer, viewer roles. Token-based auth on all endpoints.</li>
+                <li><strong>Memory types</strong> — decision, error, requirement, reference, user, feedback, project, conversation, architecture.</li>
+                <li><strong>One-command installer</strong> — <code>g_zikra.md</code> prompt sets up hooks, CLAUDE.md, and statusline in a single Claude Code session.</li>
+                <li><strong>PostgreSQL backend</strong> — optional <code>DB_BACKEND=postgres</code> for teams needing pgvector scale.</li>
+            </ul>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
+<section class="reveal">
+    <div class="cta-band">
+        <h2>Always <span class="gradient-text">improving.</span></h2>
+        <p>Watch the repo for new releases. Every update ships through the same one-command installer.</p>
+        <div class="btn-row">
+            <a href="install.html" class="btn btn-primary btn-lg btn-glow">How to Install</a>
+            <a href="https://github.com/GetZikra/zikra/releases" class="btn btn-github btn-lg" target="_blank" rel="noopener">GitHub Releases</a>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="footer-inner">
+        <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+        <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
+        <div class="footer-links">
+            <a href="install.html">How to Install</a>
+            <a href="changelog.html">Changelog</a>
+            <a href="license.html">MIT</a>
+            <a href="https://github.com/GetZikra/zikra" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

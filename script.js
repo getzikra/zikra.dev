@@ -27,6 +27,22 @@ if (termLines.length) {
     });
 }
 
+// ── Version badge — fetch latest GitHub tag ───────────────────────────────────
+(async () => {
+    const badge = document.getElementById('version-badge');
+    if (!badge) return;
+    try {
+        const res = await fetch('https://api.github.com/repos/getzikra/zikra/tags', {
+            headers: { 'Accept': 'application/vnd.github+json' }
+        });
+        if (!res.ok) return;
+        const tags = await res.json();
+        if (tags && tags.length && tags[0].name) {
+            badge.textContent = tags[0].name.startsWith('v') ? tags[0].name : 'v' + tags[0].name;
+        }
+    } catch (_) {}
+})();
+
 // ── Active nav link highlight ─────────────────────────────────────────────────
 const page = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a').forEach(a => {

@@ -174,6 +174,44 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
 
 .nav-actions { display: flex; gap: 0.75rem; align-items: center; }
 
+.version-badge {
+    font-size: 0.72rem;
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 0.15rem 0.45rem;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+    transition: color 0.2s, border-color 0.2s;
+}
+.version-badge:hover { color: var(--text-color); border-color: var(--primary-border); }
+
+/* ── Changelog page ── */
+.changelog-entry {
+    border-left: 2px solid var(--primary-border);
+    padding: 1.5rem 0 1.5rem 2rem;
+    margin-bottom: 0.5rem;
+}
+.changelog-entry:last-child { border-left-color: var(--glass-border); }
+.changelog-version {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+.changelog-date {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-left: 0.75rem;
+}
+.changelog-entry h3 { margin-bottom: 0.75rem; }
+.changelog-entry ul { padding-left: 1.25rem; color: var(--muted); }
+.changelog-entry ul li { margin-bottom: 0.35rem; line-height: 1.6; }
+.changelog-entry ul li strong { color: var(--text-color); }
+
 /* ── Hero ── */
 .hero {
     min-height: 100vh;
