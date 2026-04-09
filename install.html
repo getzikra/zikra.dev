@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Install Zikra — 3 Steps to Persistent AI Memory</title>
+    <meta name="description" content="Install Zikra in 3 steps: run the server, connect MCP in Claude Code, run the onboarding prompt. Takes about 5 minutes.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav class="navbar glass">
+    <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+    <div class="nav-links">
+        <a href="index.html">Zikra</a>
+        <a href="install.html">How to Install</a>
+        <a href="license.html">MIT</a>
+    </div>
+</nav>
+
+<!-- ── Hero ──────────────────────────────────────────────────────────────────── -->
+<header class="hero reveal" style="padding-bottom:2rem;">
+    <div class="badge">5 minute setup</div>
+    <h1 class="hero-title">Get started in <span class="gradient-text">3 steps</span></h1>
+    <p class="hero-sub">
+        From zero to persistent memory across every session.<br>
+        One server, one MCP connection, one prompt.
+    </p>
+</header>
+
+<!-- ── Steps ─────────────────────────────────────────────────────────────────── -->
+<section class="section reveal" style="padding-top:0;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:2rem;">
+
+        <!-- Step 1 -->
+        <div class="card glass" style="padding:2.5rem;">
+            <div style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+                <div class="card-icon" style="flex-shrink:0;width:3rem;height:3rem;font-size:1.4rem;">1</div>
+                <div style="flex:1;min-width:260px;">
+                    <h2 style="font-size:1.5rem;margin-bottom:0.5rem;">Install the server</h2>
+                    <p style="color:var(--muted);margin-bottom:1.25rem;">
+                        Clone the repo and run the interactive installer. Zikra is a single Python process — no Docker, no database setup, no config files to hand-write. The installer generates your admin token and writes a <code style="color:#FFB77A;font-size:0.88em;">.env</code> file automatically.
+                    </p>
+                    <div class="code-block" style="margin-bottom:1rem;">
+                        <span class="c-prompt">$</span> git clone https://github.com/GetZikra/zikra
+                        <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> cd zikra &amp;&amp; pip install -e .</span>
+                        <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 installer.py</span>
+                        <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 -m zikra</span>
+                        <span style="display:block;margin-top:0.75rem;" class="c-success">✓  Zikra running on http://localhost:8000</span>
+                    </div>
+                    <div class="card glass" style="padding:1rem 1.25rem;background:rgba(255,183,122,0.04);">
+                        <p style="font-size:0.88rem;color:var(--muted);margin:0;">
+                            <strong style="color:#FFB77A;">Expose to other machines</strong> — run Cloudflare Tunnel for a free, permanent public URL:
+                        </p>
+                        <div class="code-block" style="margin-top:0.6rem;padding:0.6rem 1rem;font-size:0.82rem;">
+                            <span class="c-prompt">$</span> cloudflared tunnel --url http://localhost:8000
+                            <span style="display:block;margin-top:0.3rem;" class="c-success">✓  https://zikra.yourteam.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="card glass" style="padding:2.5rem;">
+            <div style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+                <div class="card-icon" style="flex-shrink:0;width:3rem;height:3rem;font-size:1.4rem;">2</div>
+                <div style="flex:1;min-width:260px;">
+                    <h2 style="font-size:1.5rem;margin-bottom:0.5rem;">Enable MCP in Claude Code</h2>
+                    <p style="color:var(--muted);margin-bottom:1.25rem;">
+                        Open <strong style="color:var(--text);">Claude Code → Settings → MCP → Add Server</strong> and paste your server's endpoint. This gives Claude Code native access to Zikra tools — search, save, and recall memory directly from any conversation.
+                    </p>
+                    <div class="code-block" style="margin-bottom:1rem;">
+                        <span class="c-key">"mcpServers"</span><span style="color:var(--muted);">: {</span>
+                        <span style="display:block;padding-left:1.25rem;"><span class="c-key">"zikra"</span><span style="color:var(--muted);">: {</span></span>
+                        <span style="display:block;padding-left:2.5rem;"><span class="c-key">"url"</span><span style="color:var(--muted);">: </span><span class="c-val">"http://your-server:8000/mcp/sse"</span><span style="color:var(--muted);">,</span></span>
+                        <span style="display:block;padding-left:2.5rem;"><span class="c-key">"headers"</span><span style="color:var(--muted);">: {</span><span class="c-key">"Authorization"</span><span style="color:var(--muted);">: </span><span class="c-val">"Bearer YOUR_TOKEN"</span><span style="color:var(--muted);">}</span></span>
+                        <span style="display:block;padding-left:1.25rem;color:var(--muted);">}</span>
+                        <span style="color:var(--muted);">}</span>
+                    </div>
+                    <p style="font-size:0.88rem;color:var(--muted);">
+                        Replace <code style="color:#FFB77A;font-size:0.88em;">your-server:8000</code> with <code style="color:#FFB77A;font-size:0.88em;">localhost:8000</code> for a local install, or your Cloudflare Tunnel URL for remote access. The installer writes this automatically for local installs — you can skip this step if you ran it on the same machine.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="card glass" style="padding:2.5rem;">
+            <div style="display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap;">
+                <div class="card-icon" style="flex-shrink:0;width:3rem;height:3rem;font-size:1.4rem;">3</div>
+                <div style="flex:1;min-width:260px;">
+                    <h2 style="font-size:1.5rem;margin-bottom:0.5rem;">Run the onboarding prompt</h2>
+                    <p style="color:var(--muted);margin-bottom:1.25rem;">
+                        Paste this into any Claude Code session. Claude will fetch the setup instructions directly from GitHub and walk through everything automatically — no manual config, no copy-pasting tokens.
+                    </p>
+                    <div class="code-block" style="margin-bottom:1rem;">
+                        <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/g_zikra.md</span>
+                        <span style="display:block;margin-top:0.4rem;color:#FFB77A;">and follow every instruction in it.</span>
+                    </div>
+                    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">
+                        Claude will ask for your server URL and token, then install:
+                    </p>
+                    <div class="grid-3" style="gap:1rem;">
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1rem;">
+                            <div style="font-size:1.3rem;margin-bottom:0.4rem;">🪝</div>
+                            <strong style="font-size:0.9rem;">Stop hook</strong>
+                            <p style="font-size:0.82rem;color:var(--muted);margin:0.3rem 0 0;">Auto-saves a memory at the end of every Claude Code session. You never have to type "save this".</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1rem;">
+                            <div style="font-size:1.3rem;margin-bottom:0.4rem;">⚡</div>
+                            <strong style="font-size:0.9rem;">PreCompact hook</strong>
+                            <p style="font-size:0.82rem;color:var(--muted);margin:0.3rem 0 0;">Saves context before Claude compacts long conversations, so nothing is lost when the context window fills.</p>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1rem;">
+                            <div style="font-size:1.3rem;margin-bottom:0.4rem;">📊</div>
+                            <strong style="font-size:0.9rem;">Statusline bar</strong>
+                            <p style="font-size:0.82rem;color:var(--muted);margin:0.3rem 0 0;">Live bar below the input showing run counts, memory count, and context usage.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── After install ──────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <div style="max-width:860px;margin:0 auto;">
+        <h2 class="section-title" style="text-align:left;margin-bottom:0.5rem;">What happens from here</h2>
+        <p style="color:var(--muted);margin-bottom:2rem;">Once the onboarding prompt finishes, memory is live from the first message of every new session.</p>
+        <div class="grid-3" style="gap:1.25rem;">
+            <div class="card glass">
+                <div class="card-icon" style="font-size:1.6rem;">💾</div>
+                <h3 style="font-size:1rem;">Every session is saved</h3>
+                <p style="font-size:0.88rem;color:var(--muted);">When you end a Claude Code session, the Stop hook fires automatically and saves a summary to Zikra. No manual action needed.</p>
+            </div>
+            <div class="card glass">
+                <div class="card-icon" style="font-size:1.6rem;">🔍</div>
+                <h3 style="font-size:1rem;">Memory is searchable</h3>
+                <p style="font-size:0.88rem;color:var(--muted);">Ask Claude "what did we decide about auth?" and it searches Zikra automatically using hybrid vector + keyword search.</p>
+            </div>
+            <div class="card glass">
+                <div class="card-icon" style="font-size:1.6rem;">🌐</div>
+                <h3 style="font-size:1rem;">Works across machines</h3>
+                <p style="font-size:0.88rem;color:var(--muted);">Run the same onboarding prompt on any machine. Every machine connects to the same memory pool — one server, every device.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Updating ───────────────────────────────────────────────────────────────── -->
+<section class="section reveal">
+    <div style="max-width:860px;margin:0 auto;">
+        <h2 class="section-title" style="text-align:left;margin-bottom:0.5rem;">Keeping Zikra updated</h2>
+        <p style="color:var(--muted);margin-bottom:2rem;">Server and Claude Code hooks update independently. Both are one command.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:1.5rem;">
+            <div class="card glass" style="padding:2rem;">
+                <h3 style="margin-bottom:0.5rem;">Update the server</h3>
+                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">Pull latest and restart. Your <code style="color:#FFB77A;font-size:0.85em;">.env</code> and database are untouched.</p>
+                <div class="code-block">
+                    <span class="c-prompt">$</span> git pull origin main
+                    <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> pip install -e .</span>
+                    <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 -m zikra</span>
+                </div>
+            </div>
+            <div class="card glass" style="padding:2rem;">
+                <h3 style="margin-bottom:0.5rem;">Update Claude Code hooks</h3>
+                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">Re-run the same onboarding prompt. It detects your existing install and only refreshes what changed. Token and config preserved.</p>
+                <div class="code-block">
+                    <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/</span>
+                    <span style="display:block;color:#FFB77A;">GetZikra/zikra/main/prompts/g_zikra.md</span>
+                    <span style="display:block;color:#FFB77A;">and follow every instruction in it.</span>
+                </div>
+                <p style="font-size:0.82rem;color:var(--muted);margin-top:0.75rem;">MCP server settings never need manual updates.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ── CTA ────────────────────────────────────────────────────────────────────── -->
+<section class="reveal">
+    <div class="cta-band">
+        <h2>Questions? <span class="gradient-text">Open an issue.</span></h2>
+        <p>Zikra is actively used and maintained. Bugs get fixed fast.</p>
+        <div class="btn-row">
+            <a href="https://github.com/GetZikra/zikra" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">GitHub</a>
+            <a href="index.html" class="btn btn-ghost btn-lg">← Back to Zikra</a>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="footer-inner">
+        <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+        <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
+        <div class="footer-links">
+            <a href="index.html">Zikra</a>
+            <a href="install.html">How to Install</a>
+            <a href="license.html">MIT</a>
+            <a href="https://github.com/GetZikra/zikra" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
