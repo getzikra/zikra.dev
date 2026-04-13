@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.4</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.6</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,39 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.6</span>
+                <span class="changelog-date">2026-04-09</span>
+            </h3>
+            <ul>
+                <li><strong>Server-side <code>prompt_id</code> handshake</strong> — new <code>pending_runs</code> table keyed by <code>(runner, project)</code>. <code>get_prompt</code> records a pending row; <code>log_run</code> consumes it and auto-links the <code>prompt_id</code>. Fixes empty run history when prompts fire through the MCP transport. Atomic <code>FOR UPDATE</code> consume on Postgres; last-write-wins UPSERT on SQLite.</li>
+                <li><strong>Runner auto-injection via <code>X-Zikra-Runner</code> header</strong> — the MCP server pulls the runner hostname from the header and injects it into <code>get_prompt</code> / <code>log_run</code> tool arguments automatically. Callers no longer need to know their own hostname. Implemented via <code>ContextVar</code> for Streamable HTTP and session dict for SSE.</li>
+                <li><strong><code>mcp.json</code> auto-configuration</strong> — <code>installer.py</code> now writes the <code>X-Zikra-Runner</code> header into the generated <code>mcp.json</code> so new installs get the handshake out of the box.</li>
+                <li><strong>File-based rendezvous removed</strong> — <code>autolog.sh</code> and <code>watcher.py</code> no longer read or write <code>/tmp/zikra_prompt_id</code>. The handshake is now fully server-side, eliminating a race condition where long-running sessions lost their prompt linkage.</li>
+                <li><strong>Integration test for pending consumption</strong> — verifies the <code>get_prompt</code> → <code>log_run</code> handshake, idempotency of pending consume, and correct behavior when multiple prompts are in flight for the same runner+project.</li>
+            </ul>
+        </div>
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.5</span>
+                <span class="changelog-date">2026-04-09</span>
+            </h3>
+            <ul>
+                <li><strong><code>POST /mcp</code> no longer 307-redirects</strong> — Starlette's <code>Mount</code> was redirecting <code>POST /mcp</code> to <code>/mcp/</code> with a 307, which Claude.ai, Cursor, and other web MCP clients silently fail to follow. The Streamable HTTP handler is now registered directly on FastAPI via <code>@app.post('/mcp')</code> before the mount, so the redirect never fires. Legacy SSE endpoints at <code>/mcp/sse</code> and <code>/mcp/messages</code> continue to route through the mount.</li>
+                <li><strong>CORS middleware added</strong> — browser-based MCP connections and web clients were blocked before the request reached the handler. Now explicit CORS headers are sent on all routes.</li>
+                <li><strong>Web UI: direct <code>GET /api/ui/*</code> endpoints</strong> — the browser UI now reads from dedicated REST endpoints instead of posting through <code>/webhook/zikra</code> command dispatch. New endpoints: <code>/api/ui/memories</code> (hybrid FTS+vector for <code>q=&lt;text&gt;</code>, full list for <code>q=*</code>), <code>/api/ui/memories/{id}</code> (full <code>content_md</code>, no access-count bump), <code>/api/ui/prompts</code>, <code>/api/ui/requirements</code>, <code>/api/ui/run-history</code>, <code>/api/ui/bootstrap</code>. UI browsing no longer inflates <code>access_count</code> — only API clients do.</li>
+                <li><strong>Token telemetry in the topbar</strong> — new topbar pill shows aggregate <code>in / cache / out</code> tokens across all runs. Per-run history panel now exposes <code>cache_read</code> and <code>cache_creation</code> counts. Backed by a new <code>GET /api/ui/runs</code> aggregation endpoint (sum, avg, count).</li>
+                <li><strong><code>prompt_runs</code> schema extended</strong> — adds <code>prompt_id</code>, <code>tokens_cache_read</code>, <code>tokens_cache_creation</code>. Migration 005 <code>ALTER</code>s existing tables in place; no rebuild required.</li>
+                <li><strong>Content cutoff fix</strong> — <code>renderSearchDetail</code> was reading <code>m.content</code> (undefined in search results) and falling back to a truncated snippet. Now fetches the full record via <code>get_memory</code> on click and renders <code>content_md</code> through the markdown renderer so bold / code / lists / headers display correctly instead of raw syntax.</li>
+                <li><strong>Timezone-safe date parsing</strong> — new <code>parseUTCDate()</code> normalizes SQLite's <code>YYYY-MM-DD HH:MM:SS</code> format (no <code>T</code>, no <code>Z</code>). Without normalization, browsers parsed these as local time, producing wrong <code>ageDays</code> and skewed recency scores on the decay gauge and signal bars.</li>
+                <li><strong>Score fallback corrected</strong> — recency-signal rendering now falls back to the server-computed <code>score</code> instead of a stale client-side estimate when the backend payload omits per-signal values.</li>
+                <li><strong>UI polish</strong> — sidebar cards show a 90-char snippet preview so memories are distinguishable before opening. Score progress bar and signal bars get background tracks for empty-state clarity. Improved card hover / active states, spacing, and a loading skeleton while full content fetches. Inline-SVG orange "Z" favicon.</li>
+                <li><strong><code>update.sh</code> fixes</strong> — WIP snapshot commit now works without a global git identity (inline <code>-c user.name/email</code>). Rebuild path prefers <code>docker-compose.local.yml</code> if present. Execute bit restored so the script is runnable straight after clone.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>
