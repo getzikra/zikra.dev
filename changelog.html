@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.6</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.7</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,22 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.7</span>
+                <span class="changelog-date">2026-04-13</span>
+            </h3>
+            <ul>
+                <li><strong>Wikilinks in memories</strong> — write <code>[[Another Memory Title]]</code> anywhere in <code>content_md</code> and <code>save_memory</code> now parses the anchors and stores directed edges in a new <code>memory_links</code> table. Resolution prefers same-project targets, then falls back to <code>global</code>. Works on both Postgres (<code>asyncpg</code>) and SQLite backends; migration 007 ships the table.</li>
+                <li><strong>Backlinks on <code>get_memory</code></strong> — responses now include <code>links_out</code> (outgoing anchors) and <code>links_in</code> (incoming backlinks from other memories). New REST endpoint <code>GET /api/ui/backlinks/{memory_id}</code> exposes the same data for UI consumers.</li>
+                <li><strong>Graph: bold purple wikilink edges</strong> — the canvas graph now renders explicit <code>[[link]]</code> edges in bold purple <em>before</em> scored semantic candidates, so wikilinks always reach their target regardless of score threshold or per-node degree cap. Semantic pass skips pairs already claimed by a wikilink to avoid double-drawing.</li>
+                <li><strong>Orphan / stale detection</strong> — new <code>hygiene_report</code> command finds memories idle beyond <code>stale_days</code> (default 30) <em>and</em> with zero incoming wikilinks. Returns <code>days_idle</code>, <code>access_count</code>, <code>backlink_count</code>, and a <code>verdict</code> of <code>archive</code> (&gt; 90 days) or <code>review</code>. Scoped per-project.</li>
+                <li><strong>New MCP tool: <code>zikra_hygiene_report</code></strong> — registered in the MCP server so Claude Code, Cursor, and other MCP clients can pull a project's orphan list directly. Viewer-role accessible.</li>
+                <li><strong>Statusline stale warning</strong> — the Stop hook now caches <code>orphan_count</code> in <code>zikra-stats.json</code> alongside the memory count. When a project has orphaned memories, the statusline renders <code>⚠ N stale</code> in yellow after the token bar, so hygiene pressure is visible without opening the UI.</li>
+                <li><strong><code>delete_memory</code> command</strong> — new admin-gated command removes a memory and its <code>memory_links</code> edges via <code>ON DELETE CASCADE</code>. Requires an admin-role token; viewer and default tokens receive <code>403</code>.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>
