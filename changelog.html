@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.7</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.9</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,32 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.9</span>
+                <span class="changelog-date">2026-04-21</span>
+            </h3>
+            <ul>
+                <li><strong>Gemini CLI integration</strong> — new <code>hooks/gemini-hook.sh</code> registers for <code>AfterModel</code> and <code>SessionEnd</code> events. Parses the Gemini JSONL transcript for token counts (probes <code>usageMetadata.promptTokenCount</code> and OpenAI-style <code>usage.input_tokens</code> for cross-version compatibility). Writes <code>last_tool=gemini</code> and <code>last_model</code> to the shared <code>zikra-stats.json</code> cache so the statusline always reflects the active tool. Run the Gemini setup prompt to install automatically.</li>
+                <li><strong>Codex CLI integration</strong> — new <code>hooks/codex-hook.sh</code> registers for <code>Stop</code> and <code>PostToolUse</code> events. Probes <code>transcript_path</code> from the hook payload and falls back to <code>~/.codex/sessions/&lt;id&gt;/history.jsonl</code>. Parses OpenAI-style <code>usage.prompt_tokens</code> / <code>usage.completion_tokens</code>. Installer writes to <code>~/.codex/config.toml</code> ([hooks] section) when present, else <code>~/.codex/hooks.json</code>.</li>
+                <li><strong>Shell statusline</strong> — new <code>hooks/zikra-shell-status.sh</code> sources into <code>~/.bashrc</code> / <code>~/.zshrc</code> and renders the Zikra bar before each terminal prompt during Gemini and Codex sessions. Reuses <code>zikra-statusline.js</code> (synthetic payload from cache); project, run count, memory count, and model label all work. Token bar not shown at shell level — context window data is only available inside a Claude Code session.</li>
+                <li><strong>Installer: "Other AI tools" step</strong> — new question after hook depth. Detects <code>gemini</code> and <code>codex</code> on PATH and marks them "(detected)". Installs hooks, writes tool-specific configs, and appends the shell statusline source line to RC files. Summary lists all integrated tools.</li>
+                <li><strong>Shared cache architecture</strong> — all three tools (Claude Code, Gemini CLI, Codex CLI) write to and read from a single <code>~/.claude/cache/zikra-stats.json</code>. Claude Code uses its native statusline hook; Gemini and Codex hooks update the cache; the shell PROMPT_COMMAND reads it for non-Claude sessions.</li>
+            </ul>
+        </div>
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.8</span>
+                <span class="changelog-date">2026-04-21</span>
+            </h3>
+            <ul>
+                <li><strong>Statusline project detection from cwd</strong> — <code>hooks/zikra-statusline.js</code> now walks up from the current working directory looking for a <code>CLAUDE.md</code> with a <code>project:</code> line (or <code>ZIKRA_PROJECT=</code> env-style). First non-<code>global</code> match wins. Falls back to the cached project. Fixes sessions inside known project repos showing <code>global</code> in the statusline instead of the project name.</li>
+                <li><strong>Context window no longer hardcoded</strong> — the statusline uses whatever size Claude Code reports for the session in <code>context_window.context_window_size</code>. No cap at 200K. A 1M-variant session renders <code>X/1M</code>; a 200K session renders <code>X/200K</code>; any future window size is picked up automatically. 200K is kept only as a last-ditch fallback when the payload omits the field entirely.</li>
+                <li><strong><code>CHANGELOG.md</code> added to the main repo</strong> — <code>CHANGELOG.md</code> now lives at the root of <code>getzikra/Zikra</code> with entries from v1.0.4 forward, in Keep-a-Changelog format.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>

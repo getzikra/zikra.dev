@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.4</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.9</a>
 </nav>
 
 <!-- ── Hero ──────────────────────────────────────────────────────────────────── -->
@@ -104,13 +104,39 @@
                     <p style="color:var(--muted);margin-bottom:1.25rem;">
                         Paste the prompt for your agent into a session. Handles both first install and updates — run the same prompt any time to install or refresh.
                     </p>
-                    <p style="font-size:0.88rem;color:var(--text);margin-bottom:0.5rem;"><strong>Claude Code:</strong></p>
-                    <div class="code-block" style="margin-bottom:0.75rem;">
+                    <p style="font-size:0.88rem;color:var(--text);margin-bottom:0.5rem;"><strong>Claude Code</strong></p>
+                    <div class="code-block" style="margin-bottom:1.25rem;">
                         <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/GetZikra/zikra/main/prompts/zikra-claude-code-setup.md</span>
                         <span style="display:block;margin-top:0.4rem;color:#FFB77A;">and follow every instruction in it.</span>
                     </div>
-                    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">
-                        <strong style="color:var(--muted);">Gemini CLI</strong> — coming soon &nbsp;·&nbsp; <strong style="color:var(--muted);">Codex</strong> — coming soon
+
+                    <p style="font-size:0.88rem;color:var(--text);margin-bottom:0.5rem;"><strong>Gemini CLI</strong></p>
+                    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">
+                        Re-run the installer and choose <strong>Gemini CLI</strong> when asked "Other AI tools to integrate with?". The installer writes hook entries into <code style="color:#FFB77A;font-size:0.85em;">~/.gemini/settings.json</code> automatically.
+                    </p>
+                    <div class="code-block" style="margin-bottom:0.5rem;">
+                        <span class="c-comment"># If you already ran the installer, re-run it:</span>
+                        <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 installer.py</span>
+                        <span style="display:block;margin-top:0.6rem;color:var(--muted);font-size:0.85em;">  Other AI tools to integrate with?</span>
+                        <span style="display:block;color:var(--muted);font-size:0.85em;">  [2] Gemini CLI  (detected)</span>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.25rem;">
+                        Hooks fire on <code style="color:#FFB77A;font-size:0.85em;">AfterModel</code> and <code style="color:#FFB77A;font-size:0.85em;">SessionEnd</code>. Token counts are parsed from the Gemini JSONL transcript. The same statusline bar you see in Claude Code appears before each terminal prompt.
+                    </p>
+
+                    <p style="font-size:0.88rem;color:var(--text);margin-bottom:0.5rem;"><strong>Codex CLI</strong></p>
+                    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">
+                        Same installer step — choose <strong>Codex CLI</strong> or <strong>Both</strong>. Writes hook entries into <code style="color:#FFB77A;font-size:0.85em;">~/.codex/config.toml</code> (or <code style="color:#FFB77A;font-size:0.85em;">hooks.json</code> on newer Codex versions).
+                    </p>
+                    <div class="code-block" style="margin-bottom:0.5rem;">
+                        <span class="c-comment"># Re-run installer and pick Codex or Both:</span>
+                        <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 installer.py</span>
+                        <span style="display:block;margin-top:0.6rem;color:var(--muted);font-size:0.85em;">  Other AI tools to integrate with?</span>
+                        <span style="display:block;color:var(--muted);font-size:0.85em;">  [3] Codex CLI   (detected)</span>
+                        <span style="display:block;color:var(--muted);font-size:0.85em;">  [4] Both Gemini and Codex</span>
+                    </div>
+                    <p style="font-size:0.82rem;color:var(--muted);margin-bottom:1.25rem;">
+                        Hooks fire on <code style="color:#FFB77A;font-size:0.85em;">Stop</code> and <code style="color:#FFB77A;font-size:0.85em;">PostToolUse</code>. Token counts are parsed from <code style="color:#FFB77A;font-size:0.85em;">history.jsonl</code>. Shell statusline sourced into your RC file automatically.
                     </p>
                     <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">
                         Claude Code will ask for your server URL and token, then install:
@@ -180,12 +206,21 @@
                 </div>
             </div>
             <div class="card glass" style="padding:2rem;">
-                <h3 style="margin-bottom:0.5rem;">Update Claude Code hooks</h3>
-                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">Re-run the same onboarding prompt. It detects your existing install and only refreshes what changed. Token and config preserved.</p>
-                <div class="code-block">
+                <h3 style="margin-bottom:0.5rem;">Update hooks (all tools)</h3>
+                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">
+                    <strong>Claude Code</strong> — re-run the onboarding prompt. Detects your existing install, refreshes only what changed, preserves token and config.
+                </p>
+                <div class="code-block" style="margin-bottom:1rem;">
                     <span style="color:#FFB77A;">Fetch https://raw.githubusercontent.com/</span>
                     <span style="display:block;color:#FFB77A;">GetZikra/zikra/main/prompts/zikra-claude-code-setup.md</span>
                     <span style="display:block;color:#FFB77A;">and follow every instruction in it.</span>
+                </div>
+                <p style="font-size:0.88rem;color:var(--muted);margin-bottom:0.75rem;">
+                    <strong>Gemini CLI / Codex CLI</strong> — re-run the installer. Hook scripts are replaced in-place; tool configs are updated non-destructively.
+                </p>
+                <div class="code-block">
+                    <span class="c-prompt">$</span> git pull origin main
+                    <span style="display:block;margin-top:0.4rem;"><span class="c-prompt">$</span> python3 installer.py</span>
                 </div>
                 <p style="font-size:0.82rem;color:var(--muted);margin-top:0.75rem;">MCP server settings never need manual updates.</p>
             </div>
