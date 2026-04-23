@@ -25,7 +25,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.9</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.10</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -42,6 +42,21 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.10</span>
+                <span class="changelog-date">2026-04-22</span>
+            </h3>
+            <ul>
+                <li><strong>"Who are you?" login screen</strong> — replaces the silent settings-panel token input with a full-viewport user-picker overlay. On first visit the UI fetches <code>/api/ui/users</code> and renders a button per token label. Clicking a name reveals an inline token-paste field; the token is verified against <code>/api/ui/bootstrap</code> before being stored. An "Advanced" disclosure allows manual entry for new users. Global 401 now wipes <code>localStorage</code> and returns to the picker instead of opening the gear panel.</li>
+                <li><strong>Project-scoped tokens</strong> — new <code>project_scope</code> column on <code>access_tokens</code> (<code>NULL</code> = unrestricted). Pass <code>"project_scope": "veltisai"</code> to <code>create_token</code> to restrict a token to one project. Any request targeting a different project returns a structured 403 with a <code>hint</code> field. The UI shows a friendly banner with a one-click "Switch to '…'" button. Scoped tokens auto-lock to their project at login and on every page reload.</li>
+                <li><strong>Token usage tracking</strong> — new append-only <code>token_hits(label, command, ts)</code> table. A FastAPI middleware records every authenticated 200 response as a non-blocking background task. Webhook calls log the exact command; UI calls log <code>ui:bootstrap</code>, <code>ui:memories</code>, etc. Query via <code>GET /api/ui/token-usage</code> for <code>hits_total</code>, <code>hits_7d</code>, <code>hits_24h</code>, and <code>last_seen</code> per label.</li>
+                <li><strong><code>GET /api/ui/users</code></strong> — new unauthenticated endpoint returning <code>[{"label": "…"}, …]</code> from active non-owner tokens. Labels only — no tokens, no roles, no IDs.</li>
+                <li><strong>Project selector unlocked</strong> — removed the <code>role === 'owner'</code> gate from <code>renderProjSelector</code>; all authenticated roles now see the radio-button project list.</li>
+                <li><strong>Schema</strong> — <code>project_scope TEXT</code> added to <code>access_tokens</code>; <code>token_hits</code> table added with two indexes. SQLite: migration <code>008</code>. Postgres: <code>_PG_TABLES</code> updated for fresh installs; migration guards handle existing deployments idempotently.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>
