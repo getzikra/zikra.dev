@@ -27,19 +27,15 @@ if (termLines.length) {
     });
 }
 
-// ── Version badge — fetch latest GitHub tag ───────────────────────────────────
+// ── Version badge — fetched from /version.json (updated each release) ────────
 (async () => {
     const badge = document.getElementById('version-badge');
     if (!badge) return;
     try {
-        const res = await fetch('https://api.github.com/repos/getzikra/zikra/tags', {
-            headers: { 'Accept': 'application/vnd.github+json' }
-        });
+        const res = await fetch('/version.json', { cache: 'no-cache' });
         if (!res.ok) return;
-        const tags = await res.json();
-        if (tags && tags.length && tags[0].name) {
-            badge.textContent = tags[0].name.startsWith('v') ? tags[0].name : 'v' + tags[0].name;
-        }
+        const { version } = await res.json();
+        if (version) badge.textContent = version;
     } catch (_) {}
 })();
 
