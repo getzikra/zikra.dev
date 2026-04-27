@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zikra — Screenshots</title>
+    <meta name="description" content="See Zikra in action — memory graph, prompt library, renderings tab, and real team workflows across Claude Code, Gemini, and Codex.">
+    <link rel="canonical" href="https://zikra.dev/screenshots.html" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ── Screenshots gallery ── */
+        .ss-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .ss-card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.35s ease, border-color 0.35s ease;
+        }
+        .ss-card:hover { transform: translateY(-4px); border-color: var(--primary-border); }
+
+        .ss-img-wrap {
+            position: relative;
+            overflow: hidden;
+            cursor: zoom-in;
+            background: #0a0b12;
+        }
+        .ss-img-wrap img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.45s ease;
+        }
+        .ss-card:hover .ss-img-wrap img { transform: scale(1.015); }
+
+        .ss-body {
+            padding: 1.75rem 2rem 2rem;
+        }
+        .ss-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .ss-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.65rem;
+            line-height: 1.3;
+        }
+        .ss-desc {
+            color: var(--muted);
+            font-size: 0.975rem;
+            line-height: 1.75;
+        }
+        .ss-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-top: 1rem;
+        }
+        .ss-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            color: #94a3b8;
+        }
+
+        /* ── Lightbox ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: zoom-out;
+        }
+        .lightbox.open { display: flex; }
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 0 80px rgba(0,0,0,0.8);
+            object-fit: contain;
+        }
+        .lightbox-close {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        /* ── Testimonials ── */
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .testi-card {
+            padding: 2rem 2.25rem;
+            border-radius: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .testi-stars {
+            color: var(--primary);
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+        }
+        .testi-quote {
+            font-size: 0.975rem;
+            line-height: 1.8;
+            color: #e2e8f0;
+            flex: 1;
+        }
+        .testi-quote::before { content: '"'; }
+        .testi-quote::after  { content: '"'; }
+        .testi-author {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .testi-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .testi-role {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
+            .ss-body { padding: 1.25rem 1.5rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<nav class="navbar glass">
+    <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+    <div class="nav-links">
+        <a href="index.html">Zikra</a>
+        <a href="screenshots.html">Screenshots</a>
+        <a href="install.html">How to Install</a>
+        <a href="changelog.html">Changelog</a>
+        <a href="license.html">MIT</a>
+    </div>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.11</a>
+</nav>
+
+<!-- ── Hero ── -->
+<header class="hero-inner reveal">
+    <div class="badge">See it in action</div>
+    <h1 class="hero-title">Zikra in the wild</h1>
+    <p class="hero-sub">
+        Real screenshots from live deployments — the memory graph, prompt library, renderings tab, and the team workflows that Zikra makes possible.
+    </p>
+</header>
+
+<!-- ── Screenshots ── -->
+<section class="section reveal" style="padding-top: 2rem;">
+    <div class="ss-grid">
+
+        <!-- 1 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss1_march17_web.png">
+                <img src="assets/screenshots/ss1_march17_web.png" alt="Zikra memory list showing decisions, prompts, and architecture entries" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 01</div>
+                <div class="ss-title">Memory list — every decision your team has ever saved</div>
+                <p class="ss-desc">
+                    The core memory browser. Every entry is tagged by type — decision, prompt, architecture, conversation — and scoped to a project. Memories surface with full content previews so you can scan them at a glance without opening each one. This is what Claude reads before your session starts.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">Memory browser</span>
+                    <span class="ss-tag">Type filters</span>
+                    <span class="ss-tag">Project scoping</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss2_march18_web.png">
+                <img src="assets/screenshots/ss2_march18_web.png" alt="Zikra memory search interface with 160+ memories and filter controls" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 02</div>
+                <div class="ss-title">Search and filter across 160+ memories instantly</div>
+                <p class="ss-desc">
+                    Full hybrid search across every memory in the project — semantic vector search with keyword fallback. Type filters, module filters, and date ordering let you narrow from hundreds of entries to exactly what you need. Each card shows title, timestamp, project, and tags so nothing requires a second click to identify.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">Hybrid search</span>
+                    <span class="ss-tag">Module filters</span>
+                    <span class="ss-tag">160+ memories</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss3_apr27a_web.png">
+                <img src="assets/screenshots/ss3_apr27a_web.png" alt="Zikra memory graph — force-directed network of memories linked by wikilinks" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 03</div>
+                <div class="ss-title">Memory graph — your project as a living knowledge network</div>
+                <p class="ss-desc">
+                    The Graph tab renders every memory as a node in a force-directed network. Nodes are coloured by memory type — decisions in orange, prompts in green, conversations in blue. Edges are wikilinks written by agents as they reference related entries. You can instantly see which decisions are load-bearing, which prompts are most connected, and where knowledge clusters are forming.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">Force graph</span>
+                    <span class="ss-tag">Wikilinks</span>
+                    <span class="ss-tag">Type colouring</span>
+                    <span class="ss-tag">Live filter</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss4_apr27b_web.png">
+                <img src="assets/screenshots/ss4_apr27b_web.png" alt="Zikra graph with prompt detail panel open showing full prompt content" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 04</div>
+                <div class="ss-title">Click any node — full content opens without leaving the graph</div>
+                <p class="ss-desc">
+                    Clicking a node in the graph opens a detail panel on the right showing the full memory content, tags, confidence score, and metadata. Here a multi-step prompt — the <em>Optimization Agent Phase 2 Page Instructor</em> — is open with its complete markdown instructions visible. The graph stays live while you read, so you can trace context through connected nodes without losing your orientation.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">Node detail panel</span>
+                    <span class="ss-tag">Markdown rendering</span>
+                    <span class="ss-tag">Prompt inspection</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss5_apr27c_web.png">
+                <img src="assets/screenshots/ss5_apr27c_web.png" alt="Zikra Renderings tab showing a VeltisAI brand dashboard mockup with HTML source" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 05</div>
+                <div class="ss-title">Renderings tab — store and preview HTML mockups alongside your memories</div>
+                <p class="ss-desc">
+                    The Renderings tab lets agents save HTML mockups directly into Zikra memory. The left pane shows a live interactive preview — here a pharmaceutical brand intelligence dashboard with Veltis Scores, Coverage Index, and Compliance breakdowns by medical specialty. The right pane shows the source HTML. Any agent can pull the mockup by UUID and use it as a reference when building the real UI.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">HTML mockups</span>
+                    <span class="ss-tag">Live preview</span>
+                    <span class="ss-tag">Source view</span>
+                    <span class="ss-tag">Design handoff</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="ss-card glass reveal">
+            <div class="ss-img-wrap" data-src="assets/screenshots/ss6_apr27d_web.png">
+                <img src="assets/screenshots/ss6_apr27d_web.png" alt="Zikra prompts tab showing prompt library sidebar and full prompt content" loading="lazy">
+            </div>
+            <div class="ss-body">
+                <div class="ss-number">Screen 06</div>
+                <div class="ss-title">Prompt library — reusable, versioned, executable prompts for every agent</div>
+                <p class="ss-desc">
+                    The Prompts tab is your team's shared runbook. The left sidebar lists every saved prompt with its run count and last execution. On the right, the full prompt content — here the <em>Optimization Agent v2</em> autonomous system prompt with its complete architecture overview and step-by-step agent instructions. Any agent fetches it with a single command and executes the same workflow, every time, on any machine.
+                </p>
+                <div class="ss-tags">
+                    <span class="ss-tag">Prompt library</span>
+                    <span class="ss-tag">Run tracking</span>
+                    <span class="ss-tag">Agent-agnostic</span>
+                    <span class="ss-tag">Architecture docs</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── Testimonials ── -->
+<section class="section reveal" style="padding-top: 3rem;">
+    <h2 class="section-title">What people are saying</h2>
+    <p class="section-subtitle">From the people who build with it every day.</p>
+
+    <div class="testi-grid">
+
+        <div class="testi-card glass reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">I like doing my architecture and research on Claude Web. But when it came time to actually run the code — that's Claude Code's job. The problem? They don't talk to each other. Zikra fixed that. Every new session, Claude Code already knows what we designed.</p>
+            <div class="testi-author">
+                <div class="agent-chip av-human">M</div>
+                <div>
+                    <div class="testi-name">Mukarram</div>
+                    <div class="testi-role">Founder, Zikra</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testi-card glass reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">We even use ChatGPT sometimes when Claude Web is being stubborn about writing a prompt. Doesn't matter. The same MCP server works for all of them. Not built for a pitch deck. Built because we actually needed it.</p>
+            <div class="testi-author">
+                <div class="agent-chip av-human">M</div>
+                <div>
+                    <div class="testi-name">Mukarram</div>
+                    <div class="testi-role">Founder, Zikra</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="testi-card glass reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">Two developers building in opposite directions and not finding out until a late-night code review argument. That's what we had before. Zikra's shared memory means decisions made in one session are visible to everyone seconds later.</p>
+            <div class="testi-author">
+                <div class="agent-chip av-team">A</div>
+                <div>
+                    <div class="testi-name">Zikra team</div>
+                    <div class="testi-role">Early adopters</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="reveal">
+    <div class="cta-band">
+        <h2>Ready to give your agents a memory?</h2>
+        <p>Free, self-hosted, MIT licensed. Takes about five minutes to set up. Works with Claude, Gemini, and Codex out of the box.</p>
+        <div class="btn-row">
+            <a href="install.html" class="btn btn-primary btn-lg btn-glow">How to Install</a>
+            <a href="https://github.com/GetZikra/zikra" class="btn btn-github btn-lg" target="_blank" rel="noopener">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.6-4.04-1.6-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58C20.57 21.79 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                Star on GitHub
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="glass">
+    <div class="footer-inner">
+        <a href="index.html" class="logo"><span class="z">Z</span><span class="ikra">ikra</span></a>
+        <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
+        <div class="footer-links">
+            <a href="screenshots.html">Screenshots</a>
+            <a href="install.html">How to Install</a>
+            <a href="changelog.html">Changelog</a>
+            <a href="license.html">MIT</a>
+            <a href="https://github.com/GetZikra/zikra" target="_blank" rel="noopener">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ── Lightbox ── -->
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lb-close">✕</span>
+    <img src="" alt="Screenshot enlarged" id="lb-img">
+</div>
+
+<script src="script.js"></script>
+<script>
+    // Lightbox
+    const lb      = document.getElementById('lightbox');
+    const lbImg   = document.getElementById('lb-img');
+    const lbClose = document.getElementById('lb-close');
+
+    document.querySelectorAll('.ss-img-wrap').forEach(wrap => {
+        wrap.addEventListener('click', () => {
+            lbImg.src = wrap.dataset.src;
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    [lb, lbClose].forEach(el => {
+        el.addEventListener('click', e => {
+            if (e.target === lb || e.target === lbClose || e.target.closest('#lb-close')) {
+                lb.classList.remove('open');
+                document.body.style.overflow = '';
+                lbImg.src = '';
+            }
+        });
+    });
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && lb.classList.contains('open')) {
+            lb.classList.remove('open');
+            document.body.style.overflow = '';
+            lbImg.src = '';
+        }
+    });
+</script>
+</body>
+</html>
