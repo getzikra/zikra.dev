@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zikra — Changelog</title>
     <meta name="description" content="Zikra version history and release notes.">
+    <link rel="canonical" href="https://zikra.dev/changelog.html" />
+    <meta property="og:title" content="Zikra — Changelog" />
+    <meta property="og:description" content="Zikra version history and release notes." />
+    <meta property="og:url" content="https://zikra.dev/changelog.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://zikra.dev/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://zikra.dev/assets/og-image.png" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,7 +36,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.11</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.12</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -43,6 +53,19 @@
 <!-- ── Changelog entries ──────────────────────────────────────────────────────── -->
 <section class="section reveal">
     <div style="max-width:860px;margin:0 auto;">
+
+        <div class="changelog-entry">
+            <h3>
+                <span class="changelog-version">v1.0.12</span>
+                <span class="changelog-date">2026-04-27</span>
+            </h3>
+            <ul>
+                <li><strong>og:image social card</strong> — new 1200×630 share image (<code>/assets/og-image.png</code>) shown when Zikra links are shared on Twitter/X, Slack, Discord, LinkedIn, and any Open Graph-aware platform. All pages updated to <code>summary_large_image</code>.</li>
+                <li><strong>JSON-LD structured data</strong> — <code>SoftwareApplication</code> schema added to the homepage so search engines can surface richer results (name, description, license, code repository, pricing).</li>
+                <li><strong>Live GitHub stars badge</strong> — the "Star on GitHub" button in the hero now fetches the current star count from the GitHub API and displays it inline.</li>
+                <li><strong>Canonical + og:url tags</strong> — added to install, changelog, and license pages that were missing them.</li>
+            </ul>
+        </div>
 
         <div class="changelog-entry">
             <h3>

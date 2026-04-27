@@ -39,6 +39,23 @@ if (termLines.length) {
     } catch (_) {}
 })();
 
+// ── GitHub star count ─────────────────────────────────────────────────────────
+(async () => {
+    const el = document.getElementById('star-count');
+    if (!el) return;
+    try {
+        const r = await fetch('https://api.github.com/repos/GetZikra/zikra', { cache: 'force-cache' });
+        if (!r.ok) return;
+        const { stargazers_count } = await r.json();
+        if (typeof stargazers_count === 'number') {
+            el.textContent = stargazers_count >= 1000
+                ? (stargazers_count / 1000).toFixed(1) + 'k'
+                : stargazers_count;
+            el.classList.add('loaded');
+        }
+    } catch (_) {}
+})();
+
 // ── Active nav link highlight ─────────────────────────────────────────────────
 const page = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-links a').forEach(a => {

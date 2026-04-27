@@ -14,10 +14,30 @@
     <meta property="og:description" content="Claude Code forgets everything between sessions. Zikra fixes that — one shared memory pool for all your AI tools. Free, self-hosted, MIT licensed." />
     <meta property="og:url" content="https://zikra.dev" />
     <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://zikra.dev/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Zikra — Persistent Memory for Claude Code" />
     <meta name="twitter:description" content="Claude Code forgets everything between sessions. Zikra fixes that." />
+    <meta name="twitter:image" content="https://zikra.dev/assets/og-image.png" />
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Zikra",
+      "description": "Shared persistent memory for Claude Code, Gemini CLI, and Codex. Decisions, prompts, requirements, and session logs survive across sessions, tools, and machines.",
+      "url": "https://zikra.dev",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Linux, macOS, Windows",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "license": "https://opensource.org/licenses/MIT",
+      "codeRepository": "https://github.com/GetZikra/zikra",
+      "author": { "@type": "Organization", "name": "GetZikra", "url": "https://github.com/GetZikra" }
+    }
+    </script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,7 +59,7 @@
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
-    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.11</a>
+    <a href="changelog.html" class="version-badge" id="version-badge">v1.0.12</a>
 </nav>
 
 <!-- ── Hero ─────────────────────────────────────────────────────────────────── -->
@@ -54,7 +74,9 @@
     </p>
 
     <div class="hero-cta">
-        <a href="https://github.com/GetZikra/zikra" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Star on GitHub</a>
+        <a href="https://github.com/GetZikra/zikra" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">
+            ★ Star on GitHub<span class="star-count" id="star-count"></span>
+        </a>
         <a href="install.html" class="btn btn-ghost btn-lg">How to Install</a>
     </div>
 

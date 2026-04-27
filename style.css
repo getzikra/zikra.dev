@@ -137,6 +137,20 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
 .btn-github:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
 .btn-glow { box-shadow: none; }
 .btn-glow:hover { box-shadow: none; }
+.star-count {
+    display: inline-block;
+    margin-left: 0.55rem;
+    padding: 0.1rem 0.55rem;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+.star-count.loaded { opacity: 1; }
 
 /* ── Navbar ── */
 .navbar {
