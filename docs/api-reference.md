@@ -239,6 +239,6 @@ Return backend diagnostics: engine, db path, memory count, OpenAI key status.
 
 ## Agent-Specific Implementation Details
 
-- **Claude Code**: Use the MCP SSE endpoint at `http://localhost:8000/mcp/sse`. The installer registers it automatically in `~/.claude/settings.json`. For webhook calls, use curl with the Stop hook.
+- **Claude Code**: Use the MCP SSE endpoint at `http://localhost:8000/mcp`. The installer registers it automatically in `~/.claude/settings.json`. For webhook calls, use curl with the Stop hook.
 - **ChatGPT & Custom GPTs**: Expose the `/webhook/zikra` via Cloudflare Tunnels and hook as a standard OpenAPI action using the schema.
 - **MCP Native**: Zikra wraps into an MCP Memory Server natively. No changes to the payload scheme required.

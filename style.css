@@ -487,6 +487,77 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.2; }
 .arch-diagram .arch-label { color: #64748b; }
 .arch-diagram .arch-ok { color: #4ade80; }
 
+.architecture-figure {
+    max-width: 1180px;
+    margin: 0 auto 2rem;
+    padding: 1rem;
+    border-radius: 18px;
+    overflow: hidden;
+}
+.architecture-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+.arch-points {
+    margin-top: 2rem;
+}
+
+/* ── Promotion kit ── */
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.promo-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.promo-copy {
+    border-radius: 14px;
+    padding: 1.75rem 2rem;
+}
+.promo-copy.wide {
+    max-width: 940px;
+    margin: 0 auto;
+}
+.promo-copy p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-top: 0.75rem;
+}
+.promo-copy h3 {
+    font-size: 1.2rem;
+    margin-top: 0.65rem;
+}
+.asset-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 220px;
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-color);
+}
+.asset-card img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    background: var(--code-bg);
+}
+.asset-card span {
+    display: block;
+    padding: 1rem 1.25rem;
+    color: #FFB77A;
+    font-weight: 700;
+}
+
 /* ── CTA band ── */
 .cta-band {
     text-align: center;

@@ -1,0 +1,121 @@
+<svg width="1400" height="920" viewBox="0 0 1400 920" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Zikra governed memory architecture</title>
+  <desc id="desc">Architecture diagram showing agents, protocol entrypoints, governance gates, Zikra core services, storage, and the team workflow loop.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1400" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#10151f"/>
+      <stop offset="0.55" stop-color="#121826"/>
+      <stop offset="1" stop-color="#17120d"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="130" y1="100" x2="1260" y2="820" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffb77a"/>
+      <stop offset="1" stop-color="#e8730a"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .title{font:700 42px Inter,Arial,sans-serif;fill:#f8fafc}
+      .subtitle{font:400 20px Inter,Arial,sans-serif;fill:#b8c2d6}
+      .label{font:700 19px Inter,Arial,sans-serif;fill:#f8fafc}
+      .small{font:500 15px Inter,Arial,sans-serif;fill:#cbd5e1}
+      .tiny{font:500 13px Inter,Arial,sans-serif;fill:#94a3b8}
+      .mono{font:600 14px "JetBrains Mono",Consolas,monospace;fill:#ffb77a}
+      .box{fill:#151d2d;stroke:#334155;stroke-width:1.4;rx:18;filter:url(#shadow)}
+      .box2{fill:#111827;stroke:#3b4657;stroke-width:1.2;rx:14}
+      .gate{fill:#201711;stroke:#e8730a;stroke-width:1.6;rx:16}
+      .core{fill:#162033;stroke:#ffb77a;stroke-width:1.6;rx:16}
+      .store{fill:#101b18;stroke:#37c187;stroke-width:1.4;rx:16}
+      .line{stroke:#64748b;stroke-width:2.2;fill:none;marker-end:url(#arrow)}
+      .accent-line{stroke:#e8730a;stroke-width:2.8;fill:none;marker-end:url(#arrowAccent)}
+      .green-line{stroke:#37c187;stroke-width:2.4;fill:none;marker-end:url(#arrowGreen)}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowAccent" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#e8730a"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#37c187"/>
+    </marker>
+  </defs>
+
+  <rect width="1400" height="920" fill="url(#bg)"/>
+  <rect x="42" y="42" width="1316" height="836" rx="32" fill="#0f172a" opacity="0.54" stroke="#263244"/>
+  <text x="90" y="105" class="title">Zikra: governed project memory for teams of agents</text>
+  <text x="92" y="143" class="subtitle">One shared memory layer, multiple agents, project-scoped access, typed knowledge, run telemetry, and searchable decisions.</text>
+
+  <rect x="82" y="205" width="240" height="520" class="box"/>
+  <text x="112" y="246" class="label">People and agents</text>
+  <rect x="112" y="282" width="180" height="46" class="box2"/>
+  <text x="132" y="311" class="small">Owners / admins</text>
+  <rect x="112" y="344" width="180" height="46" class="box2"/>
+  <text x="132" y="373" class="small">Developers</text>
+  <rect x="112" y="406" width="180" height="46" class="box2"/>
+  <text x="132" y="435" class="small">Viewers</text>
+  <rect x="112" y="490" width="180" height="46" class="box2"/>
+  <text x="132" y="519" class="small">Claude Code</text>
+  <rect x="112" y="552" width="180" height="46" class="box2"/>
+  <text x="132" y="581" class="small">Codex CLI</text>
+  <rect x="112" y="614" width="180" height="46" class="box2"/>
+  <text x="132" y="643" class="small">Gemini / Cursor</text>
+  <text x="114" y="692" class="tiny">Any tool that can speak MCP</text>
+  <text x="114" y="713" class="tiny">or send an HTTP request.</text>
+
+  <rect x="390" y="205" width="270" height="520" class="box"/>
+  <text x="423" y="246" class="label">Protocol surface</text>
+  <rect x="426" y="294" width="198" height="82" class="core"/>
+  <text x="456" y="326" class="mono">POST /mcp</text>
+  <text x="456" y="352" class="small">MCP tools API</text>
+  <rect x="426" y="415" width="198" height="82" class="core"/>
+  <text x="451" y="447" class="mono">/webhook/zikra</text>
+  <text x="456" y="473" class="small">Command API</text>
+  <rect x="426" y="536" width="198" height="82" class="core"/>
+  <text x="469" y="568" class="mono">Web UI</text>
+  <text x="455" y="594" class="small">Graph + runs</text>
+
+  <rect x="728" y="205" width="250" height="520" class="box"/>
+  <text x="766" y="246" class="label">Governance gate</text>
+  <rect x="765" y="294" width="176" height="62" class="gate"/>
+  <text x="792" y="331" class="small">Bearer token</text>
+  <rect x="765" y="388" width="176" height="82" class="gate"/>
+  <text x="790" y="420" class="small">Role-based</text>
+  <text x="799" y="446" class="small">permissions</text>
+  <rect x="765" y="502" width="176" height="82" class="gate"/>
+  <text x="786" y="534" class="small">Project scope</text>
+  <text x="801" y="560" class="tiny">optional gate</text>
+  <text x="768" y="653" class="tiny">owner, admin, developer, viewer</text>
+  <text x="768" y="675" class="tiny">same rules across entrypoints</text>
+
+  <rect x="1044" y="205" width="274" height="520" class="box"/>
+  <text x="1090" y="246" class="label">Zikra core</text>
+  <rect x="1082" y="286" width="198" height="48" class="core"/>
+  <text x="1120" y="316" class="small">Command router</text>
+  <rect x="1082" y="352" width="198" height="48" class="core"/>
+  <text x="1131" y="382" class="small">Embeddings</text>
+  <rect x="1082" y="418" width="198" height="48" class="core"/>
+  <text x="1112" y="448" class="small">Hybrid ranking</text>
+  <rect x="1082" y="484" width="198" height="48" class="core"/>
+  <text x="1121" y="514" class="small">Memory graph</text>
+  <rect x="1082" y="550" width="198" height="48" class="core"/>
+  <text x="1115" y="580" class="small">Run telemetry</text>
+  <rect x="1082" y="616" width="198" height="48" class="core"/>
+  <text x="1132" y="646" class="small">Hygiene</text>
+
+  <rect x="390" y="777" width="928" height="70" class="store"/>
+  <text x="432" y="819" class="label">Storage: SQLite + sqlite-vec for local use, PostgreSQL + pgvector for teams</text>
+  <text x="432" y="841" class="tiny">memories, memory_links, prompt_runs, pending_runs, error_log, access_tokens, token_hits</text>
+
+  <path d="M322 335 H426" class="line"/>
+  <path d="M322 574 H426" class="line"/>
+  <path d="M624 335 H765" class="accent-line"/>
+  <path d="M624 456 H765" class="accent-line"/>
+  <path d="M624 577 H765" class="accent-line"/>
+  <path d="M941 429 H1082" class="accent-line"/>
+  <path d="M1181 664 V777" class="green-line"/>
+  <path d="M853 584 V777" class="green-line"/>
+
+  <path d="M204 757 C365 850, 1030 850, 1181 690" stroke="url(#accent)" stroke-width="3" fill="none" stroke-dasharray="10 10"/>
+  <text x="570" y="755" class="mono">requirements -> decisions -> prompts -> runs -> new memory</text>
+</svg>

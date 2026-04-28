@@ -48,7 +48,7 @@ for vector search, and supports PostgreSQL + pgvector for teams that need it.
 - PostgreSQL + pgvector supported via DB_BACKEND=postgres
 - Zero mandatory external dependencies — no Docker, no n8n required
 - Multi-user RBAC token system
-- MCP server at /mcp via SSE transport
+- MCP server at /mcp via Streamable HTTP
 - GitHub: https://github.com/getzikra/zikra
 
 
@@ -208,8 +208,7 @@ User-Agent: curl/7.81.0
 { "command": "<command-name>", ... }
 ```
 
-The `User-Agent: curl/7.81.0` header is required. Some n8n configurations reject
-requests without a recognized User-Agent.
+The `User-Agent` header is optional. Use it only if a proxy in front of Zikra requires one.
 
 ---
 
@@ -614,7 +613,7 @@ or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
 {
   "mcpServers": {
     "zikra": {
-      "url": "http://localhost:8000/mcp/sse",
+      "url": "http://localhost:8000/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
       }
@@ -630,7 +629,7 @@ Add to `~/.claude/mcp.json`:
 ```json
 {
   "zikra": {
-    "url": "http://localhost:8000/mcp/sse",
+    "url": "http://localhost:8000/mcp",
     "headers": {
       "Authorization": "Bearer YOUR_ZIKRA_TOKEN"
     }
@@ -649,8 +648,7 @@ When connected via MCP, Zikra exposes these tools:
 - `zikra_log_error` — log an error
 - `zikra_help` — list all commands
 
-The MCP server uses Server-Sent Events (SSE) transport, which is the standard
-transport for HTTP-based MCP servers.
+The MCP server uses Streamable HTTP at `/mcp`, with legacy SSE endpoints retained only for older clients.
 
 
 ---
@@ -976,8 +974,8 @@ Zikra/
 ├── scripts/
 │   └── migrate.sh            # Run all pending migrations
 ├── workflow/
-│   └── zikra_mcp_router.json # n8n workflow export
-├── docker-compose.yml        # PostgreSQL + n8n orchestration
+│   └── zikra_mcp_router.json # legacy workflow export
+├── docker-compose.yml        # Zikra server orchestration
 ├── schema.sql                # Canonical current PostgreSQL schema
 ├── install.sh                # Shell installer (alternative to zikra-claude-code-setup.md)
 └── .env.example              # Environment template
@@ -997,11 +995,11 @@ memory, Claude memory bridge, MCP server Python, self-hosted MCP server,
 Claude Code session memory, Cursor memory plugin, Gemini CLI memory,
 AI coding agent memory, agent memory layer, Claude Code hooks, session amnesia AI,
 LLM memory server, zikra memory, zikra.dev, getzikra, persistent context window,
-AI agent context sharing, Claude Code shared memory, n8n memory workflow,
+AI agent context sharing, Claude Code shared memory, governed project memory,
 PostgreSQL vector search memory, sqlite persistent memory AI, FastAPI memory server,
 AI tool interoperability, cross-agent memory sharing, developer AI memory,
 coding agent context, automatic session logging Claude, AI hook Stop hook,
-PreCompact hook, Claude Code statusline, MCP server FastAPI, MCP server n8n,
+PreCompact hook, Claude Code statusline, MCP server FastAPI, Streamable HTTP MCP,
 pgvector semantic search, sqlite-vec semantic search, hybrid search AI memory,
 confidence decay memory, memory aging AI agents, token budgeting search results,
 RBAC token memory server, self-hosted AI memory, open source AI memory,

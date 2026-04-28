@@ -42,7 +42,7 @@ GitHub: https://github.com/getzikra/zikra
 {
   "mcpServers": {
     "zikra": {
-      "url": "http://localhost:8000/mcp/sse",
+      "url": "http://localhost:8000/mcp",
       "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
     }
   }
@@ -53,7 +53,7 @@ GitHub: https://github.com/getzikra/zikra
 ```json
 {
   "zikra": {
-    "url": "http://localhost:8000/mcp/sse",
+    "url": "http://localhost:8000/mcp",
     "headers": { "Authorization": "Bearer YOUR_ZIKRA_TOKEN" }
   }
 }
@@ -110,7 +110,7 @@ Log a bug or failure for future pattern matching.
 - FastAPI server (Python) on port 8000
 - SQLite database with sqlite-vec for vector search
 - text-embedding-3-small (OpenAI) or local Ollama for embeddings
-- MCP server via SSE transport at /mcp
+- MCP server via Streamable HTTP at /mcp
 - Bearer token auth on all endpoints
 - Multi-user RBAC token system
 

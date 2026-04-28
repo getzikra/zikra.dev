@@ -57,6 +57,7 @@
         <a href="index.html">Zikra</a>
         <a href="screenshots.html">Screenshots</a>
         <a href="install.html">How to Install</a>
+        <a href="promote.html">Promote</a>
         <a href="changelog.html">Changelog</a>
         <a href="license.html">MIT</a>
     </div>
@@ -159,7 +160,7 @@ pass requirements, and approve decisions — automatically, across every machine
                     <tr><td><span class="cmd-name">Session tracking</span></td><td class="cmd-desc">Every run logged — tokens, cost, files modified, status, linked to the prompt that triggered it.</td></tr>
                     <tr><td><span class="cmd-name">Active runs table</span></td><td class="cmd-desc">See which machine is running which prompt in real time across your team.</td></tr>
                     <tr><td><span class="cmd-name">Statusline bar</span></td><td class="cmd-desc">Live in your terminal. Run count, memory count, model, project, context usage. Skull at 600K tokens.</td></tr>
-                    <tr><td><span class="cmd-name">n8n dashboard</span></td><td class="cmd-desc">Web interface for browsing, searching, and managing all memories via n8n + direct DB access.</td></tr>
+                    <tr><td><span class="cmd-name">Built-in web UI</span></td><td class="cmd-desc">Browse memories, graph links, prompts, requirements, runs, token usage, and project-scoped views from the server UI.</td></tr>
                     <tr><td><span class="cmd-name">MCP native</span></td><td class="cmd-desc">Claude connects via MCP trigger. No custom integration.</td></tr>
                     <tr><td><span class="cmd-name">Alias normaliser</span></td><td class="cmd-desc">"find", "recall", "remember", "query" all route correctly. Agents don't need exact command names.</td></tr>
                     <tr><td><span class="cmd-name">Self-documenting API</span></td><td class="cmd-desc">Unknown command returns full reference with examples. No external docs needed at runtime.</td></tr>
@@ -252,6 +253,33 @@ pass requirements, and approve decisions — automatically, across every machine
         </div>
     </div>
 
+</section>
+
+<!-- ── Architecture ─────────────────────────────────────────────────────────── -->
+<section id="architecture" class="section reveal">
+    <h2 class="section-title">The architecture: governed memory, not another note bucket</h2>
+    <p class="section-subtitle">
+        Zikra sits between your agents and your project knowledge. MCP clients, CLI hooks,
+        custom agents, and the web UI all pass through the same token gate, project scope,
+        command router, ranking layer, and storage backend.
+    </p>
+    <div class="architecture-figure glass">
+        <img src="assets/architecture.svg" alt="Zikra architecture diagram showing agents, protocols, governance, core services, and storage" loading="lazy">
+    </div>
+    <div class="grid-3 arch-points">
+        <div class="card glass">
+            <h3>Agent agnostic</h3>
+            <p>Claude Code can use MCP. Codex, Gemini, shell hooks, or custom workers can use the webhook. Same memory pool, same project rules.</p>
+        </div>
+        <div class="card glass">
+            <h3>Project gated</h3>
+            <p>Roles control what a token can do. Project scopes control where it can do it. This is how memory becomes usable for real teams.</p>
+        </div>
+        <div class="card glass">
+            <h3>Typed and ranked</h3>
+            <p>Requirements, decisions, prompts, errors, notes, and runs are searchable by meaning, keyword, recency, frequency, and confidence.</p>
+        </div>
+    </div>
 </section>
 
 <!-- ── What it actually does ─────────────────────────────────────────────────── -->
@@ -504,6 +532,7 @@ pass requirements, and approve decisions — automatically, across every machine
         <span class="footer-copy">© 2026 Zikra Contributors — MIT Licensed</span>
         <div class="footer-links">
             <a href="install.html">How to Install</a>
+            <a href="promote.html">Promote</a>
             <a href="changelog.html">Changelog</a>
             <a href="license.html">MIT</a>
             <a href="https://github.com/GetZikra/zikra" target="_blank" rel="noopener">GitHub</a>
