@@ -44,7 +44,7 @@ if (termLines.length) {
     const el = document.getElementById('star-count');
     if (!el) return;
     try {
-        const r = await fetch('https://api.github.com/repos/GetZikra/zikra', { cache: 'force-cache' });
+        const r = await fetch('https://api.github.com/repos/getzikra/zikra', { cache: 'no-cache' });
         if (!r.ok) return;
         const { stargazers_count } = await r.json();
         if (typeof stargazers_count === 'number') {

@@ -58,6 +58,25 @@
 
         <div class="changelog-entry">
             <h3>
+                <span class="changelog-version">v1.0.13</span>
+                <span class="changelog-date">2026-05-06</span>
+            </h3>
+            <ul>
+                <li><strong>Memory-type color palette</strong> — the <code>TYPE_COLORS</code> map in the web UI now has 14 distinct presets so every memory type that exists in the database renders with its own color in the graph view and in badges. New entries: <code>bug</code> (red), <code>diary</code> (rose), <code>investigation</code> (gold), <code>reference</code> (sky blue), <code>mockup</code> (orange), <code>skill</code> (mint), <code>feedback</code> (teal), <code>handoff</code> (lavender), and a coral for <code>error</code> so it no longer collides with <code>bug</code>.</li>
+                <li><strong>Search pagination</strong> — the Search tab now shows <code>showing N of total</code> under the result list and a <strong>Load more</strong> button when more results are available. Replaces the silent 50-row truncation. Server cap raised from 200 to 1000.</li>
+                <li><strong>Hooks: server <code>log_run</code></strong> — <code>hooks/codex-hook.sh</code> and <code>hooks/gemini-hook.sh</code> now POST a <code>log_run</code> to the Zikra server when <code>ZIKRA_URL</code> and <code>ZIKRA_TOKEN</code> are set. Token counts land in <code>prompt_runs</code> on the server, not just the local statusline cache.</li>
+                <li><strong>MCP <code>project_scope</code> enforcement</strong> — tokens minted with a <code>project_scope</code> are now enforced for all project-scoped MCP tools. Mismatched calls return a structured <code>token_scope_mismatch</code> error; matched calls have <code>project</code> injected automatically.</li>
+                <li><strong>Architecture docs rewritten</strong> — <code>docs/architecture.md</code> repositioned around the team-memory-OS framing with Mermaid diagrams for system, request flow, role/scope model, and storage layout.</li>
+                <li><strong><code>PROMOTION.md</code> launch kit</strong> — public promotion kit at the repo root with canonical links, positioning, and submission copy for directories, awesome lists, and launch platforms.</li>
+                <li><strong><code>prompts/zikra-audit.md</code></strong> — new Claude Code audit prompt for project drift, type misclassification, ghost projects, and emerging-project signals.</li>
+                <li><strong>Stars badge fix on this site</strong> — <code>script.js</code> was passing <code>cache: 'force-cache'</code> to <code>fetch()</code>, which froze the GitHub star count to whatever the first response returned. Switched to <code>'no-cache'</code> so the count refreshes every page load.</li>
+                <li><strong>Memory type cleanup</strong> — DB-side merges consolidated stray one-off types: <code>run_diary</code> → <code>diary</code>, <code>memory</code> → <code>reference</code>, <code>knowledge</code> → <code>reference</code>. Distinct types reduced from 15 to 12.</li>
+                <li><strong><code>setup.py</code> version sync</strong> — was 9 releases stale at <code>1.0.1</code>; now matches <code>zikra/version.py</code>.</li>
+            </ul>
+        </div>
+
+        <div class="changelog-entry">
+            <h3>
                 <span class="changelog-version">v1.0.12</span>
                 <span class="changelog-date">2026-04-27</span>
             </h3>
